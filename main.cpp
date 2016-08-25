@@ -14,7 +14,8 @@ that particular year (median price, median rent, lagged home price appreciation,
 Case-Shiller Inex Futures Price, etc...)
 (not included on GitHub due to proprietary data)
 Currently works for on data from 2007-2014
-Cities: San Diego, San Francisco, Los Angeles
+Cities: San Diego, San Francisco, Los Angeles, Boston, Chicago, 
+Denver, Miami, New York 
 
 Copyright A. Michael Sharifi, 2016
 */
@@ -78,8 +79,8 @@ int main(){
 
 			// load city_data and into ps1 and gs1; include current rent, current home price,
 			// lagged home price appreciation, Case-Shiller Futures Price, current time
-			// load_pricepath now stores everything in 
-			load_pricepath(&snodes1, city_data.rent[t], city_data.price[t], city_data.ret_lag[t], city_data.csf_1yr[t], t, city_init, city_id);
+			// load_simpath store discretized approximation in snodes1 structure 
+			load_simpath(&snodes1, city_data.rent[t], city_data.price[t], city_data.ret_lag[t], city_data.csf_1yr[t], t, city_init, city_id);
 
 			cout << "main.cpp: begin data" << endl;
 			vf_F.enter_data(&snodes1, phr_in, t, t_hor, city_data.csf_1yr[t], pref);

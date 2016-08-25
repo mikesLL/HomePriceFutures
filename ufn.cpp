@@ -2,7 +2,8 @@
 ufc: felicitous utility function 
 accepts double c_in (non-durable consumption), double hu_in (housing consumption)
 returns double cobb-douglas evaluated at those values
-alpha_cd, calpha_cd, rho, are parameters initialized in the calibration.h
+
+_cd, calpha_cd, rho, are parameters initialized in the calibration.h
 
 Copyright A. Michael Sharifi, 2016
 */

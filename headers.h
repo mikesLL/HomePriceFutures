@@ -31,7 +31,7 @@ typedef struct{
 	int valid_flag;
 } gen_res;
 
-void load_pricepath(void *snodes_in, double rent_in, double ph0_in,
+void load_simpath(void *snodes_in, double rent_in, double ph0_in,
 	double ret0_in, double csf_1yr_in, int t_id, string city_init_in, int city_id_in);
 
 void gen_VP(void *snodes_in, void *my_func_data1, void *my_func_data2 );
