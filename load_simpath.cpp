@@ -27,16 +27,15 @@ In actual regression:
 Numeraire: non-durable consumption
 Rent grows in real terms
 Income grows in real terms as the agent ages and city-wide income increases
-Note: be careful about the San Francisco story
 */
 
 #include "headers.h"
 
-void load_simpath(void *snodes_in, double rent_in, double ph0_in, double ret0_in, double csf_1yr_in, int t_id, string city_init_in, int city_id) {
+void load_simpath(void *snodes_in, double rent_in, double ph0_in, double ret0_in, double csf_1yr_in, int t_id, string city_init_in, int city_id, int age_begin_in) {
 
 	int s1, s2, s_test;                             // state in current period, state in next period
 	int N_print =  10000;                          // number of observations to print to file
-	int N_sim = 1000000;                                            // number of simulations
+	int N_sim = 2000000;                                            // number of simulations
 	int i_ph, i_rent, i_yi, i_s;                                 // state and individual dimension indices
 
 	cout << "load ppath: ph0_in:  " << ph0_in << endl;
@@ -45,8 +44,20 @@ void load_simpath(void *snodes_in, double rent_in, double ph0_in, double ret0_in
 	// year: 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014
 	double inf_mult[] = {104.5, 106.9, 109.7, 113.4, 117.1, 120.4, 125.0, 124.6, 126.6, 130.6, 133.3, 135.3, 137.6}; 
 
-	// adding determnistic (real) rent growth
-	double g_rent[] = { 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01 };
+
+	//determnistic (real) rent growth
+	double g_rent_store[] = {
+		0.00279512280912727,
+		0.00372666252799066,
+		0.00374066193750439,
+		0.00158055419701987,
+		0.00503271347985580,
+		- 0.000102926026248194,
+		0.00425295851646686,
+		0.00612790147006233
+	};
+
+	double g_rent = g_rent_store[city_id];
 
 	ph0_in = ph0_in / inf_mult[t_id] * 100.0;
 	rent_in = rent_in / inf_mult[t_id] * 100.0;
@@ -137,15 +148,16 @@ double gamma0_store[] = {
 	
 	string city_init = city_init_in;                                          // initial conditions for simulation
 	    
-	double rent = rent_in;
+	double rent0 = rent_in;
 
-	cout << "load ppath; rent = " << rent << endl;
+	cout << "load ppath; rent = " << rent0 << endl;
 	
 	double ph0 = ph0_in;
 	double ret0 = ret0_in;
 	double csf_1yr = csf_1yr_in;
 	
 	snodes *snodes1 = (snodes*)snodes_in;
+	int T_max = (*snodes1).T_max;
 
 	cout << "begin load_simpath" << endl ;
     double duration;
@@ -161,6 +173,9 @@ double gamma0_store[] = {
 	cout << " N_sim = " << N_sim << endl;
 	
 	int T_sim = T_max + 1;                                                              // T_max is a measure of the investor's horizon
+	
+	cout << "T_sim = " << T_sim << endl;
+	
 	double ret_tn, ret_lag, ecm;
 
 	vector<vector<double>> ph_str(T_sim + 1, vector<double>(N_sim, 0.0) );              // store city-wide home prices
@@ -186,7 +201,7 @@ double gamma0_store[] = {
 	double sigma_yc = 0.0001; //0.01;   // 0.0                  // avg real income / rent growth stdev
 
 	double mult_2005 =   .56 / .51; // 1.5;                              // multiplier: convert $1992 to $2005
-	double mult_unit = 0.01;                             // muttiplier: convert $1000s from parameters to $100000s in paper
+	double mult_unit = 0.01;                             // multiplier: convert $1000s from parameters to $100000s in paper
 
 	double log_y_rand = 0.0;                             // random componenet of income (log)
 	double log_y_age;                                    // age-based (deterministic) component of income
@@ -197,8 +212,9 @@ double gamma0_store[] = {
 	int t = 0, n = 0, n1 = 0, n2 = 0;                                          // time and simulation indices
 	double res_sum, res_sq_sum, res_mean, res_std, row_sum;                    // sums for computing means and standard deviations
 
-    double i_age; // Track agent's age
-	double i_age0 = age_begin;  // initial age
+    //int i_age; // Track agent's age
+	//int age_t = age_begin_in;  // track household age
+	double age_td; // track household age as double
 
 	// loop through simulations
 	cout << "load_simpath.cpp: Begin Simulations" << endl;
@@ -209,13 +225,15 @@ double gamma0_store[] = {
 		
 		// t = 0: initial year
 		t = 0;                                 
-		i_age = i_age0 + double(t);             // initial age
+		age_td = double(age_begin_in) + double(t); // initial age
 		
 		ph_str[t][n] = log(ph0);
-		rent_str[t][n] = rent;
+		rent_str[t][n] = rent0;
 	
 		// compute age-related component of log-income (deterministic)
-		log_y_age = -4.3148 + 0.3194*i_age - 0.0577*pow(i_age, 2.0) / 10.0 + 0.0033*pow(i_age, 3.0) / 100.0;
+		
+		log_y_age = -4.3148 + 0.3194*age_td - 0.0577*pow(age_td, 2.0) / 10.0 
+			+ 0.0033*pow(age_td, 3.0) / 100.0;
 		
 		yi_str[t][n] = y_city_mult[city_id]*mult_unit*mult_2005*exp(log_fe + log_y_age);
 		yi_str[t][n] = log(yi_str[t][n]);
@@ -224,7 +242,7 @@ double gamma0_store[] = {
 
 		// t = 1: first year
 		t = 1;                                  // first year: draw shocks
-		i_age = i_age0 + double(t);                         // current age
+		age_td = double(age_begin_in) + double(t);   // current age
 
 		g_yc_t = mu_yc + sigma_yc*dist(gen);    // city-wide income / rent
 		u_t = sigma_u*dist(gen);                // individual: permanent shock
@@ -233,28 +251,25 @@ double gamma0_store[] = {
 		v_t = v_t0 + u_t;  // upadate income permanent component
 		v_t0 = v_t;                             // update transient component
 		
-
 		// compute age-related component of log-income (deterministic)
-		log_y_age = -4.3148 + 0.3194*i_age - 0.0577*pow( i_age, 2.0) / 10.0 + 0.0033*pow(  i_age, 3.0) / 100.0;
+		log_y_age = -4.3148 + 0.3194*age_td - 0.0577*pow(age_td, 2.0) / 10.0 + 0.0033*pow(age_td, 3.0) / 100.0;
 
 		// compute home price appreciation
 		ret_tn = (csf_1yr - ph0) / ph0 + sigma_ret*dist(gen);  // impose first year expected return equals the futures-based forecast
 
-		rent_str[t][n] = exp(g_yc_t)*rent_str[t-1][n];
+		rent_str[t][n] = exp(g_rent)*rent_str[t-1][n]; // update rent path
 		
 		yi_str[t][n] = y_city_mult[city_id]*mult_unit*mult_2005*exp( log_fe + log_y_age + v_t + e_t );  // Cocco, Maenhoust, Gomes parameters are in 1000's; convert to 100k
 		yi_str[t][n] = log(yi_str[t][n]);
 
 		ph_str[t][n] = (ret_tn) + ph_str[t - 1][n];  // home prices in sim are in logs
 
-
-		// simulate for later time periods
+		// simulate later time periods
 		for (t = 2; t < (T_sim + 1); t++){
-			i_age = i_age0 + double(t);                        // compute age
+			age_td = double(age_begin_in) + double(t);  // compute age
 
 			// compute age-related component of log-income (deterministic)
-			log_y_age = -4.3148 + 0.3194*i_age - 0.0577*pow(i_age, 2.0) / 10.0 + 0.0033*pow(i_age, 3.0) / 100.0;
-
+			log_y_age = -4.3148 + 0.3194*age_td - 0.0577*pow(age_td, 2.0) / 10.0 + 0.0033*pow(age_td, 3.0) / 100.0;
 
 			// draw shocks
 			g_yc_t = mu_yc + sigma_yc*dist(gen);  // city-wide income / rent
@@ -266,20 +281,17 @@ double gamma0_store[] = {
 			v_t0 = v_t;                             // update transient component
 			
 			// compute home price
-			ret_lag = ph_str[t - 1][n] - ph_str[t - 2][n];
-			//ret_lag = log(ph_str[t - 1][n]) - log(ph_str[t - 2][n]); 
-			ecm = log(rent) - gamma0_hat - gamma1_hat*(ph_str[t - 1][n]);
-			//ecm = log(rent) - gamma0_hat - gamma1_hat*log(ph_str[t-1][n]);                     // error correction 
+			ret_lag = ph_str[t - 1][n] - ph_str[t - 2][n];                                       // ph_str is in logs 
+			ecm = log(rent_str[t - 1][n]) - gamma0_hat - gamma1_hat*(ph_str[t - 1][n]);          // cointegrate rents, prices
 			
-			ret_tn = alpha_hat + rhof_hat*ret_lag + theta_hat*ecm + sigma_ret*dist(gen);         // impose cointegration
+			ret_tn = alpha_hat + rhof_hat*ret_lag + theta_hat*ecm + sigma_ret*dist(gen);         // return series
 		
-			rent_str[t][n] = exp(g_yc_t)*rent_str[t-1][n];
+			rent_str[t][n] = exp(g_rent)*rent_str[t-1][n];
 
 			yi_str[t][n] = mult_unit*mult_2005*exp(log_fe + log_y_age + v_t + e_t);
 			yi_str[t][n] = log(yi_str[t][n]);
 
-			ph_str[t][n] = (ret_tn) + ph_str[t - 1][n];
-			//ph_str[t][n] = exp(ret_tn)*ph_str[t-1][n];
+			ph_str[t][n] = ret_tn + ph_str[t - 1][n];
 		}
 	}
 
@@ -312,7 +324,8 @@ double gamma0_store[] = {
 		res_sq_sum = inner_product(rent_str[t].begin(), rent_str[t].end(), rent_str[t].begin(), 0.0);
 		res_std = sqrt(res_sq_sum / (double) rent_str[t].size() - res_mean * res_mean);
 
-		if (t == 0) {
+		// check null stdev case
+		if ( (res_std != res_std ) || (res_std <= 0.01) ) {
 			res_std = 0.01;  // initial period: manually set stdev
 		}
 
@@ -415,7 +428,7 @@ double gamma0_store[] = {
 	
 	// print sample price paths
 	ofstream price_obs_file;                                        
-	price_obs_file.open("price_results/" + city_init + "yr" + to_string(t_id) + "price_obs_file.csv", ios::out | ios::trunc);
+	price_obs_file.open("price_results/" + string("age") + to_string( (*snodes1).age0 ) + "/"  + city_init + "yr" + to_string(t_id) + "price_obs_file.csv", ios::out | ios::trunc);
 	for (n = 0; n < N_print; n++) {
 		for (t = 0; t < T_sim; t++) {
 			price_obs_file << exp(ph_str[t][n]) << ",";
@@ -426,7 +439,7 @@ double gamma0_store[] = {
 
 	// print sample rent paths
 	ofstream rent_obs_file;                                       
-	rent_obs_file.open("price_results/" + city_init + "yr" + to_string(t_id) + "rent_obs_file.csv", ios::out | ios::trunc);
+	rent_obs_file.open("price_results/" + string("age") + to_string( (*snodes1).age0 ) + "/" + city_init + "yr" + to_string(t_id) + "rent_obs_file.csv", ios::out | ios::trunc);
 	for (n = 0; n < N_print; n++) {
 		for (t = 0; t < T_sim; t++) {
 			rent_obs_file << rent_str[t][n] << ",";
@@ -437,7 +450,7 @@ double gamma0_store[] = {
 
 	// print sample income paths
 	ofstream yi_obs_file;                                     
-	yi_obs_file.open("price_results/" + city_init + "yr" + to_string(t_id) + "yi_obs_file.csv", ios::out | ios::trunc);
+	yi_obs_file.open("price_results/" + string("age") + to_string( (*snodes1).age0 ) + "/" +  city_init + "yr" + to_string(t_id) + "yi_obs_file.csv", ios::out | ios::trunc);
 	for (n = 0; n < N_print; n++) {
 		for (t = 0; t < T_sim; t++) {
 			yi_obs_file << exp(yi_str[t][n]) << ",";
@@ -447,8 +460,9 @@ double gamma0_store[] = {
 	yi_obs_file.close();
 
 
-	ofstream pstruct_file;                                                   // print out price grid
-	pstruct_file.open("price_results/" + city_init + "yr" + to_string(t_id) + "pstruct_file.csv", ios::out | ios::trunc);
+	// print out price grid
+	ofstream pstruct_file;                                                  
+	pstruct_file.open("price_results/" + string("age") + to_string( (*snodes1).age0 ) + "/" + city_init + "yr" + to_string(t_id) + "pstruct_file.csv", ios::out | ios::trunc);
 	for (t = 0; t < T_sim; t++) {
 		for (n = 0; n < n_ph; n++) {
 			pstruct_file << (*snodes1).p_gridt[t][n] << ",";         // alt: ph_str_nds[t][n];
@@ -456,8 +470,9 @@ double gamma0_store[] = {
 		pstruct_file << endl;
 	}
 
-	ofstream ystruct_file;                                                              // print out income grid
-	ystruct_file.open("price_results/" + city_init + "yr" + to_string(t_id) + "ystruct_file.csv", ios::out | ios::trunc);
+	// print out income grid
+	ofstream ystruct_file;                                                              
+	ystruct_file.open("price_results/" + string("age") + to_string( (*snodes1).age0 ) + "/" + city_init + "yr" + to_string(t_id) + "ystruct_file.csv", ios::out | ios::trunc);
 	for (t = 0; t < T_sim; t++) {
 		for (n = 0; n < n_yi; n++) {
 			ystruct_file << (*snodes1).yi_gridt[t][n] << ",";         // alt: ph_str_nds[t][n];
@@ -465,8 +480,19 @@ double gamma0_store[] = {
 		ystruct_file << endl;
 	}
 
-	ofstream gstruct_file;                                                             // print out transition matrix
-	gstruct_file.open("price_results/" + city_init + "yr" + to_string(t_id) + "gstruct_file.csv", ios::out | ios::trunc);
+	// print out rent grid
+	ofstream rstruct_file;
+	rstruct_file.open("price_results/" + string("age") + to_string( (*snodes1).age0 ) + "/" + city_init + "yr" + to_string(t_id) + "rstruct_file.csv", ios::out | ios::trunc);
+	for (t = 0; t < T_sim; t++) {
+		for (n = 0; n < n_rent; n++) {
+			rstruct_file << (*snodes1).rent_gridt[t][n] << ",";         // alt: ph_str_nds[t][n];
+		}
+		rstruct_file << endl;
+	}
+
+	// print out transition matrix
+	ofstream gstruct_file;                                                           
+	gstruct_file.open("price_results/" + string("age") + to_string( (*snodes1).age0 ) + "/" + city_init + "yr" + to_string(t_id) + "gstruct_file.csv", ios::out | ios::trunc);
 	for (t = 0; t < T_sim; t++) {
 		for (i = 0; i < n_s; i++) {
 			for (j = 0; j < n_s; j++) {

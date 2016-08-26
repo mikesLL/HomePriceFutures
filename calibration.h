@@ -1,22 +1,24 @@
 // calibration.h
 // Includes parameters used throughout the program
 // Copyright A. Michael Sharifi, 2016
+// 
+// cities: San Diego, San Francisco, Los Angeles, Boston, Chicago, Denver,  Miami, New York
+// city_id: 0,1,2,3,4,5,6,7,8
+// *.read_in files begin at year 5 (2007) and end at year 11 (2013)
 
-
-/*
-San Diego, San Francisco, Los Angeles, Boston, Chicago, Denver,  Miami, New York
-city_id: 0,1,2,3,4,5,6,7,8
-*/
 const int city_begin = 0;
-const int city_end = 3;
+const int city_end = 2;
+
 const int t_begin = 5;                   // begin in year 4 from .csv
 const int t_end = 12;                    // = 11 to cycle through all time periods;
 
+const int age_begin_store[] = { 30, 45, 60 };
+const int n_age = 3;
 
-const double age_begin = 30.0; //45.0;  // 60
-                                           // sd_read_in, sfr_read_in, and lax_read_in, all begin at year 4 and end at year 11
-const int T_max = 5; //35; //20; //12;    // maximum number of years included in _readin.csv; 1,...,11 corresponds to years 2003,...,2014
-const int w_n = 200;                      // Grid points in wealth; set = 10 for fast computation, = 2000 for precision
+//const int T_max = 5; //35; //20; //12;    // maximum number of years included in _readin.csv; 1,...,11 corresponds to years 2003,...,2014
+const int age_max = 65;                  // age at which household retires / annuitiezes wealth  
+//const int T_max = 5;  
+const int w_n = 400;                     // Grid points in wealth; set = 200 for fast computation, = 2000 for precision
 
 const double csfLev = 1.0 * ( 1.0 / 0.055 );       // Case-Shiller Index Future margin-implied leverage; (notional value contract)/(median home price)*(1/margin)
 const int csfLevi = int(floor(csfLev));   // Floor for identification
@@ -78,7 +80,11 @@ const double gammad = 1.01;
 const int gammai = int(floor(gammad));
 
 //Equity approximation (Gaussian-Hermite quadrature, 2 node approximation)
+<<<<<<< HEAD
 const double x_mu = 0.06; // Cocco-Gomes Maenhout
+=======
+const double x_mu = 0.06; // Cocco, Gomes Maenhout (2005)
+>>>>>>> dev
 const double x_std = 0.157; 
 const int retxn = 2;
 const double retxv[] = { x_mu - x_std, x_mu + x_std }; //{ -0.10, 0.25 };

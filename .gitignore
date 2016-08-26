@@ -40,10 +40,19 @@ Thumbs.db
 # Folders
 Debug/
 price_results/*.csv
+price_results/age30/*.csv
+price_results/age45/*.csv
+price_results/age60/*.csv
+
 vfn_results/*.csv
+vfn_results/age30/*.csv
+vfn_results/age45/*.csv
+vfn_results/age60/*.csv
+
 first_results/*.csv
 first_results/*.mat
 first_results/*.zip
+
 eval_perf/*.mat
 *.sdf
 *.sln

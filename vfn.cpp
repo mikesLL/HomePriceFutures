@@ -3,10 +3,9 @@
 
 #include "headers.h"
 
-//using namespace std;
+void vfn::enter_data(void *snodes_in, double phr_in, int t_id_in, int t_num_in, double csf_1yr_in, int pref_in, int T_max_in) {
 
-void vfn::enter_data(void *snodes_in, double phr_in, int t_id_in, int t_num_in, double csf_1yr_in, int pref_in) {
-
+	T_max = T_max_in; 
 	snodes1 = (snodes *)snodes_in;
 
 	csf_1yr = csf_1yr_in;
@@ -140,28 +139,7 @@ eval_res vfn::eval_v(int i_t_in, int i_s_in, double w_in) {
 
 			res1.v_out = max(vw3_grid[i_t_in][i_s_in][w_i_low], v_tlower);
 
-			/*
-			int w_i_a = w_n - 21;
-			int w_i_b = w_n - 11;
-			int w_i_c = w_n - 1;
 			
-			double w_a = w_grid[w_i_a];
-			double w_b = w_grid[w_i_b];
-			double w_c = w_grid[w_i_c]; 
-			
-			double v_a = vw3_grid[i_t_in][i_s_in][w_i_a];
-			double v_b = vw3_grid[i_t_in][i_s_in][w_i_b];
-			double v_c = vw3_grid[i_t_in][i_s_in][w_i_c];
-
-			double lambda_ab = log( (v_b - v_a) / (v_c - v_a) ) /
-                                   log( (w_b - w_a) / (w_c - w_a) );
-		
-			double theta_ab = (w_in - w_a) / (w_b - w_a);
-
-			res1.v_out = (1.0 - pow(theta_ab, lambda_ab)) * v_a + pow(theta_ab, lambda_ab)*v_c;
-			res1.w_i_floor = w_n - 1;
-			res1.v_i_floor = res1.v_out;
-			*/
 
 		} else {
 			res1.v_out = vw3_grid[i_t_in][i_s_in][0] - 1.0e6*pow(w_in - w_min, 2);
@@ -170,9 +148,6 @@ eval_res vfn::eval_v(int i_t_in, int i_s_in, double w_in) {
 		}
 	}
 
-	//if (res1.v_out != res1.v_out) {
-	//	res1.v_out = 
-	//}
 
 	return res1;
 }

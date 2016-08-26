@@ -5,7 +5,7 @@ Copyright A. Michael Sharifi, 2016
 
 #include "headers.h"
 
-// enter data to facilitate value function evaluation
+// enter data to speed up value function evaluation
 void ufnEV2::enter_data(void *snodes_in, void *vf2_in) {
 
 	int i_s2, i_ph2;
@@ -40,14 +40,6 @@ void ufnEV2::enter_data(void *snodes_in, void *vf2_in) {
 		csf_net2[i_s2] = ( (*snodes1).p_gridt[t_hor + 1][i_ph2] - ph_2e ) / ph_2e;
 	}
 
-	//}
-	//else {
-	//	for (i_s2 = 0; i_s2 < n_s; i_s2++) {
-	//		csf_net2[i_s2] = 0.0;
-	//	}
-	//}
-
-	// select states in next period with positive probability
 	i_s2p = 0;
 	for (i_s2 = 0; i_s2 < n_s; i_s2++) {
 		if ( (*snodes1).gammat[t_hor][i_s1][i_s2] > 0.0) {
@@ -114,29 +106,16 @@ inline eval_res ufnEV2::eval_v( int i_s_in, double w_in) {
 		w_i_d = (double)(w_n - 1.0)*(w_in - w_min) / (w_max - w_min);    // map w_in to w_i
 		w_i_low = (int)floor(w_i_d);
 		w_low = (*vf2).w_grid[w_i_low];
-		//w_high = (*vf2).w_grid[w_i_low+1];
-
-		//w_diff1 = (w_in - (*vf2).w_grid[w_i_low]);
+	
 		w_diff2 = ( (*vf2).w_grid[1] - (*vf2).w_grid[0] );
 
 		alpha1 = (w_in - w_low) / w_diff2;
-
-		//num1 = w_diff1 * vw3_d_grid_ti2[i_s_in][w_i_low] +
-		//	1.0*0.5*pow(w_diff1, 2.0)*vw3_dd_grid_ti2[i_s_in][w_i_low];
-
-		//den1 = w_diff2 * vw3_d_grid_ti2[i_s_in][w_i_low] +
-		//	1.0*0.5*pow(w_diff2, 2.0)*vw3_dd_grid_ti2[i_s_in][w_i_low];
 		
 		v_tlower = vw3_grid_ti2[i_s_in][w_i_low];
 		v_tupper = vw3_grid_ti2[i_s_in][w_i_low + 1];
 
 		res2.v_out = v_tlower + alpha1*(v_tupper - v_tlower);
-		//res2.v_out = v_tlower + min( max(num1 / den1, alpha1), 1.0)*(v_tupper - v_tlower);
-
-		//if (res2.v_out != res2.v_out) {
-		//	res2.v_out = v_tlower + alpha1*(v_tupper - v_tlower);
-		//}
-
+		
 		res2.w_i_floor = w_i_low;
 		res2.v_i_floor = vw3_grid_ti2[i_s_in][w_i_low];  // TODO: double check; this may be an issue when considering tenure changes
 	}
@@ -180,17 +159,3 @@ inline eval_res ufnEV2::eval_v( int i_s_in, double w_in) {
 }
 
 
-
-//for (i_s2 = 0; i_s2 < n_s; i_s2++) {
-
-//double E_csf = 0.0;
-
-//for (i_s2p = 0; i_s2p < N_s2p; i_s2p++) {
-//	i_s2 = i_s2p_vec[i_s2p];
-//	E_csf = E_csf + csfLev * (*snodes1).gammat[t_hor][i_s1][i_s2] * csf_net2[i_s2];
-//}
-
-//if ( (E_csf) > .01) {
-//if ( 1 ) {
-//	cout <<  "ufnEV2.cpp: E_csf =" << E_csf << endl;
-//}

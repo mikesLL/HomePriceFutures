@@ -41,75 +41,93 @@ int main(){
 		load_csv(&city_data, city_filename);
 
 		int t;
+		int i_age;
 
 #pragma omp parallel for
 		for (t = t_begin; t <= t_end; t++) {
+			for (i_age = 0; i_age < n_age; i_age++) {
 
-			int t_hor = T_max; // optimization problem horizon;
-			double duration;
-			double phr_in = city_data.rent[t];     // load in current median rent
+				int age0 = age_begin_store[i_age];     // household's initial age
+				int T_max = age_max - age0;            // optimization problem horizon
+				int t_hor = T_max;                     // household's planning horizon time index
+			       
+				double duration;
+				double phr_in = city_data.rent[t];     // load in current median rent
 
-			clock_t start = clock();
-			snodes snodes1;                        // discretized states including home prices, rents, incomes
+				clock_t start = clock();                 
 
-			snodes1.city_id = city_id; 
-			snodes1.hu_ten[0] = hu_ten_store[city_id][0];
-			snodes1.hu_ten[1] = hu_ten_store[city_id][1];
-			snodes1.hu_ten[2] = hu_ten_store[city_id][2];
+				// discretized states including home prices, rents, incomes
+				snodes snodes1(age0, T_max );
 
-			snodes1.ten_w[0] = 0.0;
-			snodes1.ten_w[1] = snodes1.hu_ten[1] / hu_med[city_id]; 
-			snodes1.ten_w[2] = snodes1.hu_ten[2] / hu_med[city_id];
+				snodes1.city_id = city_id;
+				snodes1.hu_ten[0] = hu_ten_store[city_id][0];
+				snodes1.hu_ten[1] = hu_ten_store[city_id][1];
+				snodes1.hu_ten[2] = hu_ten_store[city_id][2];
 
-			snodes1.rent_adj = snodes1.hu_ten[0] / hu_med[city_id];
+				snodes1.ten_w[0] = 0.0;
+				snodes1.ten_w[1] = snodes1.hu_ten[1] / hu_med[city_id];
+				snodes1.ten_w[2] = snodes1.hu_ten[2] / hu_med[city_id];
 
-			snodes1.adj_tax();
+				snodes1.rent_adj = snodes1.hu_ten[0] / hu_med[city_id];
 
-			cout << "housing tenure: " << endl;
-			cout << snodes1.hu_ten[0] << "..." << snodes1.hu_ten[1] << "..." << snodes1.hu_ten[2] << "..." << endl;
+				cout << "snoedes1.rent_adj = " << snodes1.rent_adj << endl; 
 
-			cout << "housing wealth weight: " << endl;
-			cout << snodes1.ten_w[0] << "..." << snodes1.ten_w[1] << "..." << snodes1.ten_w[2] << "..." << endl;
+				snodes1.adj_tax();
 
-			cout << "rent adj: " << endl;
-			cout << snodes1.rent_adj << endl;
+				cout << "housing tenure: " << endl;
+				cout << snodes1.hu_ten[0] << "..." << snodes1.hu_ten[1] << "..." << snodes1.hu_ten[2] << "..." << endl;
 
-			vfn vf_F;
-			vfn vf_P;
+				cout << "housing wealth weight: " << endl;
+				cout << snodes1.ten_w[0] << "..." << snodes1.ten_w[1] << "..." << snodes1.ten_w[2] << "..." << endl;
 
+<<<<<<< HEAD
 			// load city_data and into ps1 and gs1; include current rent, current home price,
 			// lagged home price appreciation, Case-Shiller Futures Price, current time
 			// load_simpath store discretized approximation in snodes1 structure 
 			load_simpath(&snodes1, city_data.rent[t], city_data.price[t], city_data.ret_lag[t], city_data.csf_1yr[t], t, city_init, city_id);
+=======
+				cout << "rent adj: " << endl;
+				cout << snodes1.rent_adj << endl;
+>>>>>>> dev
 
-			cout << "main.cpp: begin data" << endl;
-			vf_F.enter_data(&snodes1, phr_in, t, t_hor, city_data.csf_1yr[t], pref);
+				vfn vf_F;
+				vfn vf_P;
+				
+				// load city_data and into ps1 and gs1; include current rent, current home price,
+				// lagged home price appreciation, Case-Shiller Futures Price, current time
+				// load_simpath store discretized approximation in snodes1 structure 
+				load_simpath(&snodes1, city_data.rent[t], city_data.price[t], city_data.ret_lag[t],
+					city_data.csf_1yr[t], t, city_init, city_id, age0);
 
-			cout << "main.cpp: set terminal" << endl;
-			vf_F.set_terminal(phr_in);
+				cout << "main.cpp: begin data" << endl;
+				vf_F.enter_data(&snodes1, phr_in, t, t_hor, city_data.csf_1yr[t], pref, T_max);
 
-			cout << "main.cpp: store_data" << endl;
-			store_data(&snodes1, &vf_F, city_init + "yr", t, t_hor);
+				cout << "main.cpp: set terminal" << endl;
+				vf_F.set_terminal(phr_in);
 
-			for (t_hor = (T_max - 1); t_hor >= 0; t_hor--) {
-				snodes1.t_hor = t_hor;
-				cout << "main.cpp: vf_P: enter data" << endl;
-				vf_P.enter_data(&snodes1, phr_in, t, t_hor, city_data.csf_1yr[t], pref);
+				cout << "main.cpp: store_data" << endl;
+				store_data(&snodes1, &vf_F, city_init + "yr", t, t_hor, T_max);
 
-				cout << " main.cpp: gen_VP" << endl;
-				gen_VP(&snodes1, &vf_P, &vf_F);
+				for (t_hor = (T_max - 1); t_hor >= 0; t_hor--) {
+					snodes1.t_hor = t_hor;
+					cout << "main.cpp: vf_P: enter data" << endl;
+					vf_P.enter_data(&snodes1, phr_in, t, t_hor, city_data.csf_1yr[t], pref, T_max);
 
-				cout << "main.cpp: begin store_data" << endl;
-				store_data(&snodes1, &vf_P, city_init + "yr", t, t_hor);
+					cout << " main.cpp: gen_VP" << endl;
+					gen_VP(&snodes1, &vf_P, &vf_F);
 
-				vf_F = vf_P;
+					cout << "main.cpp: begin store_data" << endl;
+					store_data(&snodes1, &vf_P, city_init + "yr", t, t_hor, T_max);
+
+					vf_F = vf_P;
+				}
+
+				t_hor = 0;
+
+				cout << "\n Value Function Iteration Completed \n";
+				duration = (clock() - start) / (double)CLOCKS_PER_SEC;
+				cout << "total run time: " << duration << '\n';
 			}
-
-			t_hor = 0;
-
-			cout << "\n Value Function Iteration Completed \n";
-			duration = (clock() - start) / (double)CLOCKS_PER_SEC;
-			cout << "total run time: " << duration << '\n';
 		}
 	}
 

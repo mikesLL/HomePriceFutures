@@ -7,7 +7,7 @@
 
 #include "headers.h"
 
-void store_data(void *snodes_in, void *vfn_in, string file_name_in, int year1_id_in, int year1t_id_in) {
+void store_data(void *snodes_in, void *vfn_in, string file_name_in, int year1_id_in, int year1t_id_in, int T_max) {
 
 	int i_s, i_ph, i_w, t_i, w_i, i_yi, i_rent;
 	int y_i_def = 0;
@@ -17,8 +17,9 @@ void store_data(void *snodes_in, void *vfn_in, string file_name_in, int year1_id
 	vfn *vfnt = (vfn *)vfn_in;                              // address to initialized V2
 
 	snodes *snodes1 = (snodes *)snodes_in;
+	int age0 = (*snodes1).age0;
 
-	// this is the state of interest; it represents median income, median home price, median rent out of all states
+	// main state of interest; represents median income, median home price, median rent out of all states
 	int i_s_mid = (*snodes1).i_s_mid;
 
 	ofstream v1_file;                                             // open output file stream    
@@ -30,8 +31,10 @@ void store_data(void *snodes_in, void *vfn_in, string file_name_in, int year1_id
 		file_name_in + to_string(year1_id) + "pref" + to_string(pref) + "rho" + to_string(rhoi) + "gamma" + to_string(gammai) + "csfLev" + to_string(csfLevi) + "w_n" + to_string(w_n);
 
 	//string file_name = file_name_def + ".csv";
-	string file_name = "vfn_results/" + file_name_def + ".csv";
-
+	//string file_name = "vfn_results/" + file_name_def + ".csv";
+	string file_name = "vfn_results/age" + to_string(age0) +  "/" + file_name_def + ".csv";
+	string file_name_flat = "vfn_results/age" + to_string(age0) + "/" + file_name_def2 + "_flat" + ".csv";               // flat file written and appended throughout project
+	//string file_name_flat = "vfn_results/" + file_name_def2 + "_flat" + ".csv";               // flat file written and appended throughout project
 
 	cout << "store_data.cpp: list prices" << endl;
 	for (i_ph = 0; i_ph < n_ph; i_ph++) {
@@ -47,8 +50,6 @@ void store_data(void *snodes_in, void *vfn_in, string file_name_in, int year1_id
 		for (i_ph = 0; i_ph < n_ph; i_ph++) {
 			for (i_rent = 0; i_rent < n_rent; i_rent++) {
 				for (i_yi = 0; i_yi < n_yi; i_yi++) {
-					// for i_yi = 0; i_yi < n_y ; cycle across labor income states
-					//v1_file << "t_i = " << t_i << "," << "i_ph = " << i_ph << "," << "ph = " << (*snodes1).p_gridt[year1t_id][i_ph] << " , , , , , , ";
 					v1_file << "t_i = " << t_i << "," << "i_ph = " << i_ph << "," << "ph = " << (*snodes1).p_gridt[year1t_id][i_ph]
 						<< "," << "i_rent = " << i_rent << "," << "i_yi = " << i_yi << ","
 						<< "y = " << (*snodes1).yi_gridt[year1t_id][i_yi] << ",";
@@ -85,18 +86,13 @@ void store_data(void *snodes_in, void *vfn_in, string file_name_in, int year1_id
 	   then middle state is: i_s_mid
 	*/
 
-	//(*snodes1).s_ph_midry
-
 	for ( w_i = 0; w_i < w_n; w_i++) {
 		for ( t_i = 0; t_i < t_n; t_i++) {
 			for (i_ph = 0; i_ph < n_ph; i_ph++) {
 				for (i_rent = 0; i_rent < n_rent; i_rent++) {
 					for (i_yi = 0; i_yi < n_yi; i_yi++) {
-						// given i_ph, i_rent, i_yi, get state
-						i_s = (*snodes1).i2s_map[i_ph][i_rent][i_yi];
-						// for y_i = 0,..,n_y
-						// i_s = (*snodes1).i2s[i_ph][y_i][rent_i]; check ordering
-						//i_s = (*snodes1).s_ph_midry[i_ph];  // pass in price dimension of interest, receive state given median rent, income
+						
+						i_s = (*snodes1).i2s_map[i_ph][i_rent][i_yi];  // given i_ph, i_rent, i_yi, get state
 						v1_file << (*vfnt).w_grid[w_i] << ","
 							<< (*vfnt).x1_grid[t_i][i_s][w_i] << "," << (*vfnt).x2_grid[t_i][i_s][w_i] << "," << (*vfnt).x3_grid[t_i][i_s][w_i] << ","
 							<< (*vfnt).x4_grid[t_i][i_s][w_i] << "," << (*vfnt).x5_grid[t_i][i_s][w_i] << "," << (*vfnt).xt_grid[t_i][i_s][w_i] << ","
@@ -108,13 +104,10 @@ void store_data(void *snodes_in, void *vfn_in, string file_name_in, int year1_id
 		v1_file << endl;
 	}
 
-	// TODO: double check file works; only have 1 rent state now so added complexity shouldnt be too much
-	v1_file.close();                                                                 // finished writing file
+	v1_file.close();                              // finished writing file
 
 
 	cout << "store_data.cpp: begin writing flat file" << endl;
-
-	string file_name_flat = "vfn_results/" + file_name_def2 + "_flat" + ".csv";               // flat file written and appended throughout project
 
 	if (year1t_id == T_max) {
 		ofstream v1_file_flat;
@@ -150,54 +143,3 @@ void store_data(void *snodes_in, void *vfn_in, string file_name_in, int year1_id
 	}
 	v1_file_flat.close();
 }
-
-
-
-/*
-for(int w_i = 0; w_i < w_n; w_i ++ ){
-for(int t_i = 0; t_i < t_n; t_i ++){
-for(int ph_i = 0; ph_i < ph_n; ph_i ++){
-v1_file << (*vfnt).w_grid[w_i] << ","
-<< (*vfnt).x1_grid[t_i][y_i_def][ph_i][w_i] << "," << (*vfnt).x2_grid[t_i][y_i_def][ph_i][w_i] << "," << (*vfnt).x3_grid[t_i][y_i_def][ph_i][w_i] << ","
-<< (*vfnt).x4_grid[t_i][y_i_def][ph_i][w_i] << "," << (*vfnt).x5_grid[t_i][y_i_def][ph_i][w_i] << "," << (*vfnt).xt_grid[t_i][y_i_def][ph_i][w_i] << ","
-<< (*vfnt).vw3_grid[t_i][y_i_def][ph_i][w_i] << ",";
-}
-}
-v1_file<< endl;
-}
-*/
-
-
-/*
-
-for (int w_i = 0; w_i < w_n; w_i++){
-for (int t_i = 0; t_i < t_n; t_i++){
-for (int ph_i = 0; ph_i < ph_n; ph_i++){
-v1_file_flat << year1_id << "," << year1t_id << "," << rhoi << "," << gammai << "," << csfLev << "," << w_n << ","; // start working here; looking good so far
-v1_file_flat << t_i << "," << ph_i << "," << w_i << "," ;
-v1_file_flat << (*vfnt).w_grid[w_i] << ","
-<< (*vfnt).x1_grid[t_i][y_i_def][ph_i][w_i] << "," << (*vfnt).x2_grid[t_i][y_i_def][ph_i][w_i] << "," << (*vfnt).x3_grid[t_i][y_i_def][ph_i][w_i] << ","
-<< (*vfnt).x4_grid[t_i][y_i_def][ph_i][w_i] << "," << (*vfnt).x5_grid[t_i][y_i_def][ph_i][w_i] << "," << (*vfnt).xt_grid[t_i][y_i_def][ph_i][w_i] << ","
-<< (*vfnt).vw3_grid[t_i][y_i_def][ph_i][w_i] << ",";
-
-v1_file_flat << endl;
-}
-}
-
-}
-
-*/
-
-/*
-want:
-ID	year0	rho	gamma	csfLev	wn	vt	t_i	ph_i	ph	W	C	B	X	CSFp	CSFn	t_i2	V
-ID: autonumber;
-rho: const
-gamma: const
-csfLev: const
-wn: const
-year0_id:  go to main and look at t; ex: t = 0,1,2,...,
-; stays same for most of program
-vt_id:
-
-*/

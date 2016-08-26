@@ -14,7 +14,6 @@ using namespace std;
 class vfn;
 
 class ufnEV2 {
-	//eval_res res1;                                       // v_out structure
 	eval_res res2;
 	int w_i_low;
 	double w_i_d;

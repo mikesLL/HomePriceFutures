@@ -15,14 +15,12 @@ typedef struct{
 #ifndef VFN_H
 #define VFN_H
 
-//class gstruct;
 class snodes;
 
 class vfn {
 
 public:
-	//int y_i1;
-	//int ph_i1,
+
 	int t_i2, t_i1, w_i1, i_s1;
 	int lcount;
 	double ph1, phr, w_comp;
@@ -32,7 +30,7 @@ public:
 	int t_id;
 	int pref;
 	double csf_1yr;
-	//double v_def;
+	int T_max;
 
 	snodes *snodes1;    // pointer to 
 
@@ -46,7 +44,7 @@ public:
 	vector<vector<vector<double>>> vw3_d_grid;                                 // first derivative
 	vector<vector<vector<double>>> vw3_dd_grid;                                 // second derivative
 
-	void enter_data( void *snodes_in, double phr_in,int t_id, int t_num_in, double csf_1yr_in, int pref_in );	
+	void enter_data( void *snodes_in, double phr_in,int t_id, int t_num_in, double csf_1yr_in, int pref_in, int T_max_in );	
 	
 	void get_pol(int i_t_in, int i_s_in, int i_w_in, vector<double> &x_pol);
 

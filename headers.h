@@ -32,7 +32,9 @@ typedef struct{
 } gen_res;
 
 void load_simpath(void *snodes_in, double rent_in, double ph0_in,
-	double ret0_in, double csf_1yr_in, int t_id, string city_init_in, int city_id_in);
+
+	double ret0_in, double csf_1yr_in, int t_id, string city_init_in, int city_id_in, int age_begin_in);
+
 
 void gen_VP(void *snodes_in, void *my_func_data1, void *my_func_data2 );
 
@@ -40,7 +42,7 @@ gen_res gen_VPw(void *snodes_in, void *vf1_in, void *vf2_in, double coh_in, vect
 
 vector<double> gen_x0(double coh, double b_min, void *vf1, void *vf2, void * evalEV21_in, vector<double> x0_in );
 
-void store_data(void *snodes_in, void *vfn_in, string file_name, int year1_id_in, int year1_t_id_in);
+void store_data(void *snodes_in, void *vfn_in, string file_name, int year1_id_in, int year1_t_id_in, int T_max);
 
 void load_csv( void *city_in, string file_name );
 

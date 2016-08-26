@@ -1,8 +1,16 @@
-// 
-// Copyright A. Michael Sharifi
+// Copyright A. Michael Sharifi, 2016
 #include "headers.h"
 
-snodes::snodes() {
+snodes::snodes(int age0_in, int T_max_in ) {
+
+	age0 = age0_in;
+	T_max = T_max_in;
+	
+	// initialize price, rent, income grids
+	// use max time horizon, n_ph, n_rent, n_yi gridpoints
+	p_gridt = vector<vector<double>>(T_max + 1, vector<double>(n_ph, 0.0));
+	rent_gridt = vector<vector<double>>(T_max + 1, vector<double>(n_rent, 0.0));
+	yi_gridt = vector<vector<double>>(T_max + 1, vector<double>(n_yi, 0.0));
 
 	// initialize gammat state-state transition matrix
 	vector<vector<vector<double>>> zeros_T_NS_NS(T_max + 1, vector<vector<double>>(n_s, vector<double>(n_s, 0.0)));
@@ -31,7 +39,7 @@ snodes::snodes() {
 		}
 	}
 
-	// here: compute i_s_mid;
+	// compute i_s_mid;
 	int i_ph_mid = (int) floor( .5*n_ph );
 	int i_rent_mid = (int) floor( .5*n_rent );
 	int i_yi_mid = (int) floor( .5*n_yi );
