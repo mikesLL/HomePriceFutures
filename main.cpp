@@ -80,16 +80,6 @@ int main(){
 				cout << "housing wealth weight: " << endl;
 				cout << snodes1.ten_w[0] << "..." << snodes1.ten_w[1] << "..." << snodes1.ten_w[2] << "..." << endl;
 
-<<<<<<< HEAD
-			// load city_data and into ps1 and gs1; include current rent, current home price,
-			// lagged home price appreciation, Case-Shiller Futures Price, current time
-			// load_simpath store discretized approximation in snodes1 structure 
-			load_simpath(&snodes1, city_data.rent[t], city_data.price[t], city_data.ret_lag[t], city_data.csf_1yr[t], t, city_init, city_id);
-=======
-				cout << "rent adj: " << endl;
-				cout << snodes1.rent_adj << endl;
->>>>>>> dev
-
 				vfn vf_F;
 				vfn vf_P;
 				

@@ -79,12 +79,8 @@ const double alpha_ces = -6.485; // -6.7; // .75;                // Low substitu
 const double gammad = 1.01;
 const int gammai = int(floor(gammad));
 
-//Equity approximation (Gaussian-Hermite quadrature, 2 node approximation)
-<<<<<<< HEAD
-const double x_mu = 0.06; // Cocco-Gomes Maenhout
-=======
+//Equity approximation (Gaussian-Hermite quadrature, 2 node approximation
 const double x_mu = 0.06; // Cocco, Gomes Maenhout (2005)
->>>>>>> dev
 const double x_std = 0.157; 
 const int retxn = 2;
 const double retxv[] = { x_mu - x_std, x_mu + x_std }; //{ -0.10, 0.25 };
