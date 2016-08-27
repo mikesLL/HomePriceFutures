@@ -44,7 +44,6 @@ void load_simpath(void *snodes_in, double rent_in, double ph0_in, double ret0_in
 	// year: 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014
 	double inf_mult[] = {104.5, 106.9, 109.7, 113.4, 117.1, 120.4, 125.0, 124.6, 126.6, 130.6, 133.3, 135.3, 137.6}; 
 
-
 	//determnistic (real) rent growth
 	double g_rent_store[] = {
 		0.00279512280912727,

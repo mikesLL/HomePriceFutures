@@ -92,35 +92,18 @@ eval_res vfn::eval_v(int i_t_in, int i_s_in, double w_in) {
 	if ( (w_in >= w_min ) && (w_in < w_max) ) {
 		w_i_d = (double) (w_n - 1.0)*(w_in - w_min) / (w_max - w_min);    // map w_in to w_i
 		w_i_low = (int) floor(w_i_d);
-		//w_i_low = min(w_i_low, w_n ); // 
-	
-		w_diff1 = (w_in - w_grid[w_i_low]);
-		//w_diff2 = (w_grid[w_i_low+1] - w_grid[w_i_low]);
+		
 		w_diff2 = w_grid[1] - w_grid[0];
 
-		num1 = w_diff1 * vw3_d_grid[i_t_in][i_s_in][w_i_low] + 
-			1.0*0.5*pow( w_diff1 , 2.0)*vw3_dd_grid[i_t_in][i_s_in][w_i_low];
-
-		den1 = w_diff2 * vw3_d_grid[i_t_in][i_s_in][w_i_low] +
-			1.0*0.5*pow(w_diff2, 2.0)*vw3_dd_grid[i_t_in][i_s_in][w_i_low];
-		
 		alpha1 = ( w_in - w_grid[w_i_low] ) / w_diff2;
 
 		v_tlower = vw3_grid[i_t_in][i_s_in][w_i_low];
-		//	0.0*(w_in - w_grid[w_i_low])*vw3_d_grid[i_t_in][i_s_in][w_i_low] +
-		//	1.0*0.5*pow((w_in - w_grid[w_i_low]), 2.0)*vw3_dd_grid[i_t_in][i_s_in][w_i_low];
+		
 
 		v_tupper = vw3_grid[i_t_in][i_s_in][w_i_low + 1];
-		//	0.0*(w_in - w_grid[w_i_low+1])*vw3_d_grid[i_t_in][i_s_in][w_i_low+1] +
-		//	1.0*0.5*pow((w_in - w_grid[w_i_low+1]), 2.0)*vw3_dd_grid[i_t_in][i_s_in][w_i_low+1];
-
-		//res1.v_out = (1.0 - alpha1)*v_tlower + alpha1*v_tupper;
-		//v_tupper = max( v_tupper, v_tlower)
+		
 		res1.v_out = v_tlower + alpha1 * (v_tupper - v_tlower);
-		//res1.v_out = v_tlower + min( max(num1 / den1, alpha1), 1.0)*( v_tupper - v_tlower );
-
-		//res1.v_out = min(res1.v_out, vw3_grid[i_t_in][i_s_in][w_i_low + 1]);
-		//res1.v_out = max(res1.v_out, vw3_grid[i_t_in][i_s_in][w_i_low]);
+		
 
 		if (res1.v_out != res1.v_out) {
 			res1.v_out = v_tlower;
@@ -132,14 +115,9 @@ eval_res vfn::eval_v(int i_t_in, int i_s_in, double w_in) {
 		if (w_in >= w_max) {
 			w_i_low = w_n - 1;
 			v_tlower = vw3_grid[i_t_in][i_s_in][w_i_low];
-			//v_tlower = vw3_grid[i_t_in][i_s_in][w_i_low] + 0.5*pow(w_in - w_max, 0.25);
-			//v_tlower = vw3_grid[i_t_in][i_s_in][w_i_low] +
-			//	(w_in - w_grid[w_i_low])*vw3_d_grid[i_t_in][i_s_in][w_i_low] +
-			//	0.5*pow((w_in - w_grid[w_i_low]), 2.0)*vw3_dd_grid[i_t_in][i_s_in][w_i_low];
+			
 
 			res1.v_out = max(vw3_grid[i_t_in][i_s_in][w_i_low], v_tlower);
-
-			
 
 		} else {
 			res1.v_out = vw3_grid[i_t_in][i_s_in][0] - 1.0e6*pow(w_in - w_min, 2);
@@ -151,8 +129,6 @@ eval_res vfn::eval_v(int i_t_in, int i_s_in, double w_in) {
 
 	return res1;
 }
-/**/
-
 
 // value function in the event agent moves to another area
 eval_res vfn::eval_v_move(int i_t_in, int i_s_in, double w_in, int t_left) {
@@ -223,7 +199,6 @@ void vfn::set_terminal(double phr_in) {
 				
 				coh_perm -= (*snodes1).rent_adj * (*snodes1).rent_gridt[T_max][i_rent];
 			
-
 				//V_perm = 1.0 / (1.0 - beta) * ufn(coh_perm, hu_ten[i_t], pref);
 				V_perm = 1.0 / (1.0 - beta) * ufn(coh_perm, (*snodes1).hu_ten[0], pref);
 				//V_perm = 1.0 / (1.0 - beta) * 1.0 / (1.0 - rho) * pow(coh_perm, 1.0 - rho);

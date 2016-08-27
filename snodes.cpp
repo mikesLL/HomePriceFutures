@@ -1,7 +1,7 @@
 // Copyright A. Michael Sharifi, 2016
 #include "headers.h"
 
-snodes::snodes(int age0_in, int T_max_in ) {
+snodes::snodes(int age0_in, int T_max_in, int city_id_in) {
 
 	age0 = age0_in;
 	T_max = T_max_in;
@@ -49,6 +49,24 @@ snodes::snodes(int age0_in, int T_max_in ) {
     for( i_ph = 0; i_ph < n_ph; i_ph++ ){
 		s_ph_midry[i_ph] = i2s_map[i_ph][i_rent_mid][i_yi_mid];
     }
+
+	// adding work here
+	//hu_ten[0] = hu_ten_store[city_id][0];
+
+	city_id = city_id_in;
+
+	int i_t;
+
+	for (i_t = 0; i_t < t_n; i_t++) {
+		hu_ten[i_t] = hu_ten_store[city_id][i_t];
+	}
+
+	ten_w[0] = 0.0;
+
+	for (i_t = 1; i_t < t_n; i_t++) {
+		ten_w[i_t] = hu_ten[i_t] / hu_med[city_id];
+	}
+	rent_adj = hu_ten[0] / hu_med[city_id];
 
 }
 

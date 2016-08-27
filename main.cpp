@@ -57,18 +57,18 @@ int main(){
 				clock_t start = clock();                 
 
 				// discretized states including home prices, rents, incomes
-				snodes snodes1(age0, T_max );
+				//snodes snodes1(age0, T_max );
+				snodes snodes1(age0, T_max, city_id );
 
-				snodes1.city_id = city_id;
-				snodes1.hu_ten[0] = hu_ten_store[city_id][0];
-				snodes1.hu_ten[1] = hu_ten_store[city_id][1];
-				snodes1.hu_ten[2] = hu_ten_store[city_id][2];
+				//snodes1.city_id = city_id;
+				//snodes1.hu_ten[0] = hu_ten_store[city_id][0];
+				//snodes1.hu_ten[1] = hu_ten_store[city_id][1];
+				//snodes1.hu_ten[2] = hu_ten_store[city_id][2];
 
-				snodes1.ten_w[0] = 0.0;
-				snodes1.ten_w[1] = snodes1.hu_ten[1] / hu_med[city_id];
-				snodes1.ten_w[2] = snodes1.hu_ten[2] / hu_med[city_id];
-
-				snodes1.rent_adj = snodes1.hu_ten[0] / hu_med[city_id];
+				//snodes1.ten_w[0] = 0.0;
+				//snodes1.ten_w[1] = snodes1.hu_ten[1] / hu_med[city_id];
+				//snodes1.ten_w[2] = snodes1.hu_ten[2] / hu_med[city_id];
+				//snodes1.rent_adj = snodes1.hu_ten[0] / hu_med[city_id];
 
 				cout << "snoedes1.rent_adj = " << snodes1.rent_adj << endl; 
 

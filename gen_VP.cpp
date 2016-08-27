@@ -24,8 +24,6 @@ Would be kind of like the MCMC analog to VFI
 
 #include "headers.h"
 
-//using namespace std;
-
 void gen_VP(void *snodes_in, void *VFN_3d_1, void *VFN_3d_2 ){
 	
     double duration;
@@ -61,15 +59,11 @@ void gen_VP(void *snodes_in, void *VFN_3d_1, void *VFN_3d_2 ){
 	vector<double> x1(5, 0.0);
 
 	vector<double> x_guess(5, 0.0);
-	//vector<double> x_lag_w_t0(5, 0.0);
-	//vector<double> x_lag_w_t1(5, 0.0);
-	//vector<double> x_lag_w_t2(5, 0.0);
-
+	
 	vector<vector<double>> x_lag_wt(t_n, vector<double> (5, 0.0) );
 
 	for (i_ph = 0; i_ph < n_ph; i_ph++) {
 		cout << (*snodes1).p_gridt[t_hor][i_ph] << "..." << endl;
-		//cout << (*rr1).ph_grid[ph_i] << "..." << endl;
 	}
 
 	t_i = 0; // consider t_i = 0 first; case: begin with renter 
@@ -111,10 +105,12 @@ void gen_VP(void *snodes_in, void *VFN_3d_1, void *VFN_3d_2 ){
 				// load t_i2-restricted guess as an initial starting point
 				x_guess = x_lag_wt[t_i2];
 				
-				// theta1 represents cash adjustment for rent, housing size
+				// theta1 represents cash adjustment for rent, housing size				
 				theta1 = { (*snodes1).rent_gridt[t_hor][i_rent]* (*snodes1).rent_adj,
 					(*snodes1).ten_w[1] * (*snodes1).p_gridt[t_hor][i_ph],
-					(*snodes1).ten_w[2] * (*snodes1).p_gridt[t_hor][i_ph] };
+					(*snodes1).ten_w[2] * (*snodes1).p_gridt[t_hor][i_ph], 
+					(*snodes1).ten_w[3] * (*snodes1).p_gridt[t_hor][i_ph],
+				};
 						
 				coh = (*rr1).w_grid[w_i] + y_atax*(*snodes1).yi_gridt[t_hor][i_yi] - theta1[t_i2];        // coh: cash on hand = initial wealth + income - rent or transaction costs      
 
@@ -156,10 +152,7 @@ void gen_VP(void *snodes_in, void *VFN_3d_1, void *VFN_3d_2 ){
 		cout << "time elapsed: " << duration << '\n';
 	}
 	
-	
 
-	
-	
 	// now that the t_i = 0 case has been solved, t_i = 1,2 cases when sale or trade-up are equivalent
 	//to t_i = 0 with the correct downward wealth adjustment; 
 	//do not need to cycle through t_i2 = {0, 1,2}, only t_i2 = t_i
@@ -188,9 +181,6 @@ void gen_VP(void *snodes_in, void *VFN_3d_1, void *VFN_3d_2 ){
 				(*rr1).get_pol(t_i, i_s, w_i - 1, x_lag_w);                       // get x pol sol from previous w_i and assign to x
 				t_i2_lag_w = (*rr1).xt_grid[t_i][i_s][max(w_i - 1, 0)];
 				v_lag_w = (*rr1).vw3_grid[t_i][i_s][max(w_i - 1, 0)];
-
-				// load value given previous t_i as a benchmark
-				//v_lag_t = (*rr1).vw3_grid[t_i][i_s][w_i];
       
 				coh = (*rr1).w_grid[w_i] + y_atax*(*snodes1).yi_gridt[t_hor][i_yi] - (*snodes1).ten_w[t_i] * (*snodes1).p_gridt[t_hor][i_ph];       // subtract housing wealth from cash on hand  			
 				//beg_equity = min_dpmt * ten_w[t_i2] * (*snodes1).p_gridt[t_hor][i_ph];
@@ -226,11 +216,3 @@ void gen_VP(void *snodes_in, void *VFN_3d_1, void *VFN_3d_2 ){
 
 	cout << " gen" << to_string((*rr1).t_num) << "completed" << endl;
 }
-
-/*
-if ((x[0] + x[1] + x[2] + x[3] + x[4]) > (w_adj + (*snodes1).yi_gridt[t_hor][i_yi] + .01)) {
-	cout << "gen_VP.cpp: gen V1 warning here!" << endl;
-	cout << "x = " << x[0] << "," << x[1] << "," << x[2] << "," << x[3] << "," << x[4] << endl;
-	cout << "w_adj = " << w_adj << "y = " << (*snodes1).yi_gridt[t_hor][i_yi] << endl;
-}
-*/

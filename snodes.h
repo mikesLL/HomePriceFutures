@@ -18,8 +18,6 @@ public:
 
 	int age0;
 	int T_max;
-	//int n_ph, n_rent, n_yi;
-
 	int i_s_mid;
 	int t_hor;
 	int s_ph_midry[n_ph];                               // states where home prices index from low to high, but rent and yi are always median
@@ -33,8 +31,8 @@ public:
 	vector<int> s2i_rent;                               // maps state to current rent
 	vector<int> s2i_yi;                                 // maps state to current income
 
-	snodes(int age0_in, int T_max_in );
-
+	snodes(int age0_in, int T_max_in, int city_id_in );
+	
 	void adj_tax();
 };
 
