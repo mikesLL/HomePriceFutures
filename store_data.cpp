@@ -5,6 +5,7 @@
 // which contains all results
 // Copyright A. Michael Sharifi
 
+// year1t_id_in: represents the current horizon
 #include "headers.h"
 
 void store_data(void *snodes_in, void *vfn_in, string file_name_in, int year1_id_in, int year1t_id_in, int T_max) {
@@ -13,6 +14,7 @@ void store_data(void *snodes_in, void *vfn_in, string file_name_in, int year1_id
 	int y_i_def = 0;
 	int year1_id = year1_id_in;                                   // read-in / curent year
 	int year1t_id = year1t_id_in;                                 // year horizon
+	int t_hor = year1t_id;
 
 	vfn *vfnt = (vfn *)vfn_in;                              // address to initialized V2
 
@@ -30,11 +32,15 @@ void store_data(void *snodes_in, void *vfn_in, string file_name_in, int year1_id
 	string file_name_def2 =
 		file_name_in + to_string(year1_id) + "pref" + to_string(pref) + "rho" + to_string(rhoi) + "gamma" + to_string(gammai) + "csfLev" + to_string(csfLevi) + "w_n" + to_string(w_n);
 
-	//string file_name = file_name_def + ".csv";
-	//string file_name = "vfn_results/" + file_name_def + ".csv";
 	string file_name = "vfn_results/age" + to_string(age0) +  "/" + file_name_def + ".csv";
-	string file_name_flat = "vfn_results/age" + to_string(age0) + "/" + file_name_def2 + "_flat" + ".csv";               // flat file written and appended throughout project
-	//string file_name_flat = "vfn_results/" + file_name_def2 + "_flat" + ".csv";               // flat file written and appended throughout project
+
+	// flat file written and appended throughout project
+	string file_name_flat = "vfn_results/age" + to_string(age0) + "/" + file_name_def2 + "_flat" + ".csv";        
+
+	// initial year results go in first year directory
+	if (t_hor <= 0) {
+		file_name = "first_results/age" + to_string(age0) + "/" + file_name_def + ".csv";
+	}
 
 	cout << "store_data.cpp: list prices" << endl;
 	for (i_ph = 0; i_ph < n_ph; i_ph++) {
