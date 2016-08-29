@@ -27,22 +27,29 @@ void store_data(void *snodes_in, void *vfn_in, string file_name_in, int year1_id
 
 	ofstream v1_file;                                             // open output file stream    
 
-	string file_name_def =
-		file_name_in + to_string(year1_id) + "yr1t" + to_string(year1t_id) + "pref" + to_string(pref) + "rho" + to_string(rhoi) + "gamma" + to_string(gammai) + "csfLev" + to_string(csfLevi) + "w_n" + to_string(w_n);
+	// first part of filename
+	// file_name_in is city code
+	string fn_beg = file_name_in + "_age" + to_string(age0) + "_yr" + to_string(year1_id);
+	string fn_yr1 = "yr1t" + to_string(year1t_id); 
+	string fn_end = "pref" + to_string(pref) + "rho" + to_string(rhoi) + "gamma" + to_string(gammai) + "csfLev" + to_string(csfLevi) + "w_n" + to_string(w_n);
 
-	string file_name_def2 =
-		file_name_in + to_string(year1_id) + "pref" + to_string(pref) + "rho" + to_string(rhoi) + "gamma" + to_string(gammai) + "csfLev" + to_string(csfLevi) + "w_n" + to_string(w_n);
 
-	string file_name = "vfn_results/age" + to_string(age0) +  "/" + file_name_def + ".csv";
+	//string file_name_def =
+	//	file_name_in + "_age" + to_string(age0)+  "_yr" + to_string(year1_id) + "yr1t" + to_string(year1t_id) + "pref" + to_string(pref) + "rho" + to_string(rhoi) + "gamma" + to_string(gammai) + "csfLev" + to_string(csfLevi) + "w_n" + to_string(w_n);
+
+	//string file_name_def2 =
+	//	file_name_in + "_age" + to_string(age0) + "_yr" + to_string(year1_id) + "pref" + to_string(pref) + "rho" + to_string(rhoi) + "gamma" + to_string(gammai) + "csfLev" + to_string(csfLevi) + "w_n" + to_string(w_n);
+
+	string file_name = "vfn_results/" + fn_beg + fn_yr1 + fn_end + ".csv";
 
 	// flat file written and appended throughout project
 	//string file_name_flat = "vfn_results/age" + to_string(age0) + "/" + file_name_def2 + "_flat" + ".csv"; 
-	string file_name_flat = "first_results/" + file_name_def2 + to_string(age0) + "_flat" + ".csv";
+	string file_name_flat = "first_results/" + fn_beg + fn_end + "_flat" + ".csv";
 
 	// initial year results go in first year directory
-	if (t_hor <= 0) {
-		file_name = "first_results/age" + to_string(age0) + "/" + file_name_def + ".csv";
-	}
+	//if (t_hor <= 0) {
+	//	file_name = "first_results/age" + to_string(age0) + "/" + file_name_def + ".csv";
+	//}
 
 	cout << "store_data.cpp: list prices" << endl;
 	for (i_ph = 0; i_ph < n_ph; i_ph++) {

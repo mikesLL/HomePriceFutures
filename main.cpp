@@ -85,7 +85,7 @@ int main(){
 				vf_F.set_terminal(phr_in);
 
 				cout << "main.cpp: store_data" << endl;
-				store_data(&snodes1, &vf_F, city_init + "yr", t, t_hor, T_max);
+				store_data(&snodes1, &vf_F, city_init, t, t_hor, T_max);
 
 				for (t_hor = (T_max - 1); t_hor >= 0; t_hor--) {
 					snodes1.t_hor = t_hor;
@@ -96,7 +96,7 @@ int main(){
 					gen_VP(&snodes1, &vf_P, &vf_F);
 
 					cout << "main.cpp: begin store_data" << endl;
-					store_data(&snodes1, &vf_P, city_init + "yr", t, t_hor, T_max);
+					store_data(&snodes1, &vf_P, city_init, t, t_hor, T_max);
 
 					vf_F = vf_P;
 				}
