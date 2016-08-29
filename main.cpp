@@ -40,13 +40,12 @@ int main(){
 		cout << "city_init = " << city_init << endl;
 		load_csv(&city_data, city_filename);
 
-		int t;
+		int t, i_age; // initial year, household age in initial year
+		
+		for (i_age = 0; i_age < n_age; i_age++) {
 
 #pragma omp parallel for
-		for (t = t_begin; t <= t_end; t++) {
-
-			int i_age;
-			for (i_age = 0; i_age < n_age; i_age++) {
+			for (t = t_begin; t <= t_end; t++) {
 
 				int age0 = age_begin_store[i_age];     // household's initial age
 				int T_max = age_max - age0;            // optimization problem horizon
@@ -79,7 +78,7 @@ int main(){
 				load_simpath(&snodes1, city_data.rent[t], city_data.price[t], city_data.ret_lag[t],
 					city_data.csf_1yr[t], t, city_init, city_id, age0);
 
-				cout << "main.cpp: begin data" << endl;
+				cout << "main.cpp: begin enter data" << endl;
 				vf_F.enter_data(&snodes1, phr_in, t, t_hor, city_data.csf_1yr[t], pref, T_max);
 
 				cout << "main.cpp: set terminal" << endl;

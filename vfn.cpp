@@ -9,9 +9,9 @@ void vfn::enter_data(void *snodes_in, double phr_in, int t_id_in, int t_num_in, 
 	snodes1 = (snodes *)snodes_in;
 
 	csf_1yr = csf_1yr_in;
-	t_id = t_id_in;
-	phr = phr_in;
-	t_num = t_num_in;
+	t_id = t_id_in;                 // current year 
+	phr = phr_in;                   // rent 
+	t_num = t_num_in;               // planning horizon
 	pref = pref_in;
 	lcount = 0;
 
@@ -42,11 +42,6 @@ void vfn::enter_data(void *snodes_in, double phr_in, int t_id_in, int t_num_in, 
 	// wealth grid
 	for (int w_i = 0; w_i < w_n; w_i++) {
 		w_grid[w_i] = w_min + (w_max - w_min)* double(w_i) / (double(w_n) - 1.0);
-	}
-
-	// home price grid
-	for (int i_ph = 0; i_ph < n_ph; i_ph++) {
-		ph_grid[i_ph] = (*snodes1).p_gridt[t_id][i_ph];
 	}
 
 }

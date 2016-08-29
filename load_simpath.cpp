@@ -129,7 +129,7 @@ double gamma0_store[] = {
 		0.0340633256106433
 	};
 
-	double y_city_mult[] = { 1.23, 1.54, 1.02,  1.34, 1.02, 1.00,  0.95, 1.39 };
+	double y_city_mult[] = { 1.23, 1.54, 1.02, 1.34, 1.02, 1.00,  0.95, 1.39 };
 
 	double alpha_hat = alpha_store[city_id];
 	double rhof_hat = rhof_store[city_id];

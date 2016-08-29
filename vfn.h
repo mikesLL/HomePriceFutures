@@ -24,7 +24,7 @@ public:
 	int t_i2, t_i1, w_i1, i_s1;
 	int lcount;
 	double ph1, phr, w_comp;
-	double ph_grid[n_ph], w_grid[w_n];
+	double w_grid[w_n];
 	double v_opt_loop;
 	int t_num;
 	int t_id;
