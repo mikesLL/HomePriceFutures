@@ -41,10 +41,11 @@ int main(){
 		load_csv(&city_data, city_filename);
 
 		int t;
-		int i_age;
 
 #pragma omp parallel for
 		for (t = t_begin; t <= t_end; t++) {
+
+			int i_age;
 			for (i_age = 0; i_age < n_age; i_age++) {
 
 				int age0 = age_begin_store[i_age];     // household's initial age
