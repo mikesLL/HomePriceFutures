@@ -18,7 +18,8 @@ N_cols = 19;                               % each .csv includes 18 columns
 ds_tmp{N_files} = zeros(1,N_cols);
 for id = 1:N_files
     fprintf('store file %d of %d \n', id, N_files);
-    ds_tmp{id} = xlsread(fileName(id,:));    
+    %ds_tmp{id} = xlsread(fileName(id,:));
+    foo = xlsread(fileName(id,:), 'A1:C3');
 end
 ds = vertcat(ds_tmp{:});                   % data_struct stores data from initial horizon in all years
 save('ds_save.mat');

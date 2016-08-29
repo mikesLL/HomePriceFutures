@@ -17,8 +17,13 @@ Copyright A. Michael Sharifi 2016
 %}
 
 function eval_perf( city_id, reload_data )
+
+city_id = 0;  % set to san diego for now
+reload_data = 1; % yes, reload data
+
 addpath('../figures');
 addpath('../first_results');
+addpath('../first_results/age30');
 
 ds_load = load_ds( reload_data );   % loads data from initial period value function
 save('eval_perf_save');

@@ -20,6 +20,7 @@ void store_data(void *snodes_in, void *vfn_in, string file_name_in, int year1_id
 
 	snodes *snodes1 = (snodes *)snodes_in;
 	int age0 = (*snodes1).age0;
+	int city_id = (*snodes1).city_id; 
 
 	// main state of interest; represents median income, median home price, median rent out of all states
 	int i_s_mid = (*snodes1).i_s_mid;
@@ -35,7 +36,8 @@ void store_data(void *snodes_in, void *vfn_in, string file_name_in, int year1_id
 	string file_name = "vfn_results/age" + to_string(age0) +  "/" + file_name_def + ".csv";
 
 	// flat file written and appended throughout project
-	string file_name_flat = "vfn_results/age" + to_string(age0) + "/" + file_name_def2 + "_flat" + ".csv";        
+	//string file_name_flat = "vfn_results/age" + to_string(age0) + "/" + file_name_def2 + "_flat" + ".csv"; 
+	string file_name_flat = "first_results/" + file_name_def2 + to_string(age0) + "_flat" + ".csv";
 
 	// initial year results go in first year directory
 	if (t_hor <= 0) {
@@ -115,37 +117,51 @@ void store_data(void *snodes_in, void *vfn_in, string file_name_in, int year1_id
 
 	cout << "store_data.cpp: begin writing flat file" << endl;
 
-	if (year1t_id == T_max) {
+	//if (year1t_id == T_max) {
+	if (t_hor  <= 0) {
 		ofstream v1_file_flat;
 		v1_file_flat.open(file_name_flat, ios::out | ios::trunc);
 		//v1_file_flat << "year1_id, year1t_id, rho, gamma, csfLev, w_n, t_i, ph_i, w_i, W, C, B, X, CSFp, CSFn, t_i2, V";
-		v1_file_flat << "year1_id, year1t_id, rho, gamma, csfLev, w_n, t_i, ph_i, i_rent, i_yi, w_i, W, C, B, X, CSFp, CSFn, t_i2, V";
+		//v1_file_flat << "year1_id, year1t_id, rho, gamma, csfLev, w_n, t_i, ph_i, i_rent, i_yi, w_i, W, C, B, X, CSFp, CSFn, t_i2, V";
+		v1_file_flat << "city_id, age0, year1_id, year1t_id, rho, gamma, csfLev, w_n, t_i, ph_i, i_rent, i_yi, w_i, W, C, B, X, CSFp, CSFn, t_i2, V";
 		v1_file_flat << endl;
 		v1_file_flat.close();
 	}
 
-	ofstream v1_file_flat;
-	v1_file_flat.open(file_name_flat, ios::out | ios::app);               // outstream, truncate
 
-	for (w_i = 0; w_i < w_n; w_i++) {
-		for (t_i = 0; t_i < t_n; t_i++) {
-			for (i_ph = 0; i_ph < n_ph; i_ph++) {
-				for (i_rent = 0; i_rent < n_rent; i_rent++) {
-					for (i_yi = 0; i_yi < n_yi; i_yi++) {
-						i_s = (*snodes1).s_ph_midry[i_ph];  // pass in price dimension of interest, receive state given median rent, income
-						v1_file_flat << year1_id << "," << year1t_id << "," << rhoi << "," << gammai << "," << csfLev << "," << w_n << ","; // start working here; looking good so far
-						//v1_file_flat << t_i << "," << ph_i << "," << w_i << ",";
-						v1_file_flat << t_i << "," << i_ph << "," << i_rent << "," << i_yi << "," << w_i << ",";
-						v1_file_flat << (*vfnt).w_grid[w_i] << ","
-							<< (*vfnt).x1_grid[t_i][i_s][w_i] << "," << (*vfnt).x2_grid[t_i][i_s][w_i] << "," << (*vfnt).x3_grid[t_i][i_s][w_i] << ","
-							<< (*vfnt).x4_grid[t_i][i_s][w_i] << "," << (*vfnt).x5_grid[t_i][i_s][w_i] << "," << (*vfnt).xt_grid[t_i][i_s][w_i] << ","
-							<< (*vfnt).vw3_grid[t_i][i_s][w_i] << ",";
+	// TODO: if year = 0: initial year
+	// want to be able to go to first results and download flat files all at once
+	// will also want to add age etc to rent grid, pstruct, etc ... 
+	// file should be: city, age, etc... continued
+	// 1. pass in age
+	// 2. already have horizon
+	// 3. save in first_results?
+	// 
+	int foo = city_id;
 
-						v1_file_flat << endl;
+	if (t_hor <= 0) {
+		ofstream v1_file_flat;
+		v1_file_flat.open(file_name_flat, ios::out | ios::app);               // outstream, append
+
+		for (w_i = 0; w_i < w_n; w_i++) {
+			for (t_i = 0; t_i < t_n; t_i++) {
+				for (i_ph = 0; i_ph < n_ph; i_ph++) {
+					for (i_rent = 0; i_rent < n_rent; i_rent++) {
+						for (i_yi = 0; i_yi < n_yi; i_yi++) {
+							i_s = (*snodes1).s_ph_midry[i_ph];  // pass in price dimension of interest, receive state given median rent, income
+							v1_file_flat << city_id << "," << age0 << "," << year1_id << "," << year1t_id << "," << rhoi << "," << gammai << "," << csfLev << "," << w_n << ",";
+							v1_file_flat << t_i << "," << i_ph << "," << i_rent << "," << i_yi << "," << w_i << ",";
+							v1_file_flat << (*vfnt).w_grid[w_i] << ","
+								<< (*vfnt).x1_grid[t_i][i_s][w_i] << "," << (*vfnt).x2_grid[t_i][i_s][w_i] << "," << (*vfnt).x3_grid[t_i][i_s][w_i] << ","
+								<< (*vfnt).x4_grid[t_i][i_s][w_i] << "," << (*vfnt).x5_grid[t_i][i_s][w_i] << "," << (*vfnt).xt_grid[t_i][i_s][w_i] << ","
+								<< (*vfnt).vw3_grid[t_i][i_s][w_i] << ",";
+
+							v1_file_flat << endl;
+						}
 					}
 				}
 			}
 		}
+		v1_file_flat.close();
 	}
-	v1_file_flat.close();
 }
