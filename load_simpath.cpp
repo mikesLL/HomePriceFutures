@@ -425,10 +425,12 @@ double gamma0_store[] = {
 
 	cout << "load_simpath.cpp: gamma T max:" << endl;
 	
+	string fn_beg = "price_results/" + city_init + "_age" + to_string((*snodes1).age0) + "_yr" + to_string(t_id);
+
 	// print sample price paths
 	ofstream price_obs_file;                                        
 	//price_obs_file.open("price_results/" + string("age") + to_string( (*snodes1).age0 ) + "/"  + city_init + "yr" + to_string(t_id) + "price_obs_file.csv", ios::out | ios::trunc);
-	price_obs_file.open("price_results/" + city_init + "age" + to_string((*snodes1).age0) +"yr" + to_string(t_id) + "price_obs_file.csv", ios::out | ios::trunc);
+	price_obs_file.open(fn_beg + "_price_obs_file.csv", ios::out | ios::trunc);
 
 	for (n = 0; n < N_print; n++) {
 		for (t = 0; t < T_sim; t++) {
@@ -440,7 +442,8 @@ double gamma0_store[] = {
 
 	// print sample rent paths
 	ofstream rent_obs_file;                                       
-	rent_obs_file.open("price_results/" + city_init + "age" + to_string((*snodes1).age0)  + "yr" + to_string(t_id) + "rent_obs_file.csv", ios::out | ios::trunc);
+	//rent_obs_file.open("price_results/" + city_init + "age" + to_string((*snodes1).age0)  + "yr" + to_string(t_id) + "rent_obs_file.csv", ios::out | ios::trunc);
+	rent_obs_file.open( fn_beg + "_rent_obs_file.csv", ios::out | ios::trunc);
 	for (n = 0; n < N_print; n++) {
 		for (t = 0; t < T_sim; t++) {
 			rent_obs_file << rent_str[t][n] << ",";
@@ -448,10 +451,6 @@ double gamma0_store[] = {
 		rent_obs_file << endl;
 	}
 	rent_obs_file.close();
-
-
-	// 
-	string fn_beg = "price_results/" + city_init + "_age" + to_string((*snodes1).age0) + "_yr" + to_string(t_id);
 
 	// print sample income paths
 	ofstream yi_obs_file;                                     
