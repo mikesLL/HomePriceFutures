@@ -8,7 +8,7 @@ Copyright A. Michael Sharifi
 %}
 
 function [  ten_i2, ten_i2_CSF, csf, B, B_CSF, X, X_CSF ] = ...
-    gen_table4(col, t_i1, city_id, ds, t_begin, t_end, p_mid  )
+    gen_table4(col, age0, t_i1, city_id, ds, t_begin, t_end, p_mid  )
 
 %ds_W = sortrows( ds(:,[10,11]) );
 %idx0 = find(ds_W(:,2) >= W1, 1, 'first');
@@ -29,19 +29,23 @@ idx_CSF = ( ds(:,col.csfLev) > 0.0 );
 
 %%
 for t = t_begin:t_end
-    idx1 = all( [ ds(:,col.city_id) == city_id, ...     % city_id condition
-        ds(:,col.year_id) == t, ...           % year condition
-        ds(:,col.hor_id) == 0, ...           % year horizon = 0
+    idx1 = all( [ ds(:,col.age0) == age0, ...   % age condition
+        ds(:,col.city_id) == city_id, ...       % city_id condition
+        ds(:,col.year_id) == t, ...             % year condition
+        ds(:,col.hor_id) == 0, ...              % year horizon = 0
         idx, ...
-        ds(:,col.t_i) == t_i1, ...        % t_i = 0
-        ds(:,col.ph_i) == p_mid ], 2);         % p_i = 2 (actual price)
+        ds(:,col.t_i) == t_i1, ...              % t_i = 0
+        ds(:,col.i_yi) == 1, ...                % i_yi = 1
+        ds(:,col.ph_i) == p_mid ], 2);          % p_i = 2 (actual price)
     
-    idx2 = all( [ ds(:,col.city_id) == city_id, ...     % city_id condition
+    idx2 = all( [ ds(:,col.age0) == age0, ...   % age condition
+        ds(:,col.city_id) == city_id, ...     % city_id condition
         ds(:,col.year_id) == t, ...           % year condition
         ds(:,col.hor_id) == 0, ...           % year horizon = 0
         idx_CSF, ...
-        ds(:,col.t_i) == t_i1, ...        % t_i = 0
-        ds(:,col.ph_i) == p_mid ], 2);         % p_i = 2 (actual price)
+        ds(:,col.t_i) == t_i1, ...               % t_i = 0
+        ds(:,col.i_yi) == 1, ...                 % i_yi = 1
+        ds(:,col.ph_i) == p_mid ], 2);           % p_i = 2 (actual price)
     
    
     %ten_i2(:,t) = ds(idx1,17);

@@ -54,10 +54,14 @@ first_results/*.mat
 first_results/*.zip
 
 eval_perf/*.mat
+eval_perf/*.png
+eval_perf/*.asv
+
+figures/*
+
 *.sdf
 *.sln
 *.vcxproj
 *.filters
 *.opendb
 *.suo
-eval_perf/*.mat

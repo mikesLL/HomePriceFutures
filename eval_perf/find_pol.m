@@ -1,7 +1,6 @@
 %{
 find_pol.m
-
-This file finds optimal tenure / home size as a function of current 
+Script finds optimal tenure / home size as a function of current 
 state variables and access to home price futures
 
 Copyright A. Michael Sharifi, 2016
@@ -13,7 +12,9 @@ csfFlag: allow / disallow home price futures
 ds: input dataset
 %}
 
-function [ xpol ] = find_pol(col, W1, t_i1, csfFlag, ds, t_begin, t_end, p_mid  )
+function [ xpol ] = find_pol(col, age0, W1, t_i1, csfFlag, ds, t_begin, t_end, p_mid  )
+
+%save('find_pol_save');
 
 % find wealth index W_i1 associated with W1 
 ds_W = sortrows( ds(:,[col.w_i,col.W]) );
@@ -38,12 +39,14 @@ end
 
 %%
 for t = t_begin:t_end
-    idx2 = all( [ ds(:,col.year_id) == t, ...         % year condition
-        ds(:,col.hor_id) == 0, ...          % year horizon = 0
+    idx2 = all( [ ds(:,col.age0) == age0, ...   % age condition
+        ds(:,col.year_id) == t, ...             % year condition
+        ds(:,col.hor_id) == 0, ...              % year horizon = 0
         idx_CSF, ...
-        ds(:,col.t_i) == t_i1, ...          % t_i = 0
-        ds(:,col.ph_i) == p_mid, ...        % p_i = 2 (actual price)
-        ds(:,col.w_i) == W_i1] , ...        % find w_i of interest
+        ds(:,col.t_i) == t_i1, ...              % t_i = 0
+        ds(:,col.i_yi) == 1, ...              % i_yi = 1
+        ds(:,col.ph_i) == p_mid, ...            % p_mid: represents actual price
+        ds(:,col.w_i) == W_i1] , ...            % find w_i of interest
         2);
     
     xpol.year_id(t) = t;

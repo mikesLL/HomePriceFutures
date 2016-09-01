@@ -9,14 +9,14 @@
 const int city_begin = 0;
 const int city_end = 3;
 
-const int t_begin = 5;                   // begin in year 5 from .csv
+const int t_begin = 11;                   // begin in year 5 from .csv
 const int t_end = 11;                    // = 11 to cycle through all time periods;
 
 const int age_begin_store[] = { 30, 45, 60 };
 const int n_age = 3;
 
 const int age_max = 65;                  // age at which household retires / annuitizes wealth  
-const int w_n = 40;                     // Grid points in wealth; set = 200 for fast computation, = 2000 for precision
+const int w_n = 200;                     // Grid points in wealth; set = 200 for fast computation, = 2000 for precision
 
 const double csfLev = 1.0 * ( 1.0 / 0.055 );       // Case-Shiller Index Future margin-implied leverage; (notional value contract)/(median home price)*(1/margin)
 const int csfLevi = int(floor(csfLev));   // Floor for identification

@@ -19,72 +19,93 @@ Copyright A. Michael Sharifi 2016
 function eval_perf( city_id, reload_data )
 
 city_id = 0;  % set to san diego for now
-reload_data = 1; % yes, reload data
-
+%reload_data = 0; % yes, reload data
 addpath('../figures');
-addpath('../first_results');
-addpath('../first_results/age30');
+%addpath('../first_results');
 
-ds_load = load_ds( reload_data );   % loads data from initial period value function
-save('eval_perf_save');
+%%
+reload_data = 1;
+%city_str = 'sd';
+%city_str = 'sf';
+%city_str = 'lax';
+%city_str = 'bos';
+%city_str = 'chi';
+%city_str = 'den';
+%city_str = 'mia';
+city_str = 'nym';
+ds_load = load_ds( reload_data, city_str );   % loads data from initial period value function
+%save('ds_load_sd','ds_load');
+%save('ds_load_sf','ds_load');
+%save('ds_load_lax','ds_load');
+%save('ds_load_bos','ds_load');
+%save('ds_load_chi','ds_load');
+%save('ds_load_den','ds_load');
+%save('ds_load_mia','ds_load');
+save('ds_load_nym','ds_load');
+
+%save('eval_perf_save');
 
 %% load column indices
-col.city_id = 1;  % column parameters
-col.year_id = 2;
-col.hor_id = 3;
-col.pref = 4;
-col.rho = 5;
+col.city_id = 1;      % city index
+col.age0 = 2;         % initial age
+col.year_id = 3;      % beginning year
+col.hor_id = 4;       % horizon
+col.rho = 5; 
 col.gamma = 6;
 col.csfLev = 7;
 col.w_n = 8;
 col.t_i = 9;
 col.ph_i = 10;
-col.w_i = 11;
-col.W = 12;
-col.C = 13;
-col.B = 14;
-col.X = 15;
-col.csfP = 16;
-col.csfN = 17;
-col.t_i2 = 18;
-col.V = 19;
+col.i_rent = 11;
+col.i_yi = 12;
+col.w_i = 13;
+col.W = 14;
+col.C = 15;
+col.B = 16;
+col.X = 17;
+col.csfP = 18;
+col.csfN = 19;
+col.t_i2 = 20;
+col.V = 21;
 
 %% initialization
-y_inc2 = .8;
-csfLev = .1031*50.0;
+y_inc2 = .56;
+csfLev = 18.8; %.1031*50.0;
 
-city_str_store = {'sd','sfr','lax'};
+city_str_store = {'sd','sfr','lax','bos','chi','den','mia','nym'};
 city_str = char(city_str_store(city_id+1));
-years = (2003:2013);
+years = (2007:2013);
 
-t_begin = 4;             % time periods
-t_end = 11;
-rho = 3;
-w_n = 2000; %400;
-p_mid = 4;                                % = 2 for ph_n = 5, =4 for ph_n  = 9
-N_w = 2000;
+t_begin = 5;             % beginning time period
+t_end = 11;              % ending time period
+rho = 1;
+w_n = 400;
+p_mid = 4;               % = 2 for ph_n = 5, =4 for ph_n  = 9
+N_w = 400; %2000;
+
 idx_use = all([ (ds_load(:,col.city_id) == city_id), (ds_load(:,col.rho) == rho ), ...
     (ds_load(:,col.w_n) == w_n) ], 2);
 ds = ds_load(idx_use,:);                      % ds is the relevant smaller dataset
 
 %%
-W1 = .4;                                   % three levels of wealth of interest
+age0 = 30;            % age level of interest
+W1 = .4;              % three wealth levels of interest
 W2 = 1.6;
 W3 = 4.0;
-t_i1 = 0;                                  % inital condition: renter
+t_i1 = 0;             % inital condition: renter
 %t_i1 = 1;
 
 %% table of policies over time w/o CSF  (three wealth levels)
 csfFlag = 0;
-xpol_01 = find_pol(col, W1, t_i1, csfFlag, ds, t_begin, t_end, p_mid  );
-xpol_02 = find_pol(col, W2, t_i1, csfFlag, ds, t_begin, t_end, p_mid  );
-xpol_03 = find_pol(col, W3, t_i1, csfFlag, ds, t_begin, t_end, p_mid  );
+xpol_01 = find_pol(col, age0, W1, t_i1, csfFlag, ds, t_begin, t_end, p_mid  );
+xpol_02 = find_pol(col, age0, W2, t_i1, csfFlag, ds, t_begin, t_end, p_mid  );
+xpol_03 = find_pol(col, age0, W3, t_i1, csfFlag, ds, t_begin, t_end, p_mid  );
 
 %% table of policies over time w/CSF (three wealth levels)
 csfFlag = 1;
-xpol_11 = find_pol(col, W1, t_i1, csfFlag, ds, t_begin, t_end, p_mid  );
-xpol_12 = find_pol(col, W2, t_i1, csfFlag, ds, t_begin, t_end, p_mid  );
-xpol_13 = find_pol(col, W3, t_i1, csfFlag, ds, t_begin, t_end, p_mid  );
+xpol_11 = find_pol(col, age0, W1, t_i1, csfFlag, ds, t_begin, t_end, p_mid  );
+xpol_12 = find_pol(col, age0, W2, t_i1, csfFlag, ds, t_begin, t_end, p_mid  );
+xpol_13 = find_pol(col, age0, W3, t_i1, csfFlag, ds, t_begin, t_end, p_mid  );
 
 %% gret: gross return
 gret = dataset;
@@ -141,13 +162,17 @@ plot(ten_i2_CSF(3,:), 'r');
 %}
 %% value funcion and wealth compensation for adding CSF
 % vfn_store, vfn_CSF_store: each col is a value fn for one time period
-plotFlag = 0;
+
+save('eval_perf2');
+
+%%
+plotFlag = 1;
 [w, vfn_store, vfn_CSF_store, w_DIFF_store ] = ...
-    gen_table3(col, t_i1, city_id, ds, t_begin, t_end, plotFlag, p_mid);
+    gen_table3(col, age0, t_i1, city_id, ds, t_begin, t_end, plotFlag, p_mid);
 
 %% lowest level of wealth at which a renter decides to become an owner
 [  ten_i2, ten_i2_CSF, csf, B, B_CSF, X, X_CSF ] = ...
-    gen_table4(col, t_i1, city_id, ds, t_begin, t_end, p_mid  );
+    gen_table4(col, age0, t_i1, city_id, ds, t_begin, t_end, p_mid  );
 
 
 % note: city_id = 2 so currently looking at Los Angeles
@@ -157,19 +182,21 @@ plotFlag = 0;
 
 %% plot tenure choices by wealth in 2013
 % tenure.png
-t_use = 4;
+t_use = 8;
 figure('Position', [0 0 1200 400]);
 h1(1) = subplot(1,2,1); 
+figure; hold on;
 plot(w, ten_i2(:,t_use));       %plot tenure w/o CSF by wealth
+plot(w, ten_i2_CSF(:,t_use),'--');
 title('Tenure w/o CSF');
 xlabel('Wealth');
-ylim([0, 2]);
+ylim([0, 3]);
 
 h1(2) = subplot(1,2,2);          %plot tenure w/ CSF by wealth
 plot(w, ten_i2_CSF(:,t_use));
 title('Tenure w/ CSF');
 xlabel('Wealth');
-ylim([ 0, 2]);
+ylim([ 0, 3]);
 %linkaxes(h1,'y', 'x');
 
 %% Find wealth levels at which tenure switches

@@ -40,15 +40,17 @@ int main(){
 		cout << "city_init = " << city_init << endl;
 		load_csv(&city_data, city_filename);
 
-		int t, i_age; // initial year, household age in initial year
-		
+		//int t; // i_age; // initial year, household age in initial year
+		int i_age;
+#pragma omp parallel for
 		for (i_age = 0; i_age < n_age; i_age++) {
 
-#pragma omp parallel for
+			int t;
 			for (t = t_begin; t <= t_end; t++) {
 
 				int age0 = age_begin_store[i_age];     // household's initial age
-				int T_max = age_max - age0;            // optimization problem horizon
+				int T_max = 20;
+				//int T_max = age_max - age0;            // optimization problem horizon
 				int t_hor = T_max;                     // household's planning horizon time index
 			       
 				double duration;

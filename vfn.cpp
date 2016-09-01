@@ -182,6 +182,7 @@ void vfn::set_terminal(double phr_in) {
 	double V_perm;
 	double V_fs;
 
+	int i_ph3;
 	int i_t, i_s, i_w, i_yi, i_rent;
 
 	for (i_t = 0; i_t < t_n; i_t++) {
@@ -189,7 +190,21 @@ void vfn::set_terminal(double phr_in) {
 			for (i_w = 0; i_w < w_n; i_w++) {
 				i_yi = (*snodes1).s2i_yi[i_s];
 				i_rent = (*snodes1).s2i_rent[i_s];
+
+				i_ph3 = (*snodes1).s2i_ph[i_s]; // retrieve home price state
+
 		
+				// experimental version
+				coh_perm = (rb - 1.0)*( w_grid[i_w] - (*snodes1).p_gridt[T_max][i_ph3] ); 
+
+				if ( i_t == 0 ) {
+					coh_perm -= (*snodes1).rent_adj * (*snodes1).rent_gridt[T_max][i_rent];
+				}
+
+				V_perm = 1.0 / (1.0 - beta) * ufn(coh_perm, (*snodes1).hu_ten[i_t], pref);
+				
+				// old version 
+				/*
 				coh_perm = (rb - 1.0)*w_grid[i_w] + 0.0*(rb - 1.0)*15.0*y_atax*y_replace*(*snodes1).yi_gridt[T_max][i_yi];
 				
 				coh_perm -= (*snodes1).rent_adj * (*snodes1).rent_gridt[T_max][i_rent];
@@ -200,7 +215,8 @@ void vfn::set_terminal(double phr_in) {
 
 				c_fs = 0.05;
 				//V_fs = 1.0 / (1.0 - beta) * ufn(c_fs, (*snodes1).hu_ten[0], pref);
-				
+				*/
+
 				// evaluate bequest value
 				vw3_grid[i_t][i_s][i_w] = b_motive*max(V_perm, V_fs);
 				v_move[i_w] = b_motive*V_perm;
