@@ -18,30 +18,36 @@ Copyright A. Michael Sharifi 2016
 
 function eval_perf( city_id, reload_data )
 
+param.city_str_store = {'sd','sfr','lax','bos','chi','den','mia','nym'};
+param.age0_store = [30, 45, 60];
+param.i_yi_mid = 1;              % index: middle income state index
+param.hor0 = 0;                  % index: initial horizon 
+param.p_mid = 4;                 % index: initial price 
+ 
 city_id = 0;  % set to san diego for now
 %reload_data = 0; % yes, reload data
 addpath('../figures');
 %addpath('../first_results');
 
 %%
-reload_data = 1;
-%city_str = 'sd';
+reload_data = 0;
+city_str = 'sd';
 %city_str = 'sf';
 %city_str = 'lax';
 %city_str = 'bos';
 %city_str = 'chi';
 %city_str = 'den';
 %city_str = 'mia';
-city_str = 'nym';
+%city_str = 'nym';
 ds_load = load_ds( reload_data, city_str );   % loads data from initial period value function
-%save('ds_load_sd','ds_load');
+save('ds_load_sd','ds_load');
 %save('ds_load_sf','ds_load');
 %save('ds_load_lax','ds_load');
 %save('ds_load_bos','ds_load');
 %save('ds_load_chi','ds_load');
 %save('ds_load_den','ds_load');
 %save('ds_load_mia','ds_load');
-save('ds_load_nym','ds_load');
+%save('ds_load_nym','ds_load');
 
 %save('eval_perf_save');
 
@@ -71,9 +77,7 @@ col.V = 21;
 %% initialization
 y_inc2 = .56;
 csfLev = 18.8; %.1031*50.0;
-
-city_str_store = {'sd','sfr','lax','bos','chi','den','mia','nym'};
-city_str = char(city_str_store(city_id+1));
+city_str = char(param.city_str_store(city_id+1));
 years = (2007:2013);
 
 t_begin = 5;             % beginning time period
@@ -93,7 +97,6 @@ W1 = .4;              % three wealth levels of interest
 W2 = 1.6;
 W3 = 4.0;
 t_i1 = 0;             % inital condition: renter
-%t_i1 = 1;
 
 %% table of policies over time w/o CSF  (three wealth levels)
 csfFlag = 0;
@@ -165,10 +168,12 @@ plot(ten_i2_CSF(3,:), 'r');
 
 save('eval_perf2');
 
-%%
+%% gen_table3: plots estimated wealth gains by year and for all age groups
 plotFlag = 1;
+%[w, vfn_store, vfn_CSF_store, w_DIFF_store ] = ...
+%    gen_table3(col, age0, t_i1, city_id, ds, t_begin, t_end, plotFlag, p_mid);
 [w, vfn_store, vfn_CSF_store, w_DIFF_store ] = ...
-    gen_table3(col, age0, t_i1, city_id, ds, t_begin, t_end, plotFlag, p_mid);
+    gen_fig3(param, col, t_i1, city_id, ds, t_begin, t_end, plotFlag, p_mid);
 
 %% lowest level of wealth at which a renter decides to become an owner
 [  ten_i2, ten_i2_CSF, csf, B, B_CSF, X, X_CSF ] = ...

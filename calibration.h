@@ -6,8 +6,8 @@
 // city_id: 0,1,2,3,4,5,6,7,8
 // *.read_in files begin at year 5 (2007) and end at year 11 (2013)
 
-const int city_begin = 0;
-const int city_end = 3;
+const int city_begin = 2;
+const int city_end = 2;
 
 const int t_begin = 11;                   // begin in year 5 from .csv
 const int t_end = 11;                    // = 11 to cycle through all time periods;
@@ -21,11 +21,10 @@ const int w_n = 200;                     // Grid points in wealth; set = 200 for
 const double csfLev = 1.0 * ( 1.0 / 0.055 );       // Case-Shiller Index Future margin-implied leverage; (notional value contract)/(median home price)*(1/margin)
 const int csfLevi = int(floor(csfLev));   // Floor for identification
 
-//const int t_n = 3;                        // possible tenure states
 const int t_n = 4;                        // possible tenure states
 const int pref = 1;                       // set pref = 0 for Cobb-Douglas, = 1 for CES
 const int N_control = 6;
-const int N_cities = 8; // 3;                   // number of cities available
+const int N_cities = 8;                    // number of cities
 
 const int n_ph = 9;      // possible home price states
 const int n_rent = 1; // 3;  possible rent states
@@ -37,8 +36,11 @@ const int n_s = n_ph * n_rent * n_yi;  // number of states
 const double y_tax = 0.0;                 // 0.3;  // taxation is handled in snodes.cpp
 const double y_atax = 1.0 - y_tax;
 const double y_replace = 0.9388;            // From Cocco, Gomes, Maenhout (2005)
+
 const double w_max = 40.0; //16.05;         // maximum wealth (on grid) (100's thousands)             
-const double w_min = -2.0; // 0.05;          // minimum wealth (on grid) (100's thousands) 
+const double w_min = 0.0; // 0.05;          // minimum wealth (on grid) (100's thousands) 
+//const double w_max = 40.0; //16.05;         // maximum wealth (on grid) (100's thousands)             
+//const double w_min = -2.0; // 0.05;          // minimum wealth (on grid) (100's thousands) 
 
 //const double rho = 3.0;
 const double rho = 1.8;                  // Power: curvature parameter; governs risk-aversion  also = 1.0, 2.0, 4.0
@@ -102,6 +104,6 @@ const double max_ltv = .95;                          // max loan to value
 const double mort_spread = .02;                       // mortgage spread above risk-free rate
 const double pmi_dpmt = .20;                          // if down payment below this amount, add to mortgage spread
 const double pmi_prem = 0.01;                         // pmi premium
-const double credit_prem = .18;                       // unsecured credit limit
-const double b_min_unsec = -0.4;                      // unsecured borrowing limit
+const double credit_prem = .18;                       // unsecured credit apr
+const double b_min_unsec = 0.0; // -0.4;               // unsecured borrowing limit
 

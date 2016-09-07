@@ -272,7 +272,7 @@ double gamma0_store[] = {
 
 			// draw shocks
 			g_yc_t = mu_yc + sigma_yc*dist(gen);  // city-wide income / rent
-			u_t = sigma_e*dist(gen);              // individual: permanent shock
+			u_t = sigma_u*dist(gen);              // individual: permanent shock
 			e_t = sigma_e*dist(gen);              // individual: transient shock
 
 			// update income path 
@@ -295,8 +295,8 @@ double gamma0_store[] = {
 	}
 
 	cout << "load_simpath.cpp: Finished Running Simulations" << endl;
-
 	cout << "load_simpath.cpp: Compute Home Price Nodes " << endl;
+
 	for (t = 0; t < T_sim; t++) {
 		res_sum = accumulate(ph_str[t].begin(), ph_str[t].end(), 0.0);
 		res_mean = res_sum / (double)ph_str[t].size();
@@ -429,7 +429,6 @@ double gamma0_store[] = {
 
 	// print sample price paths
 	ofstream price_obs_file;                                        
-	//price_obs_file.open("price_results/" + string("age") + to_string( (*snodes1).age0 ) + "/"  + city_init + "yr" + to_string(t_id) + "price_obs_file.csv", ios::out | ios::trunc);
 	price_obs_file.open(fn_beg + "_price_obs_file.csv", ios::out | ios::trunc);
 
 	for (n = 0; n < N_print; n++) {
@@ -442,7 +441,6 @@ double gamma0_store[] = {
 
 	// print sample rent paths
 	ofstream rent_obs_file;                                       
-	//rent_obs_file.open("price_results/" + city_init + "age" + to_string((*snodes1).age0)  + "yr" + to_string(t_id) + "rent_obs_file.csv", ios::out | ios::trunc);
 	rent_obs_file.open( fn_beg + "_rent_obs_file.csv", ios::out | ios::trunc);
 	for (n = 0; n < N_print; n++) {
 		for (t = 0; t < T_sim; t++) {
@@ -454,7 +452,6 @@ double gamma0_store[] = {
 
 	// print sample income paths
 	ofstream yi_obs_file;                                     
-	//yi_obs_file.open("price_results/" +  city_init + "_age" + to_string((*snodes1).age0) + "yr" + to_string(t_id) + "yi_obs_file.csv", ios::out | ios::trunc);
 	yi_obs_file.open( fn_beg +  "_yi_obs_file.csv", ios::out | ios::trunc);
 	for (n = 0; n < N_print; n++) {
 		for (t = 0; t < T_sim; t++) {
@@ -467,7 +464,6 @@ double gamma0_store[] = {
 
 	// print out price grid
 	ofstream pstruct_file;                                                  
-	//pstruct_file.open("price_results/" + city_init + "_age" + to_string((*snodes1).age0)  + "_yr" + to_string(t_id) + "pstruct_file.csv", ios::out | ios::trunc);
 	pstruct_file.open( fn_beg + "_pstruct_file.csv", ios::out | ios::trunc);
 	for (t = 0; t < T_sim; t++) {
 		for (n = 0; n < n_ph; n++) {
@@ -478,7 +474,6 @@ double gamma0_store[] = {
 
 	// print out income grid
 	ofstream ystruct_file;                                                              
-	//ystruct_file.open("price_results/" + city_init + "_age" + to_string((*snodes1).age0) + "_yr" + to_string(t_id) + "ystruct_file.csv", ios::out | ios::trunc);
 	ystruct_file.open( fn_beg + "_ystruct_file.csv", ios::out | ios::trunc);
 	for (t = 0; t < T_sim; t++) {
 		for (n = 0; n < n_yi; n++) {
@@ -489,7 +484,6 @@ double gamma0_store[] = {
 
 	// print out rent grid
 	ofstream rstruct_file;
-	//rstruct_file.open("price_results/" +  city_init + "_age" + to_string((*snodes1).age0) +  "_yr" + to_string(t_id) + "rstruct_file.csv", ios::out | ios::trunc);
 	rstruct_file.open(fn_beg + "_rstruct_file.csv", ios::out | ios::trunc);
 	for (t = 0; t < T_sim; t++) {
 		for (n = 0; n < n_rent; n++) {
@@ -500,7 +494,6 @@ double gamma0_store[] = {
 
 	// print out transition matrix
 	ofstream gstruct_file;                                                           
-	//gstruct_file.open("price_results/" + city_init + "_age" + to_string((*snodes1).age0) + "_yr" + to_string(t_id) + "gstruct_file.csv", ios::out | ios::trunc);
 	gstruct_file.open(fn_beg + "_gstruct_file.csv", ios::out | ios::trunc);
 
 	for (t = 0; t < T_sim; t++) {

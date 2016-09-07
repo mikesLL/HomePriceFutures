@@ -180,7 +180,7 @@ void vfn::set_terminal(double phr_in) {
 	double c_comp_perm;
 	double uc_perm;
 	double V_perm;
-	double V_fs;
+	double V_fs = -1.0e10; 
 
 	int i_ph3;
 	int i_t, i_s, i_w, i_yi, i_rent;
