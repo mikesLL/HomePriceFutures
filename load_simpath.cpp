@@ -46,14 +46,14 @@ void load_simpath(void *snodes_in, double rent_in, double ph0_in, double ret0_in
 
 	//determnistic (real) rent growth
 	double g_rent_store[] = {
-		0.00279512280912727,
-		0.00372666252799066,
-		0.00374066193750439,
-		0.00158055419701987,
-		0.00503271347985580,
-		- 0.000102926026248194,
-		0.00425295851646686,
-		0.00612790147006233
+		0.0198,
+		0.0218,
+		0.0159,
+		0.0131,
+		0.0110,
+		0.0028,
+		0.0088,
+		0.0210
 	};
 
 	double g_rent = g_rent_store[city_id];
@@ -262,7 +262,8 @@ double gamma0_store[] = {
 		yi_str[t][n] = y_city_mult[city_id]*mult_unit*mult_2005*exp( log_fe + log_y_age + v_t + e_t );  // Cocco, Maenhoust, Gomes parameters are in 1000's; convert to 100k
 		yi_str[t][n] = log(yi_str[t][n]);
 
-		ph_str[t][n] = (ret_tn) + ph_str[t - 1][n];  // home prices in sim are in logs
+		//ph_str[t][n] = (ret_tn) + ph_str[t - 1][n];  // home prices in sim are in logs
+		ph_str[t][n] =  ret_tn + ph_str[t - 1][n];  // home prices in sim are in logs
 
 		// simulate later time periods
 		for (t = 2; t < (T_sim + 1); t++){
