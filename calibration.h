@@ -97,8 +97,8 @@ const double b_motive = 1.0;                         // Strength of bequest moti
 const double c_fs = .02;                             // Minimum baseline consumption (Gov Assistance)
 const double coh_fs = .05;                           // Cash on hand (Gov Asssistance: Non-durable Consumption + Housing)
 
-const double min_dpmt = .05;                         // minimum down payment
-const double max_ltv = .95;                          // max loan to value
+const double min_dpmt = 0.2; // .05;                         // minimum down payment
+const double max_ltv = 0.8; // .95;                          // max loan to value
 
 // mortgage risk criteria
 const double mort_spread = .02;                       // mortgage spread above risk-free rate
