@@ -15,6 +15,7 @@ vector<double> gen_x0(double coh_in, double b_min, void *vf1_in, void *vf2_in, v
 
 	ufnEV2 * ufnEV21 = (ufnEV2*)ufnEV21_in;
 
+	//int t_i2 = (*ufnEV21).t_i2;
 	double coh = coh_in;
 	double csf_min = 0.0;
 
@@ -22,7 +23,8 @@ vector<double> gen_x0(double coh_in, double b_min, void *vf1_in, void *vf2_in, v
 
 	int opt_flag = 1, nds = 4, it_max = 100000;
 	int N_control2 = N_control - 3;  // For part without csf
-	int N_control3 = N_control - 1;  // for part with csf
+	int N_control3 = N_control - 2; // -1;  // for part with csf
+
 	int N_controlh;
 	double h_step0 = 0.2;
 	double h_step_mult = 0.25;
@@ -97,6 +99,10 @@ vector<double> gen_x0(double coh_in, double b_min, void *vf1_in, void *vf2_in, v
 		}
 
 		for (i = 0; i < N_controlh; i++) {
+			if ( (i == 3 ) && ( (*ufnEV21).t_i2 >= 1 ) ) {
+				i++;
+			}
+
 			x0_h = x0;
 			x0_h[i] = x0[i] + h_step;
 
@@ -113,6 +119,7 @@ vector<double> gen_x0(double coh_in, double b_min, void *vf1_in, void *vf2_in, v
 				vi_min = v0_h;
 			}
 		}
+	
 
 		if (i_min_flag >= 1) {
 			x1 = x0;

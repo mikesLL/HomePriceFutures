@@ -12,7 +12,7 @@ const int city_end = 2;
 const int t_begin = 5;                   // begin in year 5 from .csv
 const int t_end = 11;                    // = 11 to cycle through all time periods;
 
-const int age_begin_store[] = { 30, 45, 60 };
+const int age_begin_store[] = { 45, 60, 30 };
 const int n_age = 3;
 
 const int age_max = 65;                  // age at which household retires / annuitizes wealth  
@@ -94,7 +94,7 @@ const double p_move = 0.0;                            // Probability receiving a
 const double b_min_const = -20.0;                    
 const double b_motive = 1.0;                         // Strength of bequest motive
 
-const double c_fs = .05;                             // Minimum baseline consumption (Gov Assistance)
+const double c_fs = .02;                             // Minimum baseline consumption (Gov Assistance)
 const double coh_fs = .05;                           // Cash on hand (Gov Asssistance: Non-durable Consumption + Housing)
 
 const double min_dpmt = .05;                         // minimum down payment
