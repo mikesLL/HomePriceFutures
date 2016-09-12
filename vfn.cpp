@@ -304,17 +304,6 @@ void vfn::interp_vw3(int i_t_in, int i_s_in) {
 		}
 
 	}
-
-	for (w_i0 = 0; w_i0 <= (w_n - 1); w_i0++) {
-
-		if  ()  {
-
-
-
-
-		}
-	}
-
 }
 
 
