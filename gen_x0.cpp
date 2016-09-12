@@ -117,6 +117,7 @@ vector<double> gen_x0(double coh_in, double b_min, void *vf1_in, void *vf2_in, v
 		}
 	}
 
+	h_step = h_step0;
 	it = 0;
 	opt_flag = 1;
 
