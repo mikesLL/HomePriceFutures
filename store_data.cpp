@@ -135,15 +135,6 @@ void store_data(void *snodes_in, void *vfn_in, string file_name_in, int year1_id
 		v1_file_flat.close();
 	}
 
-
-	// TODO: if year = 0: initial year
-	// want to be able to go to first results and download flat files all at once
-	// will also want to add age etc to rent grid, pstruct, etc ... 
-	// file should be: city, age, etc... continued
-	// 1. pass in age
-	// 2. already have horizon
-	// 3. save in first_results?
-	// 
 	int foo = city_id;
 
 	if (t_hor <= 0) {

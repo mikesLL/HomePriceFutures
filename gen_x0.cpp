@@ -20,6 +20,7 @@ vector<double> gen_x0(double coh_in, double b_min, void *vf1_in, void *vf2_in, v
 	double csf_min = 0.0;
 
 	double h_tol = 0.001; //.0005; //  50 dollar accuracy
+	double csf_tol = 0.005;
 
 	int opt_flag = 1, nds = 4, it_max = 100000;
 	int N_control2 = N_control - 3;  // For part without csf
@@ -42,6 +43,9 @@ vector<double> gen_x0(double coh_in, double b_min, void *vf1_in, void *vf2_in, v
 	double v0_nocsf;
 
 	int i_max, i_min, i_min_flag, i, j, i_inner_loop;
+	int it_max_nocsf = 10000;
+	int h_tol_nocsf = 0.01;
+	
 
 	// starting guess for v0, adjusted to current coh, b_min
 	csf_min = min(x0[3], x0[4]);
@@ -58,6 +62,64 @@ vector<double> gen_x0(double coh_in, double b_min, void *vf1_in, void *vf2_in, v
 	v0_nocsf = (*ufnEV21).eval(x0_nocsf);
 
 	N_controlh = N_control2; // for larger step sizes, only allow access to C,B,X
+
+	// first, compute without access to csf
+	while (opt_flag) {
+
+		i_max = 0;
+		i_min = 0;
+		i_min_flag = 0;
+
+		vi_max = -1.0e6;
+		vi_min = 1.0e6;
+
+		
+		// find min, max step directions
+		for (i = 0; i < N_control2; i++) {
+		
+			x0_h = x0_nocsf;
+			x0_h[i] = x0_h[i] + h_step;
+
+			v0_h = (*ufnEV21).eval(x0_h);
+
+			if (v0_h > vi_max) {
+				i_max = i;
+				vi_max = v0_h;
+			}
+
+			if ((v0_h < vi_min) && ((x0[i] - h_step) >= lb[i])) {
+				i_min = i;
+				i_min_flag = 1;
+				vi_min = v0_h;
+			}
+		}
+
+
+		if (i_min_flag >= 1) {
+			x1 = x0_nocsf;
+			x1[i_max] = x1[i_max] + h_step;
+			x1[i_min] = x1[i_min] - h_step;
+			v1 = (*ufnEV21).eval(x1);
+		}
+
+		if (v1 > v0_nocsf) {
+			v0_nocsf = v1;
+			x0_nocsf = x1;
+		}
+		else {
+			h_step = h_step * h_step_mult;
+		}
+
+		it++;
+
+		if ((it > it_max_nocsf) || (h_step < h_tol_nocsf)) {
+			opt_flag = 0;
+		}
+	}
+
+	it = 0;
+	opt_flag = 1;
+
 
 	while (opt_flag) {
 
