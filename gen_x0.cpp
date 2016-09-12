@@ -43,8 +43,8 @@ vector<double> gen_x0(double coh_in, double b_min, void *vf1_in, void *vf2_in, v
 	double v0_nocsf;
 
 	int i_max, i_min, i_min_flag, i, j, i_inner_loop;
-	int it_max_nocsf = 1000;
-	double h_tol_nocsf = 0.01;
+	int it_max_nocsf = it_max;
+	double h_tol_nocsf = h_tol;
 	
 
 	// starting guess for v0, adjusted to current coh, b_min
