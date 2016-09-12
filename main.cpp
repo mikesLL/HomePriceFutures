@@ -60,7 +60,7 @@ int main(){
 
 				cout << "snoedes1.rent_adj = " << snodes1.rent_adj << endl; 
 
-				//snodes1.adj_tax();
+				snodes1.adj_tax();
 
 				cout << "housing tenure: " << endl;
 				cout << snodes1.hu_ten[0] << "..." << snodes1.hu_ten[1] << "..." << snodes1.hu_ten[2] << "..." << endl;

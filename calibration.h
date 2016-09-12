@@ -9,14 +9,14 @@
 const int city_begin = 2;
 const int city_end = 2;
 
-const int t_begin = 5;                   // begin in year 5 from .csv
+const int t_begin = 11;                   // begin in year 5 from .csv
 const int t_end = 11;                    // = 11 to cycle through all time periods;
 
-const int age_begin_store[] = { 45, 60, 30 };
+const int age_begin_store[] = { 30, 60, 45 };
 const int n_age = 3;
 
 const int age_max = 65;                  // age at which household retires / annuitizes wealth  
-const int w_n = 400;                     // Grid points in wealth; set = 200 for fast computation, = 2000 for precision
+const int w_n = 200;                     // Grid points in wealth; set = 200 for fast computation, = 2000 for precision
 
 const double csfLev = 1.0 * ( 1.0 / 0.055 );       // Case-Shiller Index Future margin-implied leverage; (notional value contract)/(median home price)*(1/margin)
 const int csfLevi = int(floor(csfLev));   // Floor for identification
@@ -33,6 +33,7 @@ const int n_yi =  3;  // labor income states
 const int n_s = n_ph * n_rent * n_yi;  // number of states
 
 // Labor income related parameters
+const double maint_mult = 0.99;
 const double y_tax = 0.0;                 // 0.3;  // taxation is handled in snodes.cpp
 const double y_atax = 1.0 - y_tax;
 const double y_replace = 0.9388;            // From Cocco, Gomes, Maenhout (2005)
@@ -97,8 +98,8 @@ const double b_motive = 1.0;                         // Strength of bequest moti
 const double c_fs = .02;                             // Minimum baseline consumption (Gov Assistance)
 const double coh_fs = .05;                           // Cash on hand (Gov Asssistance: Non-durable Consumption + Housing)
 
-const double min_dpmt = 0.2; // .05;                         // minimum down payment
-const double max_ltv = 0.8; // .95;                          // max loan to value
+const double min_dpmt =  .05;    //0.2;                     // minimum down payment
+const double max_ltv = 0.95; // .95;  0.8;                        // max loan to value
 
 // mortgage risk criteria
 const double mort_spread = .02;                       // mortgage spread above risk-free rate

@@ -182,7 +182,7 @@ void gen_VP(void *snodes_in, void *VFN_3d_1, void *VFN_3d_2 ){
 				t_i2_lag_w = (*rr1).xt_grid[t_i][i_s][max(w_i - 1, 0)];
 				v_lag_w = (*rr1).vw3_grid[t_i][i_s][max(w_i - 1, 0)];
       
-				coh = (*rr1).w_grid[w_i] + y_atax*(*snodes1).yi_gridt[t_hor][i_yi] - (*snodes1).ten_w[t_i] * (*snodes1).p_gridt[t_hor][i_ph];       // subtract housing wealth from cash on hand  			
+				coh = (*rr1).w_grid[w_i] + y_atax*(*snodes1).yi_gridt[t_hor][i_yi] - (*snodes1).ten_w[t_i] * maint_mult * (*snodes1).p_gridt[t_hor][i_ph];       // subtract housing wealth from cash on hand  			
 				//beg_equity = min_dpmt * ten_w[t_i2] * (*snodes1).p_gridt[t_hor][i_ph];
 				beg_equity = -1.0e6;
 
