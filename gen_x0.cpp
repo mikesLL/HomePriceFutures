@@ -76,14 +76,34 @@ vector<double> gen_x0(double coh_in, double b_min, void *vf1_in, void *vf2_in, v
 
 	N_controlh = N_control2; // for larger step sizes, only allow access to C,B,X
 
-	// first, compute a rough guess without access to csf
+	
 	int k1 = 0, k2 = 0;
 	int nds = 10;
 
+	// first, compute a rough guess without access to csf
 	for (k1 = 0; k1 <= nds; k1++) {
 		for (k2 = 0; k2 <= (nds - k1); k2++) {
 			x1[0] = 0.01 + double(k1) / double(nds) * (coh - b_min);
 			x1[1] = b_min + double(k2) / double(nds) * (coh - b_min);
+			x1[2] = coh - x1[0] - x1[2];
+
+			v1 = (*ufnEV21).eval(x1);
+
+			if (v1 > v0_g3) {
+				x0_g3 = x1;
+				v0_g3 = v1;
+			}
+		}
+	}
+
+	// second, compute again with access to csf
+	x1 = x0;
+	double csf_max = max(x0[3], x0[4]);
+
+	for (k1 = 0; k1 <= nds; k1++) {
+		for (k2 = 0; k2 <= (nds - k1); k2++) {
+			x1[0] = 0.01 + double(k1) / double(nds) * (coh - b_min - csf_max );
+			x1[1] = b_min + double(k2) / double(nds) * (coh - b_min - csf_max );
 			x1[2] = coh - x1[0] - x1[2];
 
 			v1 = (*ufnEV21).eval(x1);
