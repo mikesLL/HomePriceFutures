@@ -207,7 +207,7 @@ void vfn::set_terminal(double phr_in) {
 				// old version 
 				
 				//coh_perm = (rb - 1.0)*w_grid[i_w] + 0.0*(rb - 1.0)*15.0*y_atax*y_replace*(*snodes1).yi_gridt[T_max][i_yi];
-				coh_perm =  (rb - 1.0)*w_grid[i_w] + 1.0*(rb - 1.0)*15.0*y_atax*y_replace*(*snodes1).yi_gridt[T_max][i_yi];
+				coh_perm =  (rb - 1.0)*w_grid[i_w] + 1.0*(rb - 1.0)*30.0*y_atax*y_replace*(*snodes1).yi_gridt[T_max][i_yi];
 				
 				coh_perm -= (*snodes1).rent_adj * (*snodes1).rent_gridt[T_max][i_rent];
 			
