@@ -149,7 +149,7 @@ inline eval_res ufnEV2::eval_v( int i_s_in, double w_in) {
 			res2.w_i_floor = w_n - 1;
 			res2.v_i_floor = res2.v_out;
 		} else {
-			res2.v_out = vw3_grid_ti2[i_s_in][0] - 1e6*pow(w_in - w_min, 2);
+			res2.v_out = vw3_grid_ti2[i_s_in][0] - 1.0e6*pow(w_in - w_min, 2);
 			res2.w_i_floor = 0;
 			res2.v_i_floor = res2.v_out;
 		}

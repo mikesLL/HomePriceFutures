@@ -85,15 +85,17 @@ vector<double> gen_x0(double coh_in, double b_min, void *vf1_in, void *vf2_in, v
 		// first, compute a rough guess without access to csf
 		for (k1 = 0; k1 <= nds; k1++) {
 			for (k2 = 0; k2 <= (nds - k1); k2++) {
-				x1[0] = 0.01 + double(k1) / double(nds) * (coh - b_min);
+				x1[0] = c_fs + double(k1) / double(nds) * (coh - b_min);
 				x1[1] = b_min + double(k2) / double(nds) * (coh - b_min);
-				x1[2] = coh - x1[0] - x1[2];
+				x1[2] = coh - x1[0] - x1[1];
 
-				v1 = (*ufnEV21).eval(x1);
-
-				if (v1 > v0_g3) {
-					x0_g3 = x1;
-					v0_g3 = v1;
+				if ( x1[2] >= 0.0 ){
+					v1 = (*ufnEV21).eval(x1);
+					
+					if (v1 > v0_g3) {
+						x0_g3 = x1;
+						v0_g3 = v1;
+					}
 				}
 			}
 		}
@@ -104,19 +106,20 @@ vector<double> gen_x0(double coh_in, double b_min, void *vf1_in, void *vf2_in, v
 
 		for (k1 = 0; k1 <= nds; k1++) {
 			for (k2 = 0; k2 <= (nds - k1); k2++) {
-				x1[0] = 0.01 + double(k1) / double(nds) * (coh - b_min - csf_max);
+				x1[0] = c_fs + double(k1) / double(nds) * (coh - b_min - csf_max);
 				x1[1] = b_min + double(k2) / double(nds) * (coh - b_min - csf_max);
-				x1[2] = coh - x1[0] - x1[2];
+				x1[2] = coh - x1[0] - x1[1];
 
-				v1 = (*ufnEV21).eval(x1);
+				if (x1[2] >= 0.0) {
+					v1 = (*ufnEV21).eval(x1);
 
-				if (v1 > v0_g3) {
-					x0_g3 = x1;
-					v0_g3 = v1;
+					if (v1 > v0_g3) {
+						x0_g3 = x1;
+						v0_g3 = v1;
+					}
 				}
 			}
 		}
-
 	}
 
 	if (v0_g3 > v0) {

@@ -206,16 +206,16 @@ void vfn::set_terminal(double phr_in) {
 				*/
 				// old version 
 				
-				coh_perm = (rb - 1.0)*w_grid[i_w] + 0.0*(rb - 1.0)*15.0*y_atax*y_replace*(*snodes1).yi_gridt[T_max][i_yi];
+				//coh_perm = (rb - 1.0)*w_grid[i_w] + 0.0*(rb - 1.0)*15.0*y_atax*y_replace*(*snodes1).yi_gridt[T_max][i_yi];
+				coh_perm = (rb - 1.0)*w_grid[i_w] + 1.0*(rb - 1.0)*15.0*y_atax*y_replace*(*snodes1).yi_gridt[T_max][i_yi];
 				
 				coh_perm -= (*snodes1).rent_adj * (*snodes1).rent_gridt[T_max][i_rent];
 			
-				//V_perm = 1.0 / (1.0 - beta) * ufn(coh_perm, hu_ten[i_t], pref);
-				V_perm = 1.0 / (1.0 - beta) * ufn(coh_perm, (*snodes1).hu_ten[0], pref);
-				//V_perm = 1.0 / (1.0 - beta) * 1.0 / (1.0 - rho) * pow(coh_perm, 1.0 - rho);
-
+				V_perm = ( 1.0 - pow( beta, 20.0) ) / (1.0 - beta) * ufn(coh_perm, (*snodes1).hu_ten[0], pref);
+				//V_perm = 1.0 / (1.0 - beta) * ufn(coh_perm, (*snodes1).hu_ten[0], pref);
+				
 				c_fs = 0.01;
-				V_fs = 1.0 / (1.0 - beta) * ufn(c_fs, (*snodes1).hu_ten[0], pref);
+				V_fs = ( 1.0 - pow( beta, 20.0) ) / (1.0 - beta) * ufn(c_fs, hu_ten_def , pref);
 				
 
 				// evaluate bequest value

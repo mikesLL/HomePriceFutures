@@ -33,7 +33,7 @@ const int n_yi =  3;  // labor income states
 const int n_s = n_ph * n_rent * n_yi;  // number of states
 
 // Labor income related parameters
-const double maint_mult = 0.99;
+const double maint_mult = 0.98;
 const double y_tax = 0.0;                 // 0.3;  // taxation is handled in snodes.cpp
 const double y_atax = 1.0 - y_tax;
 const double y_replace = 0.9388;            // From Cocco, Gomes, Maenhout (2005)
@@ -95,7 +95,7 @@ const double p_move = 0.0;                            // Probability receiving a
 const double b_min_const = -20.0;                    
 const double b_motive = 1.0;                         // Strength of bequest motive
 
-const double c_fs = .02;                             // Minimum baseline consumption (Gov Assistance)
+const double c_fs = .01;                             // Minimum baseline consumption (Gov Assistance)
 const double coh_fs = .05;                           // Cash on hand (Gov Asssistance: Non-durable Consumption + Housing)
 
 const double min_dpmt =  .05;    //0.2;                     // minimum down payment
