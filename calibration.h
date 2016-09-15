@@ -74,7 +74,7 @@ const double hu_ten_def =  .5;  // square footage in default case
 const double alpha_cd = 0.6;                         // Prefence weight for C: Non-durable consumption
 const double calpha_cd = 0.4;                        // =1.0 - alpha_sd; Preference weight for H: Housing services
 
-const double delta = .05;                            // Minimum down payment
+const double delta = .2;                            // Minimum down payment
 const double rb = 1.0204;                             // Gross return on bonds / mortgage rate; sometimes = 1.04
 
 // IF CES Preferences:
@@ -83,7 +83,7 @@ const double gammad = 1.01;
 const int gammai = int(floor(gammad));
 
 //Equity approximation (Gaussian-Hermite quadrature, 2 node approximation
-const double x_mu = 0.06; // Cocco, Gomes Maenhout (2005)
+const double x_mu = 0.04 + (rb - 1.0); // Cocco, Gomes Maenhout (2005)
 const double x_std = 0.157; 
 const int retxn = 2;
 const double retxv[] = { x_mu - x_std, x_mu + x_std }; //{ -0.10, 0.25 };
