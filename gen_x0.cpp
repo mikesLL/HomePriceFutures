@@ -72,11 +72,8 @@ vector<double> gen_x0(double coh_in, double b_min, void *vf1_in, void *vf2_in, v
 	double v0_g3 = v0_g2;
 	double vi = -1.0e6;
 
-
-
 	N_controlh = N_control2; // for larger step sizes, only allow access to C,B,X
 
-	
 	int k1 = 0, k2 = 0;
 	int nds = 10;
 
@@ -89,9 +86,9 @@ vector<double> gen_x0(double coh_in, double b_min, void *vf1_in, void *vf2_in, v
 				x1[1] = b_min + double(k2) / double(nds) * (coh - b_min);
 				x1[2] = coh - x1[0] - x1[1];
 
-				if ( x1[2] >= 0.0 ){
+				if (x1[2] >= 0.0) {
 					v1 = (*ufnEV21).eval(x1);
-					
+
 					if (v1 > v0_g3) {
 						x0_g3 = x1;
 						v0_g3 = v1;
@@ -99,8 +96,10 @@ vector<double> gen_x0(double coh_in, double b_min, void *vf1_in, void *vf2_in, v
 				}
 			}
 		}
+	}
 
-		// second, compute again with access to csf
+	/*
+	// second, compute again with access to csf
 		x1 = x0;
 		double csf_max = max(x0[3], x0[4]);
 
@@ -120,7 +119,9 @@ vector<double> gen_x0(double coh_in, double b_min, void *vf1_in, void *vf2_in, v
 				}
 			}
 		}
-	}
+		*/
+	
+	
 
 	if (v0_g3 > v0) {
 		v0 = v0_g3;
