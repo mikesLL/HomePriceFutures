@@ -164,11 +164,11 @@ vector<double> gen_x0(double coh_in, double b_min, void *vf1_in, void *vf2_in, v
 		}
 
 		// find min, max step directions
-		if (h_step <= 0.01) {
-			N_controlh = N_control3; 
-		}
+		//if (h_step <= 0.01) {
+		//	N_controlh = N_control3; 
+		//}
 
-		for (i = 0; i < N_controlh; i++) {
+		for (i = 0; i < N_control3; i++) {
 			if ( (i == 3 ) && ( (*ufnEV21).t_i2 >= 1 ) ) {
 				i++;
 			}
