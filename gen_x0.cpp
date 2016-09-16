@@ -189,7 +189,7 @@ vector<double> gen_x0(double coh_in, double b_min, void *vf1_in, void *vf2_in, v
 				i_max = i;
 				vi_max = v0_h;
 
-				dv_max = v0_h - v0;
+				dv_max = ( v0_h - v0 ) / h_step;
 			}
 
 			if ((v0_h < vi_min) && ((x0[i] - h_step) >= lb[i])) {
@@ -197,7 +197,7 @@ vector<double> gen_x0(double coh_in, double b_min, void *vf1_in, void *vf2_in, v
 				i_min_flag = 1;
 				vi_min = v0_h;
 
-				dv_min = v0_h - v0;
+				dv_min = ( v0_h - v0) / h_step;
 			}
 		}
 	
@@ -207,7 +207,7 @@ vector<double> gen_x0(double coh_in, double b_min, void *vf1_in, void *vf2_in, v
 
 			//dv_max = foo_max;
 			//dv_min = foo_min;
-			h_frac = min(1.0, dv_max / dv_min - 1.0);
+			h_frac = min(1.0, dv_max / (2.0* dv_min) );
 			//h_opt = foo_max - foo_min; 
 
 			
