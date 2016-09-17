@@ -106,15 +106,16 @@ vector<double> gen_x0(double coh_in, double b_min, void *vf1_in, void *vf2_in, v
 	
 	while (opt_flag) {
 		
-		i_max = 1;
-		i_min = 1;
+		i_max = 0; // 1;
+		i_min = 0; // 1;
 		i_min_flag = 0;
 
 		v1 = -1.0e6;               
 		vi_max = -1.0e6;  
 		vi_min = 1.0e6;
 
-		for (i = 1; i < N_control3; i++){
+		//for (i = 1; i < N_control3; i++){
+		for (i = 0; i < N_control3; i++) {
 			if ( (i == 3 ) && ( (*ufnEV21).t_i2 >= 1 ) ) {
 				i++;
 			}
@@ -138,6 +139,12 @@ vector<double> gen_x0(double coh_in, double b_min, void *vf1_in, void *vf2_in, v
 	
 		if ( i_min_flag >= 1 ) {
 			x1 = x0;
+			x1[i_max] = x0[i_max] + h_step;
+			x1[i_min] = x0[i_min] - h_step;
+			v1 = (*ufnEV21).eval(x1);
+
+			/*
+			x1 = x0;
 			v1 = -1.0e6;
 
 			for (k1 = 0; k1 <= nds2; k1++) {
@@ -159,6 +166,7 @@ vector<double> gen_x0(double coh_in, double b_min, void *vf1_in, void *vf2_in, v
 					}
 				}
 			}
+			*/
 		}
 
 		if (v1 > v0) {
