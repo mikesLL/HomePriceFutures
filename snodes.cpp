@@ -50,9 +50,6 @@ snodes::snodes(int age0_in, int T_max_in, int city_id_in) {
 		s_ph_midry[i_ph] = i2s_map[i_ph][i_rent_mid][i_yi_mid];
     }
 
-	// adding work here
-	//hu_ten[0] = hu_ten_store[city_id][0];
-
 	city_id = city_id_in;
 
 	int i_t;
