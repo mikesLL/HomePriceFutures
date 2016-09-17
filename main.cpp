@@ -60,8 +60,6 @@ int main(){
 
 				cout << "snoedes1.rent_adj = " << snodes1.rent_adj << endl; 
 
-				snodes1.adj_tax();
-
 				cout << "housing tenure: " << endl;
 				cout << snodes1.hu_ten[0] << "..." << snodes1.hu_ten[1] << "..." << snodes1.hu_ten[2] << "..." << endl;
 
@@ -76,6 +74,8 @@ int main(){
 				// load_simpath store discretized approximation in snodes1 structure 
 				load_simpath(&snodes1, city_data.rent[t], city_data.price[t], city_data.ret_lag[t],
 					city_data.csf_1yr[t], t, city_init, city_id, age0);
+
+				snodes1.adj_tax();
 
 				cout << "main.cpp: begin enter data" << endl;
 				vf_F.enter_data(&snodes1, phr_in, t, t_hor, city_data.csf_1yr[t], pref, T_max);

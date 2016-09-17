@@ -82,42 +82,43 @@ void snodes::adj_tax() {
 	double tax_brack[] = {0.0, 0.4385, 1.0595, 1.61, 2.88 };
 	double tax_rate[] = { 0.15, 0.28, 0.31, 0.36, 0.396 };
 
-	double y_btax = 0.0;
-	double y_atax = 0.0;
+	double y_btax2 = 0.0;
+	double y_tax_bill = 0.0;
+	double y_atax2 = 0.0;
 	double y_diff = 0.0;
 
 	for (i_t2 = 0; i_t2 < (T_max + 1); i_t2++) {
 		for (i_y2 = 0; i_y2 < n_yi; i_y2++){ 
 			
-			y_btax = yi_gridt[i_t2][i_y2];           // load pre-tax income
-			y_atax = 0.0;
+			y_btax2 = yi_gridt[i_t2][i_y2];           // load pre-tax income
+			y_tax_bill = 0.0;
 
-			if (y_btax >= tax_brack[0]) {
-				y_diff = min(y_btax - tax_brack[0], tax_brack[1] - tax_brack[0] );
-				y_atax = y_atax + tax_rate[0] * y_diff;				
+			if (y_btax2 >= tax_brack[0]) {
+				y_diff = min(y_btax2 - tax_brack[0], tax_brack[1] - tax_brack[0] );
+				y_tax_bill = y_tax_bill +  tax_rate[0] * y_diff;
 			}
 
-			if (y_btax >= tax_brack[1]) {
-				y_diff = min( y_btax - tax_brack[1], tax_brack[2] - tax_brack[1] );
-				y_atax = y_atax + tax_rate[1] * y_diff;
+			if (y_btax2 >= tax_brack[1]) {
+				y_diff = min( y_btax2 - tax_brack[1], tax_brack[2] - tax_brack[1] );
+				y_tax_bill = y_tax_bill + tax_rate[1] * y_diff;
 			}
 
-			if (y_btax >= tax_brack[2]) {
-				y_diff = min(y_btax - tax_brack[2], tax_brack[3] - tax_brack[2]);
-				y_atax = y_atax + tax_rate[2] * y_diff;
+			if (y_btax2 >= tax_brack[2]) {
+				y_diff = min(y_btax2 - tax_brack[2], tax_brack[3] - tax_brack[2]);
+				y_tax_bill = y_tax_bill + tax_rate[2] * y_diff;
 			}
 
-			if (y_btax >= tax_brack[3]) {
-				y_diff = min(y_btax - tax_brack[3], tax_brack[4] - tax_brack[3]);
-				y_atax = y_atax + tax_rate[3] * y_diff;
+			if (y_btax2 >= tax_brack[3]) {
+				y_diff = min( y_btax2 - tax_brack[3], tax_brack[4] - tax_brack[3]);
+				y_tax_bill = y_tax_bill + tax_rate[3] * y_diff;
 			}
 
-			if (y_btax >= tax_brack[4]) {
-				y_diff = y_btax - tax_brack[4];
-				y_atax = y_atax + tax_rate[4] * y_diff;
+			if (y_btax2 >= tax_brack[4]) {
+				y_diff = y_btax2 - tax_brack[4];
+				y_tax_bill = y_tax_bill + tax_rate[4] * y_diff;
 			}
 
-			yi_gridt[i_t2][i_y2] = y_tax;
+			yi_gridt[i_t2][i_y2] = y_btax2 - y_tax_bill;
 
 		}
 	}
