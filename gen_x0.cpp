@@ -76,6 +76,7 @@ vector<double> gen_x0(double coh_in, double b_min, void *vf1_in, void *vf2_in, v
 
 	int k1 = 0, k2 = 0;
 	int nds = 10;
+	int nds2 = 4;
 
 	if ( (*vf2).w_i1 % 10 == 0 ) {
 
@@ -132,6 +133,10 @@ vector<double> gen_x0(double coh_in, double b_min, void *vf1_in, void *vf2_in, v
 	double dv_max = 0.0;
 	double dv_min = 0.0;
 
+	int i_max2 = 0;
+	int i_max1 = 0;
+	int i_min0 = 0;
+
 	while (opt_flag) {
 
 		dv_max = 0.0;
@@ -156,6 +161,7 @@ vector<double> gen_x0(double coh_in, double b_min, void *vf1_in, void *vf2_in, v
 		if (v1 > v0) {
 			x0 = x1;
 			v0 = v1;
+			v1 = -1.0e6;
 		}
 
 		x1 = x0;
@@ -168,6 +174,7 @@ vector<double> gen_x0(double coh_in, double b_min, void *vf1_in, void *vf2_in, v
 		if (v1 > v0) {
 			x0 = x1;
 			v0 = v1;
+			v1 = -1.0e6;
 		}
 
 		// find min, max step directions
@@ -175,7 +182,8 @@ vector<double> gen_x0(double coh_in, double b_min, void *vf1_in, void *vf2_in, v
 		//	N_controlh = N_control3; 
 		//}
 
-		for (i = 0; i < N_control3; i++) {
+		//for (i = 0; i < N_control3; i++) {
+		for (i = 1; i < N_control3; i++){
 			if ( (i == 3 ) && ( (*ufnEV21).t_i2 >= 1 ) ) {
 				i++;
 			}
@@ -201,19 +209,40 @@ vector<double> gen_x0(double coh_in, double b_min, void *vf1_in, void *vf2_in, v
 			}
 		}
 	
-
-		if (i_min_flag >= 1) {
+		if ( i_min_flag >= 1 ) {
 			x1 = x0;
+			v1 = -1.0e6;
+
+			for (k1 = 0; k1 <= nds2; k1++) {
+				for (k2 = 0; k2 <= (nds2 - k1); k2++) {
+
+					x0_h = x0;
+					x0_h[i_max] = x0_h[i_max] + double(k1) / double(nds2)*h_step;
+					x0_h[i_min] = x0_h[i_min] - double(k2) / double(nds2)*h_step;
+					x0_h[0] = x0[0] - ( double(k1) / double(nds2) + double(k2) / double(nds2) ) * h_step;
+
+					if (x0_h[0] >= 0.0) {
+
+						v0_h = (*ufnEV21).eval(x0_h);
+
+						if (v0_h > v1) {
+							x1 = x0_h;
+							v1 = v0_h;
+						}
+					}
+				}
+			}
 
 			//dv_max = foo_max;
 			//dv_min = foo_min;
-			h_frac = min(1.0, dv_max / (2.0* dv_min) );
+			//h_frac = min(1.0, dv_max / (2.0* dv_min) );
 			//h_opt = foo_max - foo_min; 
 
-			
+			/*
 			x1[i_max] = x0[i_max] + h_frac*h_step;
 			x1[i_min] = x0[i_min] - h_frac*h_step;
 			v1 = (*ufnEV21).eval(x1);
+			*/
 		}
 
 		if (v1 > v0) {
