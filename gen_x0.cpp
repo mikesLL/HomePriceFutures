@@ -28,7 +28,7 @@ vector<double> gen_x0(double coh_in, double b_min, void *vf1_in, void *vf2_in, v
 
 	int N_controlh;
 	double h_step0 = 0.2;
-	double h_step_mult = 0.25;
+	double h_step_mult = 0.5; //0.25;
 	double h_step = h_step0;
 
 	vector<double> x0 = x0_in;    
@@ -99,57 +99,22 @@ vector<double> gen_x0(double coh_in, double b_min, void *vf1_in, void *vf2_in, v
 		}
 	}
 
-	/*
-	// second, compute again with access to csf
-		x1 = x0;
-		double csf_max = max(x0[3], x0[4]);
-
-		for (k1 = 0; k1 <= nds; k1++) {
-			for (k2 = 0; k2 <= (nds - k1); k2++) {
-				x1[0] = c_fs + double(k1) / double(nds) * (coh - b_min - csf_max);
-				x1[1] = b_min + double(k2) / double(nds) * (coh - b_min - csf_max);
-				x1[2] = coh - x1[0] - x1[1];
-
-				if (x1[2] >= 0.0) {
-					v1 = (*ufnEV21).eval(x1);
-
-					if (v1 > v0_g3) {
-						x0_g3 = x1;
-						v0_g3 = v1;
-					}
-				}
-			}
-		}
-		*/
-	
-	
-
 	if (v0_g3 > v0) {
 		v0 = v0_g3;
 		x0 = x0_g3;
 	}
 	
-	double h_frac = 0.0;
-	double dv_max = 0.0;
-	double dv_min = 0.0;
-
-	int i_max2 = 0;
-	int i_max1 = 0;
-	int i_min0 = 0;
-
 	while (opt_flag) {
-
-		dv_max = 0.0;
-		dv_min = 0.0;
 		
-		i_max = 0;
-		i_min = 0;
+		i_max = 1;
+		i_min = 1;
 		i_min_flag = 0;
 
 		v1 = -1.0e6;                // added this
 		vi_max = -1.0e6;  
 		vi_min = 1.0e6;
 
+		/*
 		x1 = x0;
 		csf_min = min(x1[3], x1[4]);
 		x1[3] = x1[3] - csf_min;
@@ -161,7 +126,6 @@ vector<double> gen_x0(double coh_in, double b_min, void *vf1_in, void *vf2_in, v
 		if (v1 > v0) {
 			x0 = x1;
 			v0 = v1;
-			v1 = -1.0e6;
 		}
 
 		x1 = x0;
@@ -174,9 +138,8 @@ vector<double> gen_x0(double coh_in, double b_min, void *vf1_in, void *vf2_in, v
 		if (v1 > v0) {
 			x0 = x1;
 			v0 = v1;
-			v1 = -1.0e6;
 		}
-
+		*/
 		// find min, max step directions
 		//if (h_step <= 0.01) {
 		//	N_controlh = N_control3; 
@@ -196,16 +159,12 @@ vector<double> gen_x0(double coh_in, double b_min, void *vf1_in, void *vf2_in, v
 			if (v0_h > vi_max) {
 				i_max = i;
 				vi_max = v0_h;
-
-				dv_max = ( v0_h - v0 ) / h_step;
 			}
 
-			if ((v0_h < vi_min) && ((x0[i] - h_step) >= lb[i])) {
+			if ((v0_h < vi_min) && ( (x0[i] - h_step) >= lb[i])) {
 				i_min = i;
 				i_min_flag = 1;
-				vi_min = v0_h;
-
-				dv_min = ( v0_h - v0) / h_step;
+				vi_min = v0_h;	
 			}
 		}
 	
@@ -232,17 +191,6 @@ vector<double> gen_x0(double coh_in, double b_min, void *vf1_in, void *vf2_in, v
 					}
 				}
 			}
-
-			//dv_max = foo_max;
-			//dv_min = foo_min;
-			//h_frac = min(1.0, dv_max / (2.0* dv_min) );
-			//h_opt = foo_max - foo_min; 
-
-			/*
-			x1[i_max] = x0[i_max] + h_frac*h_step;
-			x1[i_min] = x0[i_min] - h_frac*h_step;
-			v1 = (*ufnEV21).eval(x1);
-			*/
 		}
 
 		if (v1 > v0) {
