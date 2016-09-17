@@ -166,7 +166,7 @@ vector<double> gen_x0(double coh_in, double b_min, void *vf1_in, void *vf2_in, v
 				if (v0_h > v1) {
 					v1 = v0_h;
 					x1 = x0_h;
-					h_step1 = double(k1) / double(nds2);
+					h_step1 = double(k1) / double(nds2) * h_step;
 				}
 			}
 
