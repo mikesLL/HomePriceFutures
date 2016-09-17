@@ -76,7 +76,7 @@ vector<double> gen_x0(double coh_in, double b_min, void *vf1_in, void *vf2_in, v
 
 	int k1 = 0, k2 = 0;
 	int nds = 10;
-	int nds2 = 5;
+	int nds2 = 2;
 
 	if ( (*vf2).w_i1 % 10 == 0 ) {
 
@@ -164,7 +164,7 @@ vector<double> gen_x0(double coh_in, double b_min, void *vf1_in, void *vf2_in, v
 		if (v1 > v0) {
 			v0 = v1;
 			x0 = x1;
-			h_step = h_step0;  // reset step size at new x0 guess remove this!!!
+			h_step = h_step0;  // reset step size at new x0 guess
 		}
 		else {
 			h_step = h_step * h_step_mult;
