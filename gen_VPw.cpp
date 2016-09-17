@@ -49,9 +49,9 @@ gen_res gen_VPw(void *snodes_in, void *vf1_in, void *vf2_in,
 	int i_yi = (*snodes1).s2i_yi[(*vf2).i_s1];
 	int t_hor = (*snodes1).t_hor;
 
-	if (beg_equity > 0.0 ){
-		cout << "gen_vpw.cpp: here" << endl; 
-	}
+	//if (beg_equity > 0.0 ){
+	//	cout << "gen_vpw.cpp: here" << endl; 
+	//}
 
 
 	// current cash on hand; wealth and income only
