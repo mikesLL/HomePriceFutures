@@ -147,7 +147,7 @@ vector<double> gen_x0(double coh_in, double b_min, void *vf1_in, void *vf2_in, v
 			if (h_step >= 0.2) {
 				nds2 = 10;
 			} else {
-				nds2 = 4;
+				nds2 = 2;
 			}
 
 			for (k1 = 1; k1 <= nds2; k1++) {
