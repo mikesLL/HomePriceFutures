@@ -103,6 +103,8 @@ vector<double> gen_x0(double coh_in, double b_min, void *vf1_in, void *vf2_in, v
 		v0 = v0_g3;
 		x0 = x0_g3;
 	}
+
+	double h_step1 = 0.0;
 	
 	while (opt_flag) {
 		
@@ -137,6 +139,7 @@ vector<double> gen_x0(double coh_in, double b_min, void *vf1_in, void *vf2_in, v
 			}
 		}
 	
+		h_step1 = h_step;
 		if ( i_min_flag >= 1 ) {
 			/*
 			x1 = x0;
@@ -149,7 +152,7 @@ vector<double> gen_x0(double coh_in, double b_min, void *vf1_in, void *vf2_in, v
 			v1 = -1.0e6;
 
 			nds2 = 2;
-			for (k1 = 1; k1 <= 4; k1++) {
+			for (k1 = 0; k1 <= 4; k1++) {
 				x0_h = x0;
 				x0_h[i_max] = x0_h[i_max] + double(k1) / 4.0 * h_step;
 				x0_h[i_min] = x0_h[i_min] - double(k1) / 4.0 * h_step;
@@ -161,6 +164,7 @@ vector<double> gen_x0(double coh_in, double b_min, void *vf1_in, void *vf2_in, v
 				if (v0_h > v1) {
 						x1 = x0_h;
 						v1 = v0_h;
+						h_step1 = double(k1) * 5.0 / 4.0 * h_step;
 				}
 			}
 			
@@ -189,13 +193,13 @@ vector<double> gen_x0(double coh_in, double b_min, void *vf1_in, void *vf2_in, v
 					}
 				}
 			}
-			*/
-			
+			*/	
 		}
 
 		if (v1 > v0) {
 			v0 = v1;
 			x0 = x1;
+			h_step = h_step1;
 			//h_step = h_step0;  // reset step size at new x0 guess
 		}
 		else {
