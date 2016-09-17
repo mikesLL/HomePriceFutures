@@ -76,7 +76,7 @@ vector<double> gen_x0(double coh_in, double b_min, void *vf1_in, void *vf2_in, v
 
 	int k1 = 0, k2 = 0;
 	int nds = 10;
-	int nds2 = 4;
+	int nds2 = 5;
 
 	if ( (*vf2).w_i1 % 10 == 0 ) {
 
