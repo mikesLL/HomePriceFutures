@@ -248,7 +248,7 @@ vector<double> gen_x0(double coh_in, double b_min, void *vf1_in, void *vf2_in, v
 		if (v1 > v0) {
 			v0 = v1;
 			x0 = x1;
-			h_step = h_step0; // TODO: check this line
+			//h_step = h_step0; // TODO: check this line
 		}
 		else {
 			h_step = h_step * h_step_mult;
