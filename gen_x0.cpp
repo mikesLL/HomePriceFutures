@@ -156,14 +156,14 @@ vector<double> gen_x0(double coh_in, double b_min, void *vf1_in, void *vf2_in, v
 				//x0_h[0] = x0[0] - (double(k1) + double(k2)) / double(nds2) * h_step;
 				
 				//if (x0_h[0] >= 0.0) {
-				//	v0_h = (*ufnEV21).eval(x0_h);
+				v0_h = (*ufnEV21).eval(x0_h);
 					
-				//	if (v0_h > v1) {
-				//		x1 = x0_h;
-				//		v1 = v0_h;
-				//	}
-				//}
+				if (v0_h > v1) {
+						x1 = x0_h;
+						v1 = v0_h;
+				}
 			}
+			
 
 			/*
 			for (k1 = -2; k1 <= 2; k1++) {
