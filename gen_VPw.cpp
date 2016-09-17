@@ -4,9 +4,9 @@
 
 #include "headers.h"
 
-gen_res gen_VPw(void *snodes_in, void *vf1_in, void *vf2_in, 
-	            double coh, vector <double> x_w_lag, 
-	            double b_min, double beg_equity ){
+gen_res gen_VPw(void *snodes_in, void *vf1_in, void *vf2_in,
+	double coh, vector <double> x_w_lag,
+	double b_min, double beg_equity) {
 
 	snodes *snodes1 = (snodes *)snodes_in;
 	vfn * vf1 = (vfn *)vf1_in;
@@ -20,27 +20,27 @@ gen_res gen_VPw(void *snodes_in, void *vf1_in, void *vf2_in,
 	//double v0_default = 1.0 / (1.0 - beta)*ufn(x0_default[0], hu_ten_def, pref);
 	double v0_default = -1.0e6;
 	double v_guess;
-	
-	ufnEV2 ufnEV21;
-	ufnEV21.enter_data(snodes1, vf2 );
 
-	
+	ufnEV2 ufnEV21;
+	ufnEV21.enter_data(snodes1, vf2);
+
 	x_w_lag[1] = max(x_w_lag[1], b_min);
 	x_w_lag[0] = coh - x_w_lag[1] - x_w_lag[2] - x_w_lag[3] - x_w_lag[4];
 
 	if (x_w_lag[0] > 0.0) {
 		x_guess = x_w_lag;
 		v_guess = ufnEV21.eval(x_guess);
-		
-	} else {
+
+	}
+	else {
 		x_guess = x0_default;
-		v_guess = -1.0e6;
+		v_guess = v0_default; 
 	}
 
-	if (  (coh - b_min) <= 0.0 ) {
+	if ((coh - b_min) <= 0.0) {
 		opt_flag = 0;
 	}
-	
+
 	gen_res res1;
 	res1.x_opt = x0_default;
 	res1.v_opt = v0_default;
@@ -49,9 +49,14 @@ gen_res gen_VPw(void *snodes_in, void *vf1_in, void *vf2_in,
 	int i_yi = (*snodes1).s2i_yi[(*vf2).i_s1];
 	int t_hor = (*snodes1).t_hor;
 
+	if (beg_equity > 0.0 ){
+		cout << "gen_vpw.cpp: here" << endl; 
+	}
+
+
 	// current cash on hand; wealth and income only
 	double cohQ = (*vf1).w_grid[(*vf2).w_i1] + (*snodes1).yi_gridt[t_hor][i_yi];
-	
+
 	if ( cohQ  < beg_equity ) {
 		opt_flag = 0;
 	}
@@ -77,17 +82,17 @@ gen_res gen_VPw(void *snodes_in, void *vf1_in, void *vf2_in,
 
 	if ((opt_flag <= 0) || (valid_flag <= 0)) {
 
-		if (v_guess > v0_default) {
-			res1.x_opt = x_guess;
-			res1.v_opt = v_guess;
-			res1.valid_flag = 1;
+		//if (v_guess > v0_default) {
+		//	res1.x_opt = x_guess;
+		//	res1.v_opt = v_guess;
+		//	res1.valid_flag = 1;
 
-		}
-		else {
+		//}
+		//else {
 			res1.x_opt = x0_default;
 			res1.v_opt = v0_default;
 			res1.valid_flag = 0;
-		}
+		//}
 	}
 
     return res1;

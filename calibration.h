@@ -74,7 +74,6 @@ const double hu_ten_def =  .5;  // square footage in default case
 const double alpha_cd = 0.6;                         // Prefence weight for C: Non-durable consumption
 const double calpha_cd = 0.4;                        // =1.0 - alpha_sd; Preference weight for H: Housing services
 
-const double delta = .2;                            // Minimum down payment
 const double rb = 1.0204;                             // Gross return on bonds / mortgage rate; sometimes = 1.04
 
 // IF CES Preferences:
@@ -98,6 +97,8 @@ const double b_motive = 1.0;                         // Strength of bequest moti
 const double c_fs = .01;                             // Minimum baseline consumption (Gov Assistance)
 const double coh_fs = .05;                           // Cash on hand (Gov Asssistance: Non-durable Consumption + Housing)
 
+// down-payment criteria
+const double delta = .2;                            // Minimum down payment
 const double min_dpmt =  .2;    //0.2;                     // minimum down payment
 const double max_ltv = 0.80; // .95;  0.8;                        // max loan to value
 
