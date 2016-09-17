@@ -130,19 +130,13 @@ void gen_VP(void *snodes_in, void *VFN_3d_1, void *VFN_3d_2 ){
 				// store the just retrieved x_opt as a guess for the next period
 				x_lag_wt[t_i2] = x1;
 
-				//v_lag_w = -1.0e6;
 				if ( (v1 > v_lag_t) || (t_i2 == 0) ) {                      // current result is better than value given previous tenure
-					//if (v1 > v_lag_w) {                                     // current result is better than value given previous wealth
 						
 						(*rr1).set_pol_ten_v(t_i, i_s, w_i, x1, t_i2, v1);  // set x, t_i2, v0 in
 
 						if (res1.valid_flag == 0) {
 							(*rr1).set_pol_ten_v(t_i, i_s, w_i, x1, 0, v1);
-						}
-
-					//} //else {
-					//	(*rr1).set_pol_ten_v(t_i, i_s, w_i, x_lag_w, t_i2_lag_w, v_lag_w);  // set x, t_i2, v0 in
-					//}					
+						}		
 				}
 			}
 		}
