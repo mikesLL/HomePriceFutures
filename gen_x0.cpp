@@ -152,10 +152,10 @@ vector<double> gen_x0(double coh_in, double b_min, void *vf1_in, void *vf2_in, v
 			v1 = -1.0e6;
 
 			nds2 = 2;
-			for (k1 = 0; k1 <= 4; k1++) {
+			for (k1 = 0; k1 <= 8; k1++) {
 				x0_h = x0;
-				x0_h[i_max] = x0_h[i_max] + double(k1) / 4.0 * h_step;
-				x0_h[i_min] = x0_h[i_min] - double(k1) / 4.0 * h_step;
+				x0_h[i_max] = x0_h[i_max] + double(k1) / 8.0 * h_step;
+				x0_h[i_min] = x0_h[i_min] - double(k1) / 8.0 * h_step;
 				//x0_h[0] = x0[0] - (double(k1) + double(k2)) / double(nds2) * h_step;
 				
 				//if (x0_h[0] >= 0.0) {
@@ -164,7 +164,7 @@ vector<double> gen_x0(double coh_in, double b_min, void *vf1_in, void *vf2_in, v
 				if (v0_h > v1) {
 						x1 = x0_h;
 						v1 = v0_h;
-						h_step1 = double(k1) * 5.0 / 4.0 * h_step;
+						h_step1 = double(k1) * 9.0 / 8.0 * h_step;
 				}
 			}
 			
