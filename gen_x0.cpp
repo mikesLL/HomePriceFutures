@@ -158,12 +158,12 @@ vector<double> gen_x0(double coh_in, double b_min, void *vf1_in, void *vf2_in, v
 			nds2 = 10;
 			for (k1 = 1; k1 <= nds2; k1++) {
 				x0_h = x0;
-				x0_h[i_max] = x0_h[i_max] + h_step;
-				x0_h[i_min] = x0_h[i_min] - h_step;
+				x0_h[i_max] = x0_h[i_max] + double(k1) / double(nds2) * h_step;
+				x0_h[i_min] = x0_h[i_min] - double(k1) / double(nds2) * h_step;
 
 				v0_h = (*ufnEV21).eval(x0_h);
 
-				if (v0_h > v0) {
+				if (v0_h > v1) {
 					v1 = v0_h;
 					x1 = x0_h;
 					h_step1 = double(k1) / double(nds2);
