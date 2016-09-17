@@ -138,40 +138,44 @@ vector<double> gen_x0(double coh_in, double b_min, void *vf1_in, void *vf2_in, v
 			}
 		}
 	
-		h_step1 = h_step;
+
 		if ( i_min_flag >= 1 ) {
-			
 			x1 = x0;
-			v1 = -1.0e6;
-
-			if (h_step >= 0.2) {
-				nds2 = 10;
-			} else {
-				nds2 = 2;
-			}
-
-			for (k1 = 1; k1 <= nds2; k1++) {
-				x0_h = x0;
-				x0_h[i_max] = x0_h[i_max] + double(k1) / double(nds2) * h_step;
-				x0_h[i_min] = x0_h[i_min] - double(k1) / double(nds2) * h_step;
-				
-				v0_h = (*ufnEV21).eval(x0_h);
-					
-				if (v0_h > v1) {
-					x1 = x0_h;
-					v1 = v0_h;
-					h_step1 = double(k1) / double(nds2) * h_step;
-				}
-			}
+			x1[i_max] = x1[i_max] + h_step;
+			x1[i_min] = x1[i_min] - h_step;
+			v1 = (*ufnEV21).eval(x1);
 		}
-
+		
 		if (v1 > v0) {
 			v0 = v1;
 			x0 = x1;
-			h_step = h_step1;
-		}
+		} 
 		else {
-			h_step = h_step * h_step_mult;
+			x1 = x0;
+			v1 = -1.0e6;
+			h_step1 = 0.1 * h_step;
+
+			nds2 = 10;
+			for (k1 = 1; k1 <= nds2; k1++) {
+				x0_h = x0;
+				x0_h[i_max] = x0_h[i_max] + h_step;
+				x0_h[i_min] = x0_h[i_min] - h_step;
+
+				v0_h = (*ufnEV21).eval(x0_h);
+
+				if (v0_h > v0) {
+					v1 = v0_h;
+					x1 = x0_h;
+					h_step1 = double(k1) / double(nds2);
+				}
+			}
+
+			if (v1 > v0) {
+				v0 = v1;
+				x0 = x1;
+			}
+
+			h_step = h_step1; //h_step = h_step * h_step_mult;
 		}
 
 		it++;
