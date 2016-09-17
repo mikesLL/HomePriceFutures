@@ -110,42 +110,10 @@ vector<double> gen_x0(double coh_in, double b_min, void *vf1_in, void *vf2_in, v
 		i_min = 1;
 		i_min_flag = 0;
 
-		v1 = -1.0e6;                // added this
+		v1 = -1.0e6;               
 		vi_max = -1.0e6;  
 		vi_min = 1.0e6;
 
-		/*
-		x1 = x0;
-		csf_min = min(x1[3], x1[4]);
-		x1[3] = x1[3] - csf_min;
-		x1[4] = x1[4] - csf_min;
-		x1[1] = max(x1[1], b_min);
-		x1[0] = coh - x1[1] - x1[2] - x1[3] - x1[4];
-		v1 = (*ufnEV21).eval(x1);
-
-		if (v1 > v0) {
-			x0 = x1;
-			v0 = v1;
-		}
-
-		x1 = x0;
-		x1[3] = 0.0;
-		x1[4] = 0.0;
-		x1[1] = max(x1[1], b_min);
-		x1[0] = coh - x1[1] - x1[2] - x1[3] - x1[4];
-		v1 = (*ufnEV21).eval(x1);
-
-		if (v1 > v0) {
-			x0 = x1;
-			v0 = v1;
-		}
-		*/
-		// find min, max step directions
-		//if (h_step <= 0.01) {
-		//	N_controlh = N_control3; 
-		//}
-
-		//for (i = 0; i < N_control3; i++) {
 		for (i = 1; i < N_control3; i++){
 			if ( (i == 3 ) && ( (*ufnEV21).t_i2 >= 1 ) ) {
 				i++;
@@ -196,7 +164,7 @@ vector<double> gen_x0(double coh_in, double b_min, void *vf1_in, void *vf2_in, v
 		if (v1 > v0) {
 			v0 = v1;
 			x0 = x1;
-			h_step = h_step0; // TODO: check this line
+			h_step = h_step0;  // reset step size at new x0 guess
 		}
 		else {
 			h_step = h_step * h_step_mult;
@@ -204,7 +172,7 @@ vector<double> gen_x0(double coh_in, double b_min, void *vf1_in, void *vf2_in, v
 
 		it++;
 
-		if ((it > it_max) || (h_step < h_tol)) {
+		if ( (it > it_max) || (h_step < h_tol) ) {
 			opt_flag = 0;
 		}
 	}
