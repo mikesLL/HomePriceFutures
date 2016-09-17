@@ -19,7 +19,7 @@ vector<double> gen_x0(double coh_in, double b_min, void *vf1_in, void *vf2_in, v
 	double coh = coh_in;
 	double csf_min = 0.0;
 
-	double h_tol = 0.001; //.0005; //  50 dollar accuracy
+	double h_tol = 0.0005; //.0005; //  50 dollar accuracy
 	double csf_tol = 0.005;
 
 	int opt_flag = 1, it_max = 100000;
