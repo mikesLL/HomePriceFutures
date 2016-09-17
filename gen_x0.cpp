@@ -27,7 +27,7 @@ vector<double> gen_x0(double coh_in, double b_min, void *vf1_in, void *vf2_in, v
 	int N_control3 = N_control - 2; // -1;  // for part with csf
 
 	int N_controlh;
-	double h_step0 = 0.2;
+	double h_step0 = 0.01; // 0.2;
 	double h_step_mult = 0.25;
 	double h_step = h_step0;
 
