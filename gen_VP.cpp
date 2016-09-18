@@ -48,7 +48,7 @@ void gen_VP(void *snodes_in, void *VFN_3d_1, void *VFN_3d_2 ){
 	int i_s;
 	int t_hor = (*snodes1).t_hor;
 
-	double coh, w_adj, v_adj, v_i_floor, v0_opt, v0, beg_equity, mpmt;
+	double coh, w_adj, v_adj, v_i_floor, v0_opt, v0, beg_equity, mpmt, b_min2;
 	double v1;
 	double v_lag_w; // value function guess from previous wealth level
 	double v_lag_t; // value function guess from previous tenure computation
@@ -91,9 +91,12 @@ void gen_VP(void *snodes_in, void *VFN_3d_1, void *VFN_3d_2 ){
 					mpmt = 0.0;
 				}
 				else {
-					b_min = (double) - max_ltv*(*snodes1).ten_w[t_i2] * (*snodes1).p_gridt[t_hor][i_ph];          // lower bound on bond / mortgage
+					b_min =  - max_ltv*(*snodes1).ten_w[t_i2] * (*snodes1).p_gridt[t_hor][i_ph];          // lower bound on bond / mortgage
 					beg_equity = min_dpmt * (*snodes1).ten_w[t_i2] * (*snodes1).p_gridt[t_hor][i_ph];
-				    mpmt = ( rb + mort_spread - 1.0 ) * (*snodes1).ten_w[t_i2] * (*snodes1).p_gridt[t_hor][i_ph];
+				    //mpmt = ( rb + mort_spread - 1.0 ) * (*snodes1).ten_w[t_i2] * (*snodes1).p_gridt[t_hor][i_ph];
+					mpmt = 0.0;
+					b_min2 = -max_lti * (*snodes1).yi_gridt[t_hor][i_yi] / (rb + mort_spread - 1.0);
+					b_min = max(b_min, b_min2);
 				}
 
 				// load previous w_i policy as a benchmark
