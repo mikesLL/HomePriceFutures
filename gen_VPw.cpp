@@ -6,7 +6,7 @@
 
 gen_res gen_VPw(void *snodes_in, void *vf1_in, void *vf2_in,
 	double coh, vector <double> x_w_lag,
-	double b_min, double beg_equity) {
+	double b_min, double beg_equity, double mpmt) {
 
 	snodes *snodes1 = (snodes *)snodes_in;
 	vfn * vf1 = (vfn *)vf1_in;
@@ -56,8 +56,13 @@ gen_res gen_VPw(void *snodes_in, void *vf1_in, void *vf2_in,
 
 	// current cash on hand; wealth and income only
 	double cohQ = (*vf1).w_grid[(*vf2).w_i1] + (*snodes1).yi_gridt[t_hor][i_yi];
+	//double foo = 
 
 	if ( cohQ  < beg_equity ) {
+		opt_flag = 0;
+	}
+
+	if ( (*snodes1).yi_gridt[t_hor][i_yi]*max_lti <= mpmt ) {
 		opt_flag = 0;
 	}
 

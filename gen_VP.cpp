@@ -48,7 +48,7 @@ void gen_VP(void *snodes_in, void *VFN_3d_1, void *VFN_3d_2 ){
 	int i_s;
 	int t_hor = (*snodes1).t_hor;
 
-	double coh, w_adj, v_adj, v_i_floor, v0_opt, v0, beg_equity;
+	double coh, w_adj, v_adj, v_i_floor, v0_opt, v0, beg_equity, mpmt;
 	double v1;
 	double v_lag_w; // value function guess from previous wealth level
 	double v_lag_t; // value function guess from previous tenure computation
@@ -88,10 +88,12 @@ void gen_VP(void *snodes_in, void *VFN_3d_1, void *VFN_3d_2 ){
 				if (t_i2 == 0) {
 					b_min = b_min_unsec;
 					beg_equity = -1.0e6;
+					mpmt = 0.0;
 				}
 				else {
 					b_min = (double) - max_ltv*(*snodes1).ten_w[t_i2] * (*snodes1).p_gridt[t_hor][i_ph];          // lower bound on bond / mortgage
 					beg_equity = min_dpmt * (*snodes1).ten_w[t_i2] * (*snodes1).p_gridt[t_hor][i_ph];
+				    mpmt = ( rb + mort_spread - 1.0 ) * (*snodes1).ten_w[t_i2] * (*snodes1).p_gridt[t_hor][i_ph];
 				}
 
 				// load previous w_i policy as a benchmark
@@ -119,7 +121,7 @@ void gen_VP(void *snodes_in, void *VFN_3d_1, void *VFN_3d_2 ){
 				(*rr2).w_i1 = w_i;                      
 				(*rr2).t_i2 = t_i2; //  t_i2 is a choice variable, so adding it to fn pointer 
 
-				res1 = gen_VPw( snodes1, rr1, rr2, coh, x_guess, b_min, beg_equity);                               // pass problem into gen_V1_w
+				res1 = gen_VPw( snodes1, rr1, rr2, coh, x_guess, b_min, beg_equity, mpmt);                               // pass problem into gen_V1_w
 				v1 = res1.v_opt;   // guess for the current vfn given current t_i2
 				x1 = res1.x_opt;    // guess for current policy given current t_i2
 
@@ -178,6 +180,7 @@ void gen_VP(void *snodes_in, void *VFN_3d_1, void *VFN_3d_2 ){
       
 				coh = (*rr1).w_grid[w_i] + y_atax*(*snodes1).yi_gridt[t_hor][i_yi] - (*snodes1).ten_w[t_i] * maint_mult * (*snodes1).p_gridt[t_hor][i_ph];       // subtract housing wealth from cash on hand  			
 				
+				mpmt = 0.0;
 				beg_equity = -1.0e6;
 
 				(*rr2).i_s1 = i_s;
@@ -185,7 +188,7 @@ void gen_VP(void *snodes_in, void *VFN_3d_1, void *VFN_3d_2 ){
 				(*rr2).w_i1 = w_i;
 				(*rr2).t_i2 = t_i2;                                                  // impose t_i2 = t_i    	      
 
-				res1 = gen_VPw(snodes1, rr1, rr2, coh, x_lag_w, b_min, beg_equity);                  // solve optimization problem
+				res1 = gen_VPw(snodes1, rr1, rr2, coh, x_lag_w, b_min, beg_equity, mpmt);                  // solve optimization problem
 				v1 = res1.v_opt;  // guess for current solution: vfn
 				x1 = res1.x_opt;  // guess for current policy
 

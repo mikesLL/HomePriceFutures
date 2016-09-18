@@ -103,7 +103,8 @@ const double min_dpmt =  .2;    //0.2;                     // minimum down payme
 const double max_ltv = 0.80; // .95;  0.8;                        // max loan to value
 
 // mortgage risk criteria
-const double mort_spread = .02;                       // mortgage spread above risk-free rate
+const double max_lti = 0.3;
+const double mort_spread = .025;                       // mortgage spread above risk-free rate
 const double pmi_dpmt = .20;                          // if down payment below this amount, add to mortgage spread
 const double pmi_prem = 0.01;                         // pmi premium
 const double credit_prem = .18;                       // unsecured credit apr
