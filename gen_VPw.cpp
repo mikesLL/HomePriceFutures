@@ -15,26 +15,48 @@ gen_res gen_VPw(void *snodes_in, void *vf1_in, void *vf2_in,
 	int opt_flag = 1;
 	int valid_flag = 1;
 
-	vector<double> x_guess;
+	double coh_diff = 0.0, coh_old = 0.0;
+
+	vector<double> x_guess, x_guess_prop;
 	vector<double> x0_default = { c_fs, 0.0, 0.0, 0.0, 0.0 };
 	//double v0_default = 1.0 / (1.0 - beta)*ufn(x0_default[0], hu_ten_def, pref);
 	double v0_default = -1.0e6;
-	double v_guess;
+	double v_guess, v_guess_prop, v_w_lag;
+
 
 	ufnEV2 ufnEV21;
 	ufnEV21.enter_data(snodes1, vf2);
 
+	coh_old = x_w_lag[0] + x_w_lag[1] + x_w_lag[2] + x_w_lag[3] + x_w_lag[4]; 
+	coh_diff = coh - coh_old;
+
+	x_guess_prop = x_w_lag; 
+	x_guess_prop[2] = max( (1.0 + coh_diff / coh_old) * (x_w_lag[2] - b_min) + b_min, b_min);
+	x_guess_prop[3] = (1.0 + coh_diff / coh_old) * x_w_lag[3];
+	x_guess_prop[4] = (1.0 + coh_diff / coh_old) * x_w_lag[4];
+	x_guess_prop[0] = coh - x_guess_prop[1] - x_guess_prop[2] - x_guess_prop[3] - x_guess_prop[4] ;
+	v_guess_prop = ufnEV21.eval(x_guess_prop);
+
 	x_w_lag[1] = max(x_w_lag[1], b_min);
 	x_w_lag[0] = coh - x_w_lag[1] - x_w_lag[2] - x_w_lag[3] - x_w_lag[4];
+	v_w_lag = ufnEV21.eval(x_w_lag);
 
+	// default case
+	x_guess = x0_default;
+	v_guess = v0_default;
+
+	// try lag, modified to b_min, coh
 	if (x_w_lag[0] > 0.0) {
 		x_guess = x_w_lag;
-		v_guess = ufnEV21.eval(x_guess);
-
+		v_guess = v_w_lag;
 	}
-	else {
-		x_guess = x0_default;
-		v_guess = v0_default; 
+
+	// try proportional increase
+	if (x_guess_prop[0] > 0.0) {
+		if (v_guess_prop > v_w_lag) {
+			x_guess = x_guess_prop;
+			v_guess = v_guess_prop;
+		}
 	}
 
 	if ((coh - b_min) <= 0.0) {
