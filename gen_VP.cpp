@@ -137,17 +137,19 @@ void gen_VP(void *snodes_in, void *VFN_3d_1, void *VFN_3d_2 ){
 					(*rr1).v_move[w_i] = v1;
 				}
 
-				// store the just retrieved x_opt as a guess for the next period
-				x_lag_wt[t_i2] = x1;
+				//if (res1.valid_flag >=  1) {
+					// store the just retrieved x_opt as a guess for the next period
+					x_lag_wt[t_i2] = x1;
 
-				if ( (v1 > v_lag_t) || (t_i2 == 0) ) {                      // current result is better than value given previous tenure
-						
+					if ((v1 > v_lag_t) || (t_i2 == 0)) {                      // current result is better than value given previous tenure
+
 						(*rr1).set_pol_ten_v(t_i, i_s, w_i, x1, t_i2, v1);  // set x, t_i2, v0 in
 
 						if (res1.valid_flag == 0) {
 							(*rr1).set_pol_ten_v(t_i, i_s, w_i, x1, 0, v1);
-						}		
-				}
+						}
+					}
+				//}
 			}
 		}
 		(*rr1).interp_vw3(t_i, i_s);  // clean and interpolate grid			
