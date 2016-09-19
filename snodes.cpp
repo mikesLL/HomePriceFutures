@@ -11,6 +11,7 @@ snodes::snodes(int age0_in, int T_max_in, int city_id_in) {
 	p_gridt = vector<vector<double>>(T_max + 1, vector<double>(n_ph, 0.0));
 	rent_gridt = vector<vector<double>>(T_max + 1, vector<double>(n_rent, 0.0));
 	yi_gridt = vector<vector<double>>(T_max + 1, vector<double>(n_yi, 0.0));
+	yi_gridt_btax = vector<vector<double>>(T_max + 1, vector<double>(n_yi, 0.0));
 
 	// initialize gammat state-state transition matrix
 	vector<vector<vector<double>>> zeros_T_NS_NS(T_max + 1, vector<vector<double>>(n_s, vector<double>(n_s, 0.0)));
@@ -86,6 +87,8 @@ void snodes::adj_tax() {
 
 	for (i_t2 = 0; i_t2 < (T_max + 1); i_t2++) {
 		for (i_y2 = 0; i_y2 < n_yi; i_y2++){ 
+
+			yi_gridt_btax[i_t2][i_y2] = yi_gridt[i_t2][i_y2];
 			
 			y_btax2 = yi_gridt[i_t2][i_y2];           // load pre-tax income
 			y_tax_bill = 0.0;

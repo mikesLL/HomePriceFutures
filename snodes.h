@@ -22,7 +22,7 @@ public:
 	int t_hor;
 	int s_ph_midry[n_ph];                               // states where home prices index from low to high, but rent and yi are always median
 
-	vector<vector<double>> p_gridt, rent_gridt, yi_gridt;
+	vector<vector<double>> p_gridt, rent_gridt, yi_gridt, yi_gridt_btax;
 
 	vector<vector<vector<double>>> gammat;              // state transition matrix for each time period
 

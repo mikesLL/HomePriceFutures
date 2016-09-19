@@ -95,7 +95,7 @@ void gen_VP(void *snodes_in, void *VFN_3d_1, void *VFN_3d_2 ){
 					beg_equity = min_dpmt * (*snodes1).ten_w[t_i2] * (*snodes1).p_gridt[t_hor][i_ph];
 				    //mpmt = ( rb + mort_spread - 1.0 ) * (*snodes1).ten_w[t_i2] * (*snodes1).p_gridt[t_hor][i_ph];
 					mpmt = 0.0;
-					b_min2 = -max_lti * (*snodes1).yi_gridt[t_hor][i_yi] / (rb + mort_spread - 1.0);
+					b_min2 = -max_lti * (*snodes1).yi_gridt_btax[t_hor][i_yi] / (rb + mort_spread - 1.0);
 
 					//if ( b_min2 > b_min) {
 					//	cout << "gen_vp.cpp: here " << endl;
@@ -179,7 +179,7 @@ void gen_VP(void *snodes_in, void *VFN_3d_1, void *VFN_3d_2 ){
 				}
 				else {
 					b_min = - max_ltv*(*snodes1).ten_w[t_i2] * (*snodes1).p_gridt[t_hor][i_ph];
-					b_min2 = -max_lti * (*snodes1).yi_gridt[t_hor][i_yi] / (rb + mort_spread - 1.0);
+					b_min2 = -max_lti * (*snodes1).yi_gridt_btax[t_hor][i_yi] / (rb + mort_spread - 1.0);
 					b_min = max(b_min, b_min2);
 				}
 

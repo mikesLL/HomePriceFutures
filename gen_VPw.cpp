@@ -18,7 +18,7 @@ gen_res gen_VPw(void *snodes_in, void *vf1_in, void *vf2_in,
 	vector<double> x_guess;
 	vector<double> x0_default = { c_fs, 0.0, 0.0, 0.0, 0.0 };
 	//double v0_default = 1.0 / (1.0 - beta)*ufn(x0_default[0], hu_ten_def, pref);
-	double v0_default = -1.0e6;
+	double v0_default = -1.0e6 - 1.0e6*pow( (coh - b_min), 2.0 );
 	double v_guess;
 
 	ufnEV2 ufnEV21;
