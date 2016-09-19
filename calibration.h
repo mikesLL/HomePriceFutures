@@ -9,7 +9,7 @@
 const int city_begin = 2;
 const int city_end = 2;
 
-const int t_begin = 11;                   // begin in year 5 from .csv
+const int t_begin = 5;                   // begin in year 5 from .csv
 const int t_end = 11;                    // = 11 to cycle through all time periods;
 
 const int age_begin_store[] = { 60, 45, 30 };
