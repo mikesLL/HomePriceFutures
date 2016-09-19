@@ -31,7 +31,8 @@ gen_res gen_VPw(void *snodes_in, void *vf1_in, void *vf2_in,
 	coh_diff = coh - coh_old;
 
 	x_guess_prop = x_w_lag; 
-	x_guess_prop[2] = max( (1.0 + coh_diff / coh_old) * (x_w_lag[2] - b_min) + b_min, b_min);
+	x_guess_prop[1] = max( (1.0 + coh_diff / coh_old) * (x_w_lag[1] - b_min) + b_min, b_min);
+	x_guess_prop[2] = (1.0 + coh_diff / coh_old) * x_w_lag[2];
 	x_guess_prop[3] = (1.0 + coh_diff / coh_old) * x_w_lag[3];
 	x_guess_prop[4] = (1.0 + coh_diff / coh_old) * x_w_lag[4];
 	x_guess_prop[0] = coh - x_guess_prop[1] - x_guess_prop[2] - x_guess_prop[3] - x_guess_prop[4] ;
