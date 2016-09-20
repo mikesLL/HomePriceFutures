@@ -19,7 +19,7 @@ gen_res gen_VPw(void *snodes_in, void *vf1_in, void *vf2_in,
 
 	vector<double> x_guess, x_guess_prop;
 	vector<double> x0_default = { c_fs, 0.0, 0.0, 0.0, 0.0 };
-	double t_left = (double)(*snodes1).t_hor - double(age_max); 
+	double t_left = double(age_max) - ((*snodes1).age0 + (double)(*snodes1).t_hor);
 	double v0_default = ( 1.0 - pow( beta, 20.0 + t_left) ) / (1.0 - beta)*ufn(x0_default[0], hu_ten_def, pref);
 	//double v0_default = 1.0 / (1.0 - beta)*ufn(x0_default[0], hu_ten_def, pref);
 	//double v0_default =  -1.0e6;
