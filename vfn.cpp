@@ -218,10 +218,14 @@ void vfn::set_terminal(double phr_in) {
 				//coh_perm = max( 0.0, c_fs ); 
 			
 				V_perm = ( 1.0 - pow( beta, 20.0) ) / (1.0 - beta) * ufn(coh_perm, (*snodes1).hu_ten[0], pref);
+
+				if (coh_perm <= 0.0) {
+					V_perm = -1.0e6 - 1.0e6*pow(coh_perm, 2.0);
+				}
 				//V_perm = 1.0 / (1.0 - beta) * ufn(coh_perm, (*snodes1).hu_ten[0], pref);
 				
-				c_fs = 0.01;
-				V_fs = -1.0e6 +  0.0*( 1.0 - pow( beta, 20.0) ) / (1.0 - beta) * ufn(c_fs, hu_ten_def , pref);
+				//c_fs = 0.01;
+				//V_fs = -1.0e6 +  0.0*( 1.0 - pow( beta, 20.0) ) / (1.0 - beta) * ufn(c_fs, hu_ten_def , pref);
 				
 				// evaluate bequest value
 				vw3_grid[i_t][i_s][i_w] = b_motive*max(V_perm, V_fs);

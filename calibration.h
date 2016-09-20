@@ -39,7 +39,7 @@ const double y_atax = 1.0 - y_tax;
 const double y_replace = 0.9388;            // From Cocco, Gomes, Maenhout (2005)
 
 const double w_max = 40.0; //16.05;         // maximum wealth (on grid) (100's thousands)             
-const double w_min = 0.0; // 0.05;          // minimum wealth (on grid) (100's thousands) 
+const double w_min = -2.0; // 0.0; // 0.05;          // minimum wealth (on grid) (100's thousands) 
 //const double w_max = 40.0; //16.05;         // maximum wealth (on grid) (100's thousands)             
 //const double w_min = -2.0; // 0.05;          // minimum wealth (on grid) (100's thousands) 
 
