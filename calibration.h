@@ -9,14 +9,14 @@
 const int city_begin = 2;
 const int city_end = 2;
 
-const int t_begin = 11;                   // begin in year 5 from .csv
+const int t_begin = 5;                   // begin in year 5 from .csv
 const int t_end = 11;                    // = 11 to cycle through all time periods;
 
 const int age_begin_store[] = { 60, 45, 30 };
 const int n_age = 1;                            // 3;
 
 const int age_max = 65;                  // age at which household retires / annuitizes wealth  
-const int w_n = 200;  //200                   // Grid points in wealth; set = 200 for fast computation, = 2000 for precision
+const int w_n = 1000;  //200                   // Grid points in wealth; set = 200 for fast computation, = 2000 for precision
 
 const double csfLev = 1.0 * ( 1.0 / 0.055 );       // Case-Shiller Index Future margin-implied leverage; (notional value contract)/(median home price)*(1/margin)
 const int csfLevi = int(floor(csfLev));   // Floor for identification
@@ -39,7 +39,7 @@ const double y_atax = 1.0 - y_tax;
 const double y_replace = 0.9388;            // From Cocco, Gomes, Maenhout (2005)
 
 const double w_max = 40.0; //16.05;         // maximum wealth (on grid) (100's thousands)             
-const double w_min = -2.0; // 0.0; // 0.05;          // minimum wealth (on grid) (100's thousands) 
+const double w_min = -1.0; // 0.0; // 0.05;          // minimum wealth (on grid) (100's thousands) 
 //const double w_max = 40.0; //16.05;         // maximum wealth (on grid) (100's thousands)             
 //const double w_min = -2.0; // 0.05;          // minimum wealth (on grid) (100's thousands) 
 
@@ -71,7 +71,7 @@ const double hu_ten_store[N_cities][t_n] =
 { 1.303, 1.303, 1.8,  1.0*2.764 } };
 */
 
-
+/*
 const double hu_ten_store[N_cities][t_n] =
 { { 1.2, 1.2, 1.6, 2.0, 2.4, 2.8, 3.2, 3.6 }, 
 { 1.2, 1.2, 1.6, 2.0, 2.4, 2.8, 3.2, 3.6 },
@@ -81,6 +81,18 @@ const double hu_ten_store[N_cities][t_n] =
 { 1.2, 1.2, 1.6, 2.0, 2.4, 2.8, 3.2, 3.6 },
 { 1.2, 1.2, 1.6, 2.0, 2.4, 2.8, 3.2, 3.6 },
 { 1.2, 1.2, 1.6, 2.0, 2.4, 2.8, 3.2, 3.6 } };
+*/
+
+const double hu_ten_store[N_cities][t_n] =
+{ { 1.217, 1.217, 1.5, 1.8, 2.1, 2.4, 2.7, 3.0 },
+{ 1.374, 1.374, 1.62, 1.9, 2.2, 2.5, 2.8, 3.1 },
+{ 1.206, 1.206, 1.5, 1.8, 2.1, 2.4, 2.7, 3.0, },
+{ 1.492, 1.492, 1.8, 2.1, 2.4, 2.7, 3.0, 3.3}, 
+{ 1.409, 1.409, 1.8,  2.2, 2.6, 3.0, 3.4, 3.8 },
+{ 1.116, 1.116, 1.59, 2.0, 2.4, 2.8, 3.2, 3.6 },
+{ 1.18, 1.18, 1.5, 1.8, 2.1, 2.4, 2.7, 3.0},
+{ 1.303, 1.303, 1.8, 2.2, 2.6, 3.0, 3.4, 3.8} };
+
 
 
 /*
