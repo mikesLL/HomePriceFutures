@@ -83,7 +83,7 @@ const double hu_ten_store[N_cities][t_n] =
 { 1.2, 1.2, 1.6, 2.0, 2.4, 2.8, 3.2, 3.6 } };
 
 
-
+/*
 const double hu_ten_store[N_cities][t_n] =
 { {1.217, 1.217, 1.5, 1.0*2.352  },
 {1.374, 1.374, 1.62,  1.0*2.585 },
@@ -93,7 +93,7 @@ const double hu_ten_store[N_cities][t_n] =
 {1.116, 1.116, 1.59,  1.0*2.379 },
 {1.18, 1.18, 1.5,  1.0*2.459 },
 {1.303, 1.303, 1.8,  1.0*2.764 } };
-
+*/
 
 const double hu_ten_def =  .5;  // square footage in default case
 
