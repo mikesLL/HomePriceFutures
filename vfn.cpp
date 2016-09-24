@@ -38,6 +38,7 @@ void vfn::enter_data(void *snodes_in, double phr_in, int t_id_in, int t_num_in, 
 	lambda_grid = zeros_TN_NS_WN;         // value function interpolation parameters; ordered: tenure, state, wealth
 
 	v_move = zeros_WN;
+	vw3_grid_norm = zeros_WN;
 
 	// wealth grid
 	for (int w_i = 0; w_i < w_n; w_i++) {
@@ -124,6 +125,59 @@ eval_res vfn::eval_v(int i_t_in, int i_s_in, double w_in) {
 
 	return res1;
 }
+
+eval_res vfn::eval_v_norm( double w_in ) {
+	eval_res res1;                                       // v_out structure
+	int w_i_low;
+	double w_i_d;
+	double alpha1;
+	double lambda1;
+	double v_tlower;
+	double v_tupper;
+	double num1, den1, w_diff1, w_diff2;
+
+	if ((w_in >= w_min) && (w_in < w_max)) {
+		w_i_d = (double)(w_n - 1.0)*(w_in - w_min) / (w_max - w_min);    // map w_in to w_i
+		w_i_low = (int)floor(w_i_d);
+
+		w_diff2 = w_grid[1] - w_grid[0];
+
+		alpha1 = (w_in - w_grid[w_i_low]) / w_diff2;
+
+		v_tlower = vw3_grid_norm[w_i_low];
+
+
+		v_tupper = vw3_grid_norm[w_i_low + 1];
+
+		res1.v_out = v_tlower + alpha1 * (v_tupper - v_tlower);
+
+
+		if (res1.v_out != res1.v_out) {
+			res1.v_out = v_tlower;
+		}
+		res1.w_i_floor = w_i_low;
+		res1.v_i_floor = vw3_grid_norm[w_i_low];  // TODO: double check; this may be an issue when considering tenure changes
+	}
+	else {
+		if (w_in >= w_max) {
+			w_i_low = w_n - 1;
+			v_tlower = vw3_grid_norm[w_i_low];
+
+
+			res1.v_out = max(vw3_grid_norm[w_i_low], v_tlower);
+
+		}
+		else {
+			res1.v_out = vw3_grid_norm[0] - 1.0e6*pow(w_in - w_min, 2);
+			res1.w_i_floor = 0;
+			res1.v_i_floor = res1.v_out;
+		}
+	}
+
+
+	return res1;
+}
+
 
 // value function in the event agent moves to another area
 eval_res vfn::eval_v_move(int i_t_in, int i_s_in, double w_in, int t_left) {

@@ -9,7 +9,7 @@
 const int city_begin = 2;
 const int city_end = 2;
 
-const int t_begin = 5;                   // begin in year 5 from .csv
+const int t_begin = 11;                   // begin in year 5 from .csv
 const int t_end = 11;                    // = 11 to cycle through all time periods;
 
 const int age_begin_store[] = { 60, 45, 30 };
@@ -21,7 +21,7 @@ const int w_n = 200;  //200                   // Grid points in wealth; set = 20
 const double csfLev = 1.0 * ( 1.0 / 0.055 );       // Case-Shiller Index Future margin-implied leverage; (notional value contract)/(median home price)*(1/margin)
 const int csfLevi = int(floor(csfLev));   // Floor for identification
 
-const int t_n = 4;                        // possible tenure states
+const int t_n =  4;                        // possible tenure states
 const int pref = 1;                       // set pref = 0 for Cobb-Douglas, = 1 for CES
 const int N_control = 6;
 const int N_cities = 8;                    // number of cities
@@ -58,8 +58,32 @@ const double hu_med[N_cities] = { 1.5, 1.62, 1.5, 1.8, 1.8, 1.59, 1.5, 1.8 };
 // Home Sizes (square footage, thousands);  33-66-quintiles from AHS (2005) Data;
 // Assume the small house can also be rented
 
+/*
 const double hu_ten_store[N_cities][t_n] =
-{ {1.217, 1.217, 1.5, 1.0*2.352 },
+{ { 1.217, 1.217, 1.5, 1.9, 2.5, 2.8, 3.1, 3.6 },
+{ 1.217, 1.217, 1.5, 1.9, 2.5, 2.8, 3.1, 3.6 },
+{ 1.374, 1.374, 1.62,  1.0*2.585 },
+{ 1.206, 1.206, 1.5,  1.0*2.455 },
+{ 1.492, 1.492, 1.8,  1.0*2.826 },
+{ 1.409, 1.409, 1.8,  1.0*2.781 },
+{ 1.116, 1.116, 1.59,  1.0*2.379 },
+{ 1.18, 1.18, 1.5,  1.0*2.459 },
+{ 1.303, 1.303, 1.8,  1.0*2.764 } };
+*/
+
+const double hu_ten_store[N_cities][t_n] =
+{ { 1.517, 1.5, 1.5, 1.0*2.352 },
+{ 1.374, 1.5, 1.62,  1.0*2.585 },
+{ 1.206, 1.5, 1.5,  1.0*2.455 },
+{ 1.492, 1.5, 1.8,  1.0*2.826 },
+{ 1.409, 1.5, 1.8,  1.0*2.781 },
+{ 1.116, 1.5, 1.59,  1.0*2.379 },
+{ 1.18, 1.5, 1.5,  1.0*2.459 },
+{ 1.303, 1.5, 1.8,  1.0*2.764 } };
+
+/*
+const double hu_ten_store[N_cities][t_n] =
+{ {1.217, 1.217, 1.5, 1.0*2.352  },
 {1.374, 1.374, 1.62,  1.0*2.585 },
 { 1.206, 1.206, 1.5,  1.0*2.455 },
 {1.492, 1.492, 1.8,  1.0*2.826 },
@@ -67,6 +91,7 @@ const double hu_ten_store[N_cities][t_n] =
 {1.116, 1.116, 1.59,  1.0*2.379 },
 {1.18, 1.18, 1.5,  1.0*2.459 },
 {1.303, 1.303, 1.8,  1.0*2.764 } };
+*/
 
 const double hu_ten_def =  .5;  // square footage in default case
 
@@ -98,9 +123,9 @@ const double c_fs = .01;                             // Minimum baseline consump
 const double coh_fs = .05;                           // Cash on hand (Gov Asssistance: Non-durable Consumption + Housing)
 
 // down-payment criteria
-const double delta = .2;                            // Minimum down payment
-const double min_dpmt =  .2;    //0.2;                     // minimum down payment
-const double max_ltv = 0.80; // .95;  0.8;                        // max loan to value
+const double delta = .1;                            // Minimum down payment
+const double min_dpmt =  .1;    //0.2;                     // minimum down payment
+const double max_ltv = 0.10; // .95;  0.8;                        // max loan to value
 
 // mortgage risk criteria
 const double max_lti = 0.3;

@@ -59,6 +59,14 @@ void gen_VP(void *snodes_in, void *VFN_3d_1, void *VFN_3d_2 ){
 	vector<double> x1(5, 0.0);
 
 	vector<double> x_guess(5, 0.0);
+
+	vector<double> x_ti1(5, 0.0);       // policy: owns smallest home
+	double v_ti1 = -1.0e6;              // value: owns smallest home
+	//x1 = x_ti1 * 1.2;
+	//v1 = v_ti1 * (1.2);
+
+	double h_mult = 0.0;
+	double bond_est = 0.0;
 	
 	vector<vector<double>> x_lag_wt(t_n, vector<double> (5, 0.0) );
 
@@ -67,6 +75,7 @@ void gen_VP(void *snodes_in, void *VFN_3d_1, void *VFN_3d_2 ){
 	}
 
 	t_i = 0; // consider t_i = 0 first; case: begin with renter 
+	int res1_flag = 1;
 	int t_i2_lag_w = 0;
 
 	for (i_s = 0; i_s < n_s; i_s++) {
@@ -79,7 +88,15 @@ void gen_VP(void *snodes_in, void *VFN_3d_1, void *VFN_3d_2 ){
 			 << "  i_ph = " << i_ph << "  begin renter problem" << endl;
 
 		for (w_i = 0; w_i < w_n; w_i++) {
-			for (t_i2 = 0; t_i2 < t_n; t_i2++) {
+
+			//for (t_i2 = 0; t_i2 < t_n; t_i2++) {
+			for (t_i2 = 0; t_i2 <= t_n; t_i2 ++){
+				if (t_i2 == t_n) {
+					t_i2 = 0;
+				}
+					
+				res1_flag = 1;
+			//for (t_i2 = 0; t_i2 <= 1; t_i2++) {
 
 				if (w_i % 100 == 0) {
 					cout << "w_i = " << w_i << endl;
@@ -116,20 +133,69 @@ void gen_VP(void *snodes_in, void *VFN_3d_1, void *VFN_3d_2 ){
 				x_guess = x_lag_wt[t_i2];
 				
 				// theta1 represents cash adjustment for rent, housing size				
-				theta1 = { (*snodes1).rent_gridt[t_hor][i_rent]* (*snodes1).rent_adj,
-					(*snodes1).ten_w[1] * (*snodes1).p_gridt[t_hor][i_ph],
-					(*snodes1).ten_w[2] * (*snodes1).p_gridt[t_hor][i_ph], 
-					(*snodes1).ten_w[3] * (*snodes1).p_gridt[t_hor][i_ph],
-				};
+				//theta1 = { (*snodes1).rent_gridt[t_hor][i_rent]* (*snodes1).rent_adj,
+				//	(*snodes1).ten_w[1] * (*snodes1).p_gridt[t_hor][i_ph],
+				//	(*snodes1).ten_w[2] * (*snodes1).p_gridt[t_hor][i_ph], 
+				//	(*snodes1).ten_w[3] * (*snodes1).p_gridt[t_hor][i_ph],
+				//};
 						
-				coh = (*rr1).w_grid[w_i] + y_atax*(*snodes1).yi_gridt[t_hor][i_yi] - theta1[t_i2];        // coh: cash on hand = initial wealth + income - rent or transaction costs      
+				coh = (*rr1).w_grid[w_i] + y_atax*(*snodes1).yi_gridt[t_hor][i_yi] -
+					(*snodes1).ten_w[t_i2] * (*snodes1).p_gridt[t_hor][i_ph];
+
+				if (t_i2 == 0) {
+					coh = coh - (*snodes1).rent_gridt[t_hor][i_rent] * (*snodes1).rent_adj;
+				}
+				
+				//coh = (*rr1).w_grid[w_i] + y_atax*(*snodes1).yi_gridt[t_hor][i_yi] - theta1[t_i2];        // coh: cash on hand = initial wealth + income - rent or transaction costs      
 
 				(*rr2).i_s1 = i_s;  // pass in current state to next-period value function
 				(*rr2).t_i1 = t_i;
 				(*rr2).w_i1 = w_i;                      
 				(*rr2).t_i2 = t_i2; //  t_i2 is a choice variable, so adding it to fn pointer 
 
-				res1 = gen_VPw( snodes1, rr1, rr2, coh, x_guess, b_min, beg_equity, mpmt);                               // pass problem into gen_V1_w
+				// 
+				// if ten_i2 > 1
+				// check if y cosntraint binds
+				// if yes, done
+				// else, continue
+
+				/*
+				if (t_i2 > 1) {
+					h_mult = (*snodes1).ten_w[t_i2] / (*snodes1).ten_w[1];
+					
+					//coh_mult = coh * (1.0 / (*snodes1).ten_w[1]);
+					bond_est = x_ti1[1] * (1.0 / (*snodes1).ten_w[1]);
+
+					bond_est = h_mult * x_ti1[1];
+					bond_est = h_mult / w_mult * x_ti1[1];
+					
+
+					if (bond_est > b_min) {				
+						x1 = x_ti1;
+						x1[0] = x_ti1[0] * h_mult;
+						x1[1] = x_ti1[1] * h_mult;
+						x1[2] = x_ti1[2] * h_mult;
+						x1[3] = x_ti1[3] * h_mult;
+						x1[4] = x_ti1[4] * h_mult;
+
+						v1 = v_ti1 * pow(h_mult, 1.0 - rho);
+						res1_flag = 0;
+					}
+				}
+				*/
+				// store: value associated with t_i = 1
+				//if (ten_i2 <= 1) : do all this
+
+				if (res1_flag) {
+					res1 = gen_VPw(snodes1, rr1, rr2, coh, x_guess, b_min, beg_equity, mpmt);                               // pass problem into gen_V1_w
+				}
+
+				// if t_i = 1: store as double v_ti1
+				if (t_i2 == 1) {
+					v_ti1 = res1.v_opt;
+					x_ti1 = res1.x_opt;
+				}
+
 				v1 = res1.v_opt;   // guess for the current vfn given current t_i2
 				x1 = res1.x_opt;    // guess for current policy given current t_i2
 
@@ -147,6 +213,8 @@ void gen_VP(void *snodes_in, void *VFN_3d_1, void *VFN_3d_2 ){
 					}
 				}
 			}
+
+			
 		}
 		(*rr1).interp_vw3(t_i, i_s);  // clean and interpolate grid			
 

@@ -39,6 +39,7 @@ public:
 	vector<vector<vector<int>>> xt_grid;
 	vector<vector<vector<double>>> x1_grid, x2_grid, x3_grid, x4_grid, x5_grid; // control variables
 	vector<vector<vector<double>>> vw3_grid;                                    // value function
+	vector<double> vw3_grid_norm;                               // value function (normalized)
 	vector<vector<vector<double>>> lambda_grid;                                 // lambda interpolation parameters
 
 	vector<vector<vector<double>>> vw3_d_grid;                                 // first derivative
@@ -52,6 +53,7 @@ public:
 	
 
 	eval_res eval_v(int i_t_in, int i_s_in, double w_in);
+	eval_res eval_v_norm(double w_in);
 	eval_res eval_v_move(int i_t_in, int i_s_in, double w_in, int t_left);
 
 
