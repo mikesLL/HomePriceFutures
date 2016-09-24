@@ -90,12 +90,12 @@ void gen_VP(void *snodes_in, void *VFN_3d_1, void *VFN_3d_2 ){
 		for (w_i = 0; w_i < w_n; w_i++) {
 
 			//for (t_i2 = 0; t_i2 < t_n; t_i2++) {
-			for (t_i2 = 0; t_i2 <= t_n; t_i2 ++){
+			for (t_i2 = 0; t_i2 < t_n; t_i2 ++){
 				cout << "gen_vp: t_i2 = " << t_i2 << endl;
 
-				if (t_i2 == t_n) {
-					t_i2 = 0;
-				}
+				//if (t_i2 == t_n) {
+				//	t_i2 = 0;
+				//}
 					
 				res1_flag = 1;
 			//for (t_i2 = 0; t_i2 <= 1; t_i2++) {
