@@ -21,7 +21,7 @@ const int w_n = 200;  //200                   // Grid points in wealth; set = 20
 const double csfLev = 1.0 * ( 1.0 / 0.055 );       // Case-Shiller Index Future margin-implied leverage; (notional value contract)/(median home price)*(1/margin)
 const int csfLevi = int(floor(csfLev));   // Floor for identification
 
-const int t_n = 8; // 4;                        // possible tenure states
+const int t_n = 4; // 4;                        // possible tenure states
 const int pref = 1;                       // set pref = 0 for Cobb-Douglas, = 1 for CES
 const int N_control = 6;
 const int N_cities = 8;                    // number of cities
@@ -71,6 +71,7 @@ const double hu_ten_store[N_cities][t_n] =
 { 1.303, 1.303, 1.8,  1.0*2.764 } };
 */
 
+/*
 const double hu_ten_store[N_cities][t_n] =
 { { 1.2, 1.2, 1.6, 2.0, 2.4, 2.8, 3.2, 3.6 }, 
 { 1.2, 1.2, 1.6, 2.0, 2.4, 2.8, 3.2, 3.6 },
@@ -80,8 +81,9 @@ const double hu_ten_store[N_cities][t_n] =
 { 1.2, 1.2, 1.6, 2.0, 2.4, 2.8, 3.2, 3.6 },
 { 1.2, 1.2, 1.6, 2.0, 2.4, 2.8, 3.2, 3.6 },
 { 1.2, 1.2, 1.6, 2.0, 2.4, 2.8, 3.2, 3.6 } };
+*/
 
-/*
+
 const double hu_ten_store[N_cities][t_n] =
 { {1.217, 1.217, 1.5, 1.0*2.352  },
 {1.374, 1.374, 1.62,  1.0*2.585 },
@@ -91,7 +93,7 @@ const double hu_ten_store[N_cities][t_n] =
 {1.116, 1.116, 1.59,  1.0*2.379 },
 {1.18, 1.18, 1.5,  1.0*2.459 },
 {1.303, 1.303, 1.8,  1.0*2.764 } };
-*/
+
 
 const double hu_ten_def =  .5;  // square footage in default case
 
