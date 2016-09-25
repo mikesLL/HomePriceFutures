@@ -21,7 +21,7 @@ const int w_n = 1000;  //200                   // Grid points in wealth; set = 2
 const double csfLev = 1.0 * ( 1.0 / 0.055 );       // Case-Shiller Index Future margin-implied leverage; (notional value contract)/(median home price)*(1/margin)
 const int csfLevi = int(floor(csfLev));   // Floor for identification
 
-const int t_n = 8; // 4;                        // possible tenure states
+const int t_n = 5; // 4;                        // possible tenure states
 const int pref = 1;                       // set pref = 0 for Cobb-Douglas, = 1 for CES
 const int N_control = 6;
 const int N_cities = 8;                    // number of cities
@@ -71,18 +71,18 @@ const double hu_ten_store[N_cities][t_n] =
 { 1.303, 1.303, 1.8,  1.0*2.764 } };
 */
 
-/*
-const double hu_ten_store[N_cities][t_n] =
-{ { 1.2, 1.2, 1.6, 2.0, 2.4, 2.8, 3.2, 3.6 }, 
-{ 1.2, 1.2, 1.6, 2.0, 2.4, 2.8, 3.2, 3.6 },
-{ 1.2, 1.2, 1.6, 2.0, 2.4, 2.8, 3.2, 3.6 },
-{ 1.2, 1.2, 1.6, 2.0, 2.4, 2.8, 3.2, 3.6 },
-{ 1.2, 1.2, 1.6, 2.0, 2.4, 2.8, 3.2, 3.6 },
-{ 1.2, 1.2, 1.6, 2.0, 2.4, 2.8, 3.2, 3.6 },
-{ 1.2, 1.2, 1.6, 2.0, 2.4, 2.8, 3.2, 3.6 },
-{ 1.2, 1.2, 1.6, 2.0, 2.4, 2.8, 3.2, 3.6 } };
-*/
 
+const double hu_ten_store[N_cities][t_n] =
+{ { 1.35, 1.35, 1.7, 2.18, 3.0 }, 
+{ 1.35, 1.35, 1.7, 2.18, 3.0 },    // sf updated
+{ 1.2, 1.2, 1.6, 2.0, 3.0 },       // lax updated
+{ 1.2, 1.2, 1.6, 2.0, 2.4 },
+{ 1.2, 1.2, 1.6, 2.0, 2.4 },
+{ 1.2, 1.2, 1.6, 2.2, 2.755 },    // denver updated
+{ 1.2, 1.2, 1.6, 2.0, 2.4 },
+{ 1.2, 1.2, 1.6, 2.0, 2.4 } };
+
+/*
 const double hu_ten_store[N_cities][t_n] =
 { { 1.217, 1.217, 1.5, 1.8, 2.1, 2.4, 2.7, 3.0 },
 { 1.374, 1.374, 1.62, 1.9, 2.2, 2.5, 2.8, 3.1 },
@@ -92,7 +92,7 @@ const double hu_ten_store[N_cities][t_n] =
 { 1.116, 1.116, 1.59, 2.0, 2.4, 2.8, 3.2, 3.6 },
 { 1.18, 1.18, 1.5, 1.8, 2.1, 2.4, 2.7, 3.0},
 { 1.303, 1.303, 1.8, 2.2, 2.6, 3.0, 3.4, 3.8} };
-
+*/
 
 
 /*
@@ -137,9 +137,9 @@ const double c_fs = .01;                             // Minimum baseline consump
 const double coh_fs = .05;                           // Cash on hand (Gov Asssistance: Non-durable Consumption + Housing)
 
 // down-payment criteria
-const double delta = .1;                            // Minimum down payment
-const double min_dpmt =  .1;    //0.2;                     // minimum down payment
-const double max_ltv = 0.10; // .95;  0.8;                        // max loan to value
+const double delta = .05;                            // Minimum down payment
+const double min_dpmt =  .05;    //0.2;                     // minimum down payment
+const double max_ltv = 0.95; // .95;  0.8;                        // max loan to value
 
 // mortgage risk criteria
 const double max_lti = 0.3;
