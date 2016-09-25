@@ -53,7 +53,7 @@ const double phi = 0.06;                  // moving / transaction costs in event
 
 // Housing-service related parameters
 // median square footage by city
-const double hu_med[N_cities] = { 1.5, 1.62, 1.5, 1.8, 1.8, 1.59, 1.5, 1.8 }; 
+const double hu_med[N_cities] = { 1.7, 1.7, 1.6, 1.8, 1.8, 1.6, 1.5, 1.8 };   // san fran updated
 
 // Home Sizes (square footage, thousands);  33-66-quintiles from AHS (2005) Data;
 // Assume the small house can also be rented
