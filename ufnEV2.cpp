@@ -99,7 +99,8 @@ double ufnEV2::eval( vector<double> x ){
 			// cycle across futures returns
 			for (i_csf_basis = 0; i_csf_basis < n_csf_basis; i_csf_basis++) {
 				w2 = rb_eff*x[1] + exp(retxv[i_x2])*x[2] +
-					exp(csf_basis[i_csf_basis]) * csfLev * csf_net2[i_s2] * (x[3] - x[4]) +
+					//exp(csf_basis[i_csf_basis]) * 
+					csfLev * csf_net2[i_s2] * (x[3] - x[4]) +
 					x[3] + x[4] + (*snodes1).ten_w[t_i2] * (*snodes1).p_gridt[t_hor + 1][i_ph2];
 
 				res1 = eval_v(i_s2, w2);    // evaluate value function in state
