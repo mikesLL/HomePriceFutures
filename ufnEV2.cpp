@@ -129,6 +129,11 @@ double ufnEV2::eval( vector<double> x ){
 
 	}
 
+	if (x[0] != x[0]) {
+		Evw_2 = -1.0e6;
+	}
+		
+
 	return uc + beta*Evw_2;
 }
 
