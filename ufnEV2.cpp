@@ -115,9 +115,9 @@ double ufnEV2::eval( vector<double> x ){
 				//vw2 = (1.0 - p_move) * res1.v_out;
 
 				res1_move = (*vf2).eval_v_def(i_s2, w2); 
-				cout << res1_move.v_out << endl; 
-				vw2 = res1.v_out;
-				//vw2 = (1.0 - p_move)* res1.v_out + p_move * res1_move.v_out; 
+				//cout << res1_move.v_out << endl; 
+				//vw2 = res1.v_out;
+				vw2 = (1.0 - p_move)* res1.v_out + p_move * res1_move.v_out; 
 
 				Evw_2 = Evw_2 + pcsf_basis[i_csf_basis]*retxp[i_x2] * (*snodes1).gammat[t_hor][i_s1][i_s2] * vw2;  // compute expectation
 			}
