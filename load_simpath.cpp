@@ -296,8 +296,8 @@ double gamma0_store[] = {
 			yi_str[t][n] = mult_unit*mult_2005*exp(log_fe + log_y_age + v_t + e_t);
 			yi_str[t][n] = log(yi_str[t][n]);
 
-			ph_str[t][n] = ret_tn + ph_str[t - 1][n];
-			ph_str_city[t][n] = ret_tn + ph_str_city[t - 1][n] + 0.08*dist(gen);
+			ph_str[t][n] = ret_tn + ph_str[t - 1][n] + 0.09*dist(gen); 
+			ph_str_city[t][n] = ret_tn + ph_str_city[t - 1][n];
 		}
 	}
 
