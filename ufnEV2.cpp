@@ -100,18 +100,12 @@ double ufnEV2::eval( vector<double> x ){
 		i_s2 = i_s2p_vec[i_s2p];
 		i_ph2 = (*snodes1).s2i_ph[i_s2];
 
-		// for (i_move = 0:1){
-		// 1. compute
-		// 2. eval v of moving? 
-		// 3. res1_move = eval_v_def(i_s2, w2);
-	    // }
-		// cycle across equity returns
-		
-
 		for (i_x2 = 0; i_x2 < retxn; i_x2++) {
 
 			// cycle across futures returns
 			for (i_csf_basis = 0; i_csf_basis < n_csf_basis; i_csf_basis++) {
+				//double foo1 = exp(csf_basis[i_csf_basis]); 
+
 				w2 = rb_eff*x[1] + exp(retxv[i_x2])*x[2] +
 					exp(csf_basis[i_csf_basis]) * csfLev * csf_net2[i_s2] * (x[3] - x[4]) +
 					x[3] + x[4] + (*snodes1).ten_w[t_i2] * (*snodes1).p_gridt[t_hor + 1][i_ph2];
@@ -120,8 +114,8 @@ double ufnEV2::eval( vector<double> x ){
 				//vw2 = (1.0 - p_move) * res1.v_out;
 
 				res1_move = (*vf2).eval_v_def(i_s2, w2); 
-				vw2 = res1.v_out;
-				//vw2 = (1.0 - p_move)* res1.v_out + p_move * res1_move.v_out; 
+				//vw2 = res1.v_out;
+				vw2 = (1.0 - p_move)* res1.v_out + p_move * res1_move.v_out; 
 
 				Evw_2 = Evw_2 + pcsf_basis[i_csf_basis]*retxp[i_x2] * (*snodes1).gammat[t_hor][i_s1][i_s2] * vw2;  // compute expectation
 			}
@@ -129,12 +123,7 @@ double ufnEV2::eval( vector<double> x ){
 		}
 
 	}
-
-	if (x[0] != x[0]) {
-		Evw_2 = -1.0e6;
-	}
-		
-
+	
 	return uc + beta*Evw_2;
 }
 
