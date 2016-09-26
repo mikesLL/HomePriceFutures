@@ -147,6 +147,7 @@ void gen_VP(void *snodes_in, void *VFN_3d_1, void *VFN_3d_2 ){
 					(*rr2).def_flag = 1;
 					res1 = gen_VPw(snodes1, rr1, rr2, coh, x_guess, b_min, beg_equity, mpmt);
 					(*rr2).vw3_def_grid[i_s][w_i] = res1.v_opt; 
+					cout << res1.v_opt << endl; 
 					(*rr2).def_flag = 0;
 				}
 
