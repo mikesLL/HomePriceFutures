@@ -16,7 +16,7 @@ const int age_begin_store[] = { 60, 45, 30 };
 const int n_age = 1;                            // 3;
 
 const int age_max = 65;                  // age at which household retires / annuitizes wealth  
-const int w_n = 1000;  //200                   // Grid points in wealth; set = 200 for fast computation, = 2000 for precision
+const int w_n = 200;  //200                   // Grid points in wealth; set = 200 for fast computation, = 2000 for precision
 
 
 const double csfLev = 1.0 * ( 1.0 / 0.055 );       // Case-Shiller Index Future margin-implied leverage; (notional value contract)/(median home price)*(1/margin)
@@ -54,6 +54,8 @@ const int rhoi = int(floor(rho));        // Floor for identification
 
 const double beta = .98;   // alt: =.95               // Beta: time preferences
 const double phi = 0.06;                  // moving / transaction costs in event of home sale; also =.15
+const double phi_sell = 0.1;
+const double phi_buy = 0.03;
 
 
 // Housing-service related parameters

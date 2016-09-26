@@ -131,7 +131,7 @@ void gen_VP(void *snodes_in, void *VFN_3d_1, void *VFN_3d_2 ){
 				x_guess = x_lag_wt[t_i2];
 						
 				coh = (*rr1).w_grid[w_i] + y_atax*(*snodes1).yi_gridt[t_hor][i_yi] -
-					(*snodes1).ten_w[t_i2] * (*snodes1).p_gridt[t_hor][i_ph];
+					(1.0 + phi_buy) * (*snodes1).ten_w[t_i2] * (*snodes1).p_gridt[t_hor][i_ph];
 
 				if (t_i2 == 0) {
 					coh = coh - (*snodes1).rent_gridt[t_hor][i_rent] * (*snodes1).rent_adj;
@@ -233,7 +233,7 @@ void gen_VP(void *snodes_in, void *VFN_3d_1, void *VFN_3d_2 ){
 
 				(*rr1).set_pol_ten_v(t_i, i_s, w_i, x1, t_i2, v1);
 
-				w_adj = (*rr1).w_grid[w_i] - phi*(*snodes1).ten_w[t_i] * (*snodes1).p_gridt[t_hor][i_ph];    //calc costs if agent sells and converts to renter
+				w_adj = (*rr1).w_grid[w_i] - phi_sell*(*snodes1).ten_w[t_i] * (*snodes1).p_gridt[t_hor][i_ph];    //calc costs if agent sells and converts to renter
 				res_t_0 = (*rr1).eval_v(0, i_s, w_adj); // evaluate value fn if agent sells and converts to renter
 
 				if ( (w_adj >= 0.0 ) && (res_t_0.v_i_floor > v1) && (res_t_0.w_i_floor >= 0)) {
@@ -243,6 +243,8 @@ void gen_VP(void *snodes_in, void *VFN_3d_1, void *VFN_3d_2 ){
 					(*rr1).set_pol_ten_v(t_i, i_s, w_i, x, t_adj, res_t_0.v_i_floor);     // first arguments are current state variables, x containts updated policy
 				}
 
+				//cout << "gen_Vp: (*rr2).vw3_def_grid[i_s][w_i_zero] " << (*rr2).vw3_def_grid[i_s][w_i_zero] << endl;
+				double vw3_def_test = (*rr2).vw3_def_grid[i_s][w_i_zero]; 
 				if (  (*rr2).vw3_def_grid[i_s][w_i_zero] > max(v1, res_t_0.v_i_floor ) ) {
 
 					(*rr2).def_flag = 1;
