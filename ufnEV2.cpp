@@ -85,14 +85,22 @@ double ufnEV2::eval( vector<double> x ){
 	}
 	
 	int i_csf_basis = 0;
-	int n_csf_basis = 2;
-	double csf_basis[] = { -0.045, 0.045 };
+	//int n_csf_basis = 2;
+	//double csf_basis[] = { -0.045, 0.045 };
+	//int n_csf_basis = 1; 
+	//double csf_basis[] = { 0.0, 0.0 };
+	//double pcsf_basis[] = { 1.0, 0.0 };
 
 	// cycle accross possible future states to compute value function expectation
 	for (i_s2p = 0; i_s2p < N_s2p; i_s2p++) {
 		i_s2 = i_s2p_vec[i_s2p];
 		i_ph2 = (*snodes1).s2i_ph[i_s2];
 
+		// for (i_move = 0:1){
+		// 1. compute
+		// 2. eval v of moving? 
+		// 3. res1_move = eval_v_def(i_s2, w2);
+	    // }
 		// cycle across equity returns
 		for (i_x2 = 0; i_x2 < retxn; i_x2++) {
 
@@ -102,9 +110,13 @@ double ufnEV2::eval( vector<double> x ){
 					exp(csf_basis[i_csf_basis]) * csfLev * csf_net2[i_s2] * (x[3] - x[4]) +
 					x[3] + x[4] + (*snodes1).ten_w[t_i2] * (*snodes1).p_gridt[t_hor + 1][i_ph2];
 
-				res1 = eval_v(i_s2, w2);    // evaluate value function in state
-				vw2 = (1.0 - p_move) * res1.v_out;
-				Evw_2 = Evw_2 + 0.5*retxp[i_x2] * (*snodes1).gammat[t_hor][i_s1][i_s2] * vw2;  // compute expectation
+				res1 = eval_v(i_s2, w2);                                   // evaluate value function in state
+				//vw2 = (1.0 - p_move) * res1.v_out;
+
+				res1_move = (*vf2).eval_v_def(i_s2, w2); 
+				vw2 = (1.0 - p_move)* res1.v_out + p_move * res1_move.v_out; 
+
+				Evw_2 = Evw_2 + pcsf_basis[i_csf_basis]*retxp[i_x2] * (*snodes1).gammat[t_hor][i_s1][i_s2] * vw2;  // compute expectation
 			}
 			
 		}

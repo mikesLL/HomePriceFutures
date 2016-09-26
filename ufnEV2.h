@@ -43,6 +43,7 @@ public:
 	double ph_2e, ph1;     // home price expectation, current home price
 
 	eval_res res1;
+	eval_res res1_move;
 
 	double csf_net2[n_s];   // home price futures payout
 

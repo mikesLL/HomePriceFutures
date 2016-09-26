@@ -56,7 +56,11 @@ public:
 	
 
 	eval_res eval_v(int i_t_in, int i_s_in, double w_in);
+	eval_res eval_v_def( int i_s_in, double w_in);
+
+
 	eval_res eval_v_norm(double w_in);
+
 	eval_res eval_v_move(int i_t_in, int i_s_in, double w_in, int t_left);
 
 

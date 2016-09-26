@@ -134,8 +134,7 @@ const int retxn = 2;
 const double retxv[] = { x_mu - x_std, x_mu + x_std }; //{ -0.10, 0.25 };
 const double retxp[] = { 0.5, 0.5 };
 
-
-const double p_move = 0.0;                            // Probability receiving an exogenous moving shock
+const double p_move = 0.20;  // also: set = 0.0                 // Probability receiving an exogenous moving shock
 
 const double b_min_const = -20.0;                    
 const double b_motive = 1.0;                         // Strength of bequest motive
@@ -155,4 +154,17 @@ const double pmi_dpmt = .20;                          // if down payment below t
 const double pmi_prem = 0.01;                         // pmi premium
 const double credit_prem = .18;                       // unsecured credit apr
 const double b_min_unsec = 0.0; // -0.4;               // unsecured borrowing limit
+
+// basis risk
+//int n_csf_basis = 1;// 2;
+
+// case: no basis risk
+const int n_csf_basis = 1; 
+const double csf_basis[] = { 0.0, 0.0 };
+const double pcsf_basis[] = { 1.0, 0.0 };
+
+//int n_csf_basis = 2;
+//double csf_basis[] = { -0.045, 0.045 };
+
+// alt:
 
