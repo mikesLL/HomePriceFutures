@@ -114,7 +114,8 @@ double ufnEV2::eval( vector<double> x ){
 				res1 = eval_v(i_s2, w2);                                   // evaluate value function in state
 				//vw2 = (1.0 - p_move) * res1.v_out;
 
-				//res1_move = (*vf2).eval_v_def(i_s2, w2); 
+				res1_move = (*vf2).eval_v_def(i_s2, w2); 
+				cout << res1_move.v_out << endl; 
 				vw2 = res1.v_out;
 				//vw2 = (1.0 - p_move)* res1.v_out + p_move * res1_move.v_out; 
 
