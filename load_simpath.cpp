@@ -191,6 +191,7 @@ double gamma0_store[] = {
 	double v_t0 = 0.0;                                   // initial permanent income shock
 	double v_t = 0.0;                                    // permanent income state
 	
+	double sigma_city_ind = 0.09;
 	
 	double log_fe = 2.3831 + 0.4831 - 0.0228*2.0;        //2.18 // fixed effects
 	double y_mu_city = 0.005;                            // city-wide real income/rent growth
@@ -267,7 +268,7 @@ double gamma0_store[] = {
 
 		//ph_str[t][n] = (ret_tn) + ph_str[t - 1][n];  // home prices in sim are in logs
 		ph_str_city[t][n] =  ret_tn + ph_str_city[t - 1][n];  // home prices in sim are in logs
-		ph_str[t][n] = ret_tn + ph_str[t - 1][n] + 0.00*dist(gen);  // home prices in sim are in logs
+		ph_str[t][n] = ret_tn + ph_str[t - 1][n] + sigma_city_ind*dist(gen);  // home prices in sim are in logs
 
 		// simulate later time periods
 		for (t = 2; t < (T_sim + 1); t++){
@@ -296,7 +297,7 @@ double gamma0_store[] = {
 			yi_str[t][n] = mult_unit*mult_2005*exp(log_fe + log_y_age + v_t + e_t);
 			yi_str[t][n] = log(yi_str[t][n]);
 
-			ph_str[t][n] = ret_tn + ph_str[t - 1][n] + 0.0*dist(gen); 
+			ph_str[t][n] = ret_tn + ph_str[t - 1][n] + sigma_city_ind*dist(gen);
 			ph_str_city[t][n] = ret_tn + ph_str_city[t - 1][n];
 		}
 	}
