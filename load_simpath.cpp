@@ -121,8 +121,8 @@ double gamma0_store[] = {
 
 	double sigma_ret_store[] = {
 		0.0898953130877952,
-		0.0964435356411414 + 0.05,
-		0.0932576970459832 + 0.05,
+		0.0964435356411414,
+		0.0932576970459832,
 		0.0416981137655714,
 		0.0425216830414940,
 		0.0319257520937813,
@@ -179,6 +179,8 @@ double gamma0_store[] = {
 	double ret_tn, ret_lag, ecm;
 
 	vector<vector<double>> ph_str(T_sim + 1, vector<double>(N_sim, 0.0) );              // store city-wide home prices
+	vector<vector<double>> ph_str_city(T_sim + 1, vector<double>(N_sim, 0.0));              // store city-wide home prices
+
 	vector<vector<double>> rent_str(T_sim + 1, vector<double>(N_sim, 0.0));             // store city-wide rent
 	vector<vector<double>> yi_str(T_sim + 1, vector<double>(N_sim, 0.0));               // individual income
 
@@ -228,6 +230,7 @@ double gamma0_store[] = {
 		age_td = double(age_begin_in) + double(t); // initial age
 		
 		ph_str[t][n] = log(ph0);
+		ph_str_city[t][n] = log(ph0);
 		rent_str[t][n] = rent0;
 	
 		// compute age-related component of log-income (deterministic)
@@ -263,7 +266,8 @@ double gamma0_store[] = {
 		yi_str[t][n] = log(yi_str[t][n]);
 
 		//ph_str[t][n] = (ret_tn) + ph_str[t - 1][n];  // home prices in sim are in logs
-		ph_str[t][n] =  ret_tn + ph_str[t - 1][n];  // home prices in sim are in logs
+		ph_str_city[t][n] =  ret_tn + ph_str_city[t - 1][n];  // home prices in sim are in logs
+		ph_str[t][n] = ret_tn + ph_str[t - 1][n] + 0.09*dist(gen);  // home prices in sim are in logs
 
 		// simulate later time periods
 		for (t = 2; t < (T_sim + 1); t++){
@@ -282,8 +286,8 @@ double gamma0_store[] = {
 			v_t0 = v_t;                             // update transient component
 			
 			// compute home price
-			ret_lag = ph_str[t - 1][n] - ph_str[t - 2][n];                                       // ph_str is in logs 
-			ecm = log(rent_str[t - 1][n]) - gamma0_hat - gamma1_hat*(ph_str[t - 1][n]);          // cointegrate rents, prices
+			ret_lag = ph_str_city[t - 1][n] - ph_str_city[t - 2][n];                                       // ph_str is in logs 
+			ecm = log(rent_str[t - 1][n]) - gamma0_hat - gamma1_hat*(ph_str_city[t - 1][n]);          // cointegrate rents, prices
 			
 			ret_tn = alpha_hat + rhof_hat*ret_lag + theta_hat*ecm + sigma_ret*dist(gen);         // return series
 		
@@ -293,6 +297,7 @@ double gamma0_store[] = {
 			yi_str[t][n] = log(yi_str[t][n]);
 
 			ph_str[t][n] = ret_tn + ph_str[t - 1][n];
+			ph_str_city[t][n] = ret_tn + ph_str_city[t - 1][n] + 0.08*dist(gen);
 		}
 	}
 
