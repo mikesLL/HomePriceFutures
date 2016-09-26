@@ -146,8 +146,8 @@ void gen_VP(void *snodes_in, void *VFN_3d_1, void *VFN_3d_2 ){
 				if ( t_i2 == 0 ) {
 					(*rr2).def_flag = 1;
 					res1 = gen_VPw(snodes1, rr1, rr2, coh, x_guess, b_min, beg_equity, mpmt);
-					(*rr2).vw3_def_grid[i_s][w_i] = res1.v_opt; 
-					cout << res1.v_opt << endl; 
+					(*rr1).vw3_def_grid[i_s][w_i] = res1.v_opt; 
+					//cout << res1.v_opt << endl; 
 					(*rr2).def_flag = 0;
 				}
 
@@ -246,7 +246,7 @@ void gen_VP(void *snodes_in, void *VFN_3d_1, void *VFN_3d_2 ){
 
 				//cout << "gen_Vp: (*rr2).vw3_def_grid[i_s][w_i_zero] " << (*rr2).vw3_def_grid[i_s][w_i_zero] << endl;
 				double vw3_def_test = (*rr2).vw3_def_grid[i_s][w_i_zero]; 
-				if (  (*rr2).vw3_def_grid[i_s][w_i_zero] > max(v1, res_t_0.v_i_floor ) ) {
+				if (  (*rr1).vw3_def_grid[i_s][w_i_zero] > max(v1, res_t_0.v_i_floor ) ) {
 
 					(*rr2).def_flag = 1;
 					coh = 0.0 + y_atax*(*snodes1).yi_gridt[t_hor][i_yi]  - 
