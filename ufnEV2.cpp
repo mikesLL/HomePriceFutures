@@ -104,7 +104,7 @@ double ufnEV2::eval( vector<double> x ){
 
 				res1 = eval_v(i_s2, w2);    // evaluate value function in state
 				vw2 = (1.0 - p_move) * res1.v_out;
-				Evw_2 = Evw_2 + retxp[i_x2] * (*snodes1).gammat[t_hor][i_s1][i_s2] * vw2;  // compute expectation
+				Evw_2 = Evw_2 + 0.5*retxp[i_x2] * (*snodes1).gammat[t_hor][i_s1][i_s2] * vw2;  // compute expectation
 			}
 			
 		}
