@@ -14,6 +14,7 @@ void vfn::enter_data(void *snodes_in, double phr_in, int t_id_in, int t_num_in, 
 	t_num = t_num_in;               // planning horizon
 	pref = pref_in;
 	lcount = 0;
+	def_flag = 0;
 
 	cout << "t_num = " << t_num << endl;
 	cout << "t_id = " << t_id << endl;
@@ -21,6 +22,8 @@ void vfn::enter_data(void *snodes_in, double phr_in, int t_id_in, int t_num_in, 
 	vector<vector<vector<int>>> zeros_int_TN_NS_WN(t_n, vector<vector<int>>(n_s, vector<int>(w_n, 0)));
 	vector<vector<vector<double>>> zeros_TN_NS_WN(t_n, vector<vector<double>>(n_s, vector<double>(w_n, 0.0)));
 	vector<vector<vector<double>>> neg_TN_NS_WN(t_n, vector<vector<double>>(n_s, vector<double>(w_n, -1.0e6)));
+
+	vector<vector<double>> neg_NS_WN(n_s, vector<double>(w_n, -1.0e6));
 
 	vector<double> zeros_WN(w_n, 0.0);
 
@@ -32,6 +35,8 @@ void vfn::enter_data(void *snodes_in, double phr_in, int t_id_in, int t_num_in, 
 	x5_grid = zeros_TN_NS_WN;             // futures:- control grid; ordered: tenure, state, wealth
 	
 	vw3_grid = neg_TN_NS_WN;            // value function; ordered: tenure, state, wealth
+	vw3_def_grid = neg_NS_WN;            // value function; ordered: tenure, state, wealth
+
 	vw3_d_grid = zeros_TN_NS_WN;            // value function: 1st deriv
 	vw3_dd_grid = zeros_TN_NS_WN;            // value function: 2nd deriv
 
@@ -368,8 +373,6 @@ void vfn::interp_vw3(int i_t_in, int i_s_in) {
 
 	}
 }
-
-
 
 
 // check for monotonicity

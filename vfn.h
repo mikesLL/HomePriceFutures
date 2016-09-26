@@ -22,6 +22,7 @@ class vfn {
 public:
 
 	int t_i2, t_i1, w_i1, i_s1;
+	int def_flag; 
 	int lcount;
 	double ph1, phr, w_comp;
 	double w_grid[w_n];
@@ -39,6 +40,8 @@ public:
 	vector<vector<vector<int>>> xt_grid;
 	vector<vector<vector<double>>> x1_grid, x2_grid, x3_grid, x4_grid, x5_grid; // control variables
 	vector<vector<vector<double>>> vw3_grid;                                    // value function
+	vector<vector<double>> vw3_def_grid;                                // value function (default)
+
 	vector<double> vw3_grid_norm;                               // value function (normalized)
 	vector<vector<vector<double>>> lambda_grid;                                 // lambda interpolation parameters
 

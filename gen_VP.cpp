@@ -32,6 +32,9 @@ void gen_VP(void *snodes_in, void *VFN_3d_1, void *VFN_3d_2 ){
 	snodes *snodes1 = (snodes *)snodes_in;
 	vfn *rr2 = (vfn *) VFN_3d_2;          // address to initialized V2
 	vfn *rr1 = (vfn *) VFN_3d_1;          // address to initialized V1
+
+	//vfn *rr3 = (vfn *) VFN
+
     gen_res res1;
 	eval_res res0;
 	eval_res res_t_lag;
@@ -93,12 +96,9 @@ void gen_VP(void *snodes_in, void *VFN_3d_1, void *VFN_3d_2 ){
 			for (t_i2 = 0; t_i2 < t_n; t_i2 ++){
 				//cout << "gen_vp: t_i2 = " << t_i2 << endl;
 
-				//if (t_i2 == t_n) {
-				//	t_i2 = 0;
-				//}
 					
 				res1_flag = 1;
-			//for (t_i2 = 0; t_i2 <= 1; t_i2++) {
+			
 
 				if (w_i % 100 == 0) {
 					cout << "w_i = " << w_i << endl;
@@ -116,10 +116,6 @@ void gen_VP(void *snodes_in, void *VFN_3d_1, void *VFN_3d_2 ){
 					mpmt = 0.0;
 					b_min2 = -max_lti * (*snodes1).yi_gridt_btax[t_hor][i_yi] / (rb + mort_spread - 1.0);
 
-					//if ( b_min2 > b_min) {
-					//	cout << "gen_vp.cpp: here " << endl;
-					//}
-
 					b_min = max(b_min, b_min2);
 				}
 
@@ -133,13 +129,6 @@ void gen_VP(void *snodes_in, void *VFN_3d_1, void *VFN_3d_2 ){
 
 				// load t_i2-restricted guess as an initial starting point
 				x_guess = x_lag_wt[t_i2];
-				
-				// theta1 represents cash adjustment for rent, housing size				
-				//theta1 = { (*snodes1).rent_gridt[t_hor][i_rent]* (*snodes1).rent_adj,
-				//	(*snodes1).ten_w[1] * (*snodes1).p_gridt[t_hor][i_ph],
-				//	(*snodes1).ten_w[2] * (*snodes1).p_gridt[t_hor][i_ph], 
-				//	(*snodes1).ten_w[3] * (*snodes1).p_gridt[t_hor][i_ph],
-				//};
 						
 				coh = (*rr1).w_grid[w_i] + y_atax*(*snodes1).yi_gridt[t_hor][i_yi] -
 					(*snodes1).ten_w[t_i2] * (*snodes1).p_gridt[t_hor][i_ph];
@@ -148,51 +137,23 @@ void gen_VP(void *snodes_in, void *VFN_3d_1, void *VFN_3d_2 ){
 					coh = coh - (*snodes1).rent_gridt[t_hor][i_rent] * (*snodes1).rent_adj;
 				}
 				
-				//coh = (*rr1).w_grid[w_i] + y_atax*(*snodes1).yi_gridt[t_hor][i_yi] - theta1[t_i2];        // coh: cash on hand = initial wealth + income - rent or transaction costs      
-
+				
 				(*rr2).i_s1 = i_s;  // pass in current state to next-period value function
 				(*rr2).t_i1 = t_i;
 				(*rr2).w_i1 = w_i;                      
 				(*rr2).t_i2 = t_i2; //  t_i2 is a choice variable, so adding it to fn pointer 
 
-				// 
-				// if ten_i2 > 1
-				// check if y cosntraint binds
-				// if yes, done
-				// else, continue
-
-				/*
-				if (t_i2 > 1) {
-					h_mult = (*snodes1).ten_w[t_i2] / (*snodes1).ten_w[1];
-					
-					//coh_mult = coh * (1.0 / (*snodes1).ten_w[1]);
-					bond_est = x_ti1[1] * (1.0 / (*snodes1).ten_w[1]);
-
-					bond_est = h_mult * x_ti1[1];
-					bond_est = h_mult / w_mult * x_ti1[1];
-					
-
-					if (bond_est > b_min) {				
-						x1 = x_ti1;
-						x1[0] = x_ti1[0] * h_mult;
-						x1[1] = x_ti1[1] * h_mult;
-						x1[2] = x_ti1[2] * h_mult;
-						x1[3] = x_ti1[3] * h_mult;
-						x1[4] = x_ti1[4] * h_mult;
-
-						v1 = v_ti1 * pow(h_mult, 1.0 - rho);
-						res1_flag = 0;
-					}
+				if ( t_i2 == 0 ) {
+					(*rr2).def_flag = 1;
+					res1 = gen_VPw(snodes1, rr1, rr2, coh, x_guess, b_min, beg_equity, mpmt);
+					(*rr2).vw3_def_grid[i_s][w_i] = res1.v_opt; 
+					(*rr2).def_flag = 0;
 				}
-				*/
-				// store: value associated with t_i = 1
-				//if (ten_i2 <= 1) : do all this
 
 				if (res1_flag) {
 					res1 = gen_VPw(snodes1, rr1, rr2, coh, x_guess, b_min, beg_equity, mpmt);                               // pass problem into gen_V1_w
 				}
 
-				// if t_i = 1: store as double v_ti1
 				if (t_i2 == 1) {
 					v_ti1 = res1.v_opt;
 					x_ti1 = res1.x_opt;
@@ -277,9 +238,22 @@ void gen_VP(void *snodes_in, void *VFN_3d_1, void *VFN_3d_2 ){
 
 				if ( (w_adj >= 0.0 ) && (res_t_0.v_i_floor > v1) && (res_t_0.w_i_floor >= 0)) {
 
-					(*rr1).get_pol(0, i_s, res_t_0.w_i_floor, x);                              // submit x as reference and load in x pol from t1 = 0
-					t_adj = (*rr1).xt_grid[0][i_s][res_t_0.w_i_floor];               // get t2 pol from t1 = 0; simulated sale
+					(*rr1).get_pol(0, i_s, res_t_0.w_i_floor, x);                         // submit x as reference and load in x pol from t1 = 0
+					t_adj = (*rr1).xt_grid[0][i_s][res_t_0.w_i_floor];                    // get t2 pol from t1 = 0; simulated sale
 					(*rr1).set_pol_ten_v(t_i, i_s, w_i, x, t_adj, res_t_0.v_i_floor);     // first arguments are current state variables, x containts updated policy
+				}
+
+				if (  (*rr2).vw3_def_grid[i_s][w_i] > max(v1, res_t_0.v_i_floor ) ) {
+
+					(*rr2).def_flag = 1;
+					coh = (*rr1).w_grid[w_i] + y_atax*(*snodes1).yi_gridt[t_hor][i_yi] -
+						(*snodes1).rent_gridt[t_hor][i_rent] * (*snodes1).rent_adj;
+						b_min = 0.0; 
+						beg_equity = -1.0e6;
+
+					res1 = gen_VPw(snodes1, rr1, rr2, coh, x_guess, b_min, beg_equity, mpmt);
+					(*rr1).set_pol_ten_v(0, i_s, w_i, res1.x_opt, 0, res1.v_opt);
+					(*rr2).def_flag = 0;
 				}
 				
 			}
