@@ -85,6 +85,10 @@ double ufnEV2::eval( vector<double> x ){
 	}
 	
 	int i_csf_basis = 0;
+	int n_csf_basis = 1;
+	double csf_basis[] = { 0.0, 0.0 };
+	double pcsf_basis[] = { 1.0, 0.0 };
+
 	//int n_csf_basis = 2;
 	//double csf_basis[] = { -0.045, 0.045 };
 	//int n_csf_basis = 1; 
@@ -102,6 +106,8 @@ double ufnEV2::eval( vector<double> x ){
 		// 3. res1_move = eval_v_def(i_s2, w2);
 	    // }
 		// cycle across equity returns
+		
+
 		for (i_x2 = 0; i_x2 < retxn; i_x2++) {
 
 			// cycle across futures returns

@@ -159,9 +159,9 @@ const double b_min_unsec = 0.0; // -0.4;               // unsecured borrowing li
 //int n_csf_basis = 1;// 2;
 
 // case: no basis risk
-const int n_csf_basis = 1; 
-const double csf_basis[] = { 0.0, 0.0 };
-const double pcsf_basis[] = { 1.0, 0.0 };
+//const int n_csf_basis = 1; 
+//const double csf_basis[] = { 0.0, 0.0 };
+//const double pcsf_basis[] = { 1.0, 0.0 };
 
 //int n_csf_basis = 2;
 //double csf_basis[] = { -0.045, 0.045 };
