@@ -134,7 +134,7 @@ const int retxn = 2;
 const double retxv[] = { x_mu - x_std, x_mu + x_std }; //{ -0.10, 0.25 };
 const double retxp[] = { 0.5, 0.5 };
 
-const double p_move = 0.20;  // also: set = 0.0                 // Probability receiving an exogenous moving shock
+const double p_move = 0.05;  // also: set = 0.0                 // Probability receiving an exogenous moving shock
 
 const double b_min_const = -20.0;                    
 const double b_motive = 1.0;                         // Strength of bequest motive
