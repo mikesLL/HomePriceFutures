@@ -35,7 +35,7 @@ void load_simpath(void *snodes_in, double rent_in, double ph0_in, double ret0_in
 
 	int s1, s2, s_test;                             // state in current period, state in next period
 	int N_print =  40000;                          // number of observations to print to file
-	int N_sim = 200000;                                            // number of simulations
+	int N_sim = 2000000;                                            // number of simulations
 	int i_ph, i_rent, i_yi, i_s;                                 // state and individual dimension indices
 
 	cout << "load ppath: ph0_in:  " << ph0_in << endl;
@@ -121,8 +121,8 @@ double gamma0_store[] = {
 
 	double sigma_ret_store[] = {
 		0.0898953130877952,
-		0.0964435356411414,
-		0.0932576970459832,
+		0.0964435356411414 + 0.05,
+		0.0932576970459832 + 0.05,
 		0.0416981137655714,
 		0.0425216830414940,
 		0.0319257520937813,
