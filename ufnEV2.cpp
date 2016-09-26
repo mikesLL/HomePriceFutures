@@ -103,8 +103,9 @@ double ufnEV2::eval( vector<double> x ){
 		for (i_x2 = 0; i_x2 < retxn; i_x2++) {
 
 			// cycle across futures returns
-			for (i_csf_basis = 0; i_csf_basis < n_csf_basis; i_csf_basis++) {
+			//for (i_csf_basis = 0; i_csf_basis < n_csf_basis; i_csf_basis++) {
 				//double foo1 = exp(csf_basis[i_csf_basis]); 
+
 
 				w2 = rb_eff*x[1] + exp(retxv[i_x2])*x[2] +
 					exp(csf_basis[i_csf_basis]) * csfLev * csf_net2[i_s2] * (x[3] - x[4]) +
@@ -113,12 +114,12 @@ double ufnEV2::eval( vector<double> x ){
 				res1 = eval_v(i_s2, w2);                                   // evaluate value function in state
 				//vw2 = (1.0 - p_move) * res1.v_out;
 
-				res1_move = (*vf2).eval_v_def(i_s2, w2); 
-				//vw2 = res1.v_out;
-				vw2 = (1.0 - p_move)* res1.v_out + p_move * res1_move.v_out; 
+				//res1_move = (*vf2).eval_v_def(i_s2, w2); 
+				vw2 = res1.v_out;
+				//vw2 = (1.0 - p_move)* res1.v_out + p_move * res1_move.v_out; 
 
-				Evw_2 = Evw_2 + pcsf_basis[i_csf_basis]*retxp[i_x2] * (*snodes1).gammat[t_hor][i_s1][i_s2] * vw2;  // compute expectation
-			}
+				Evw_2 = Evw_2 + retxp[i_x2] * (*snodes1).gammat[t_hor][i_s1][i_s2] * vw2;  // compute expectation
+			//}
 			
 		}
 
