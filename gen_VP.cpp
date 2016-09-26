@@ -243,13 +243,13 @@ void gen_VP(void *snodes_in, void *VFN_3d_1, void *VFN_3d_2 ){
 					(*rr1).set_pol_ten_v(t_i, i_s, w_i, x, t_adj, res_t_0.v_i_floor);     // first arguments are current state variables, x containts updated policy
 				}
 
-				if (  (*rr2).vw3_def_grid[i_s][w_i] > max(v1, res_t_0.v_i_floor ) ) {
+				if (  (*rr2).vw3_def_grid[i_s][w_i_zero] > max(v1, res_t_0.v_i_floor ) ) {
 
 					(*rr2).def_flag = 1;
-					coh = (*rr1).w_grid[w_i] + y_atax*(*snodes1).yi_gridt[t_hor][i_yi] -
+					coh = 0.0 + y_atax*(*snodes1).yi_gridt[t_hor][i_yi]  - 
 						(*snodes1).rent_gridt[t_hor][i_rent] * (*snodes1).rent_adj;
-						b_min = 0.0; 
-						beg_equity = -1.0e6;
+					b_min = 0.0; 
+					beg_equity = -1.0e6;
 
 					res1 = gen_VPw(snodes1, rr1, rr2, coh, x_guess, b_min, beg_equity, mpmt);
 					(*rr1).set_pol_ten_v(0, i_s, w_i, res1.x_opt, 0, res1.v_opt);

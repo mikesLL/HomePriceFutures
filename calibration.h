@@ -18,6 +18,7 @@ const int n_age = 1;                            // 3;
 const int age_max = 65;                  // age at which household retires / annuitizes wealth  
 const int w_n = 1000;  //200                   // Grid points in wealth; set = 200 for fast computation, = 2000 for precision
 
+
 const double csfLev = 1.0 * ( 1.0 / 0.055 );       // Case-Shiller Index Future margin-implied leverage; (notional value contract)/(median home price)*(1/margin)
 const int csfLevi = int(floor(csfLev));   // Floor for identification
 
@@ -40,6 +41,10 @@ const double y_replace = 0.9388;            // From Cocco, Gomes, Maenhout (2005
 
 const double w_max = 40.0; //16.05;         // maximum wealth (on grid) (100's thousands)             
 const double w_min = -1.0; // 0.0; // 0.05;          // minimum wealth (on grid) (100's thousands) 
+
+const int w_i_zero = (int)ceil(-w_min * double(w_n) / (w_max - w_min));
+
+
 //const double w_max = 40.0; //16.05;         // maximum wealth (on grid) (100's thousands)             
 //const double w_min = -2.0; // 0.05;          // minimum wealth (on grid) (100's thousands) 
 
