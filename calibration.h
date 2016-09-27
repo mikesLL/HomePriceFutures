@@ -54,8 +54,8 @@ const int rhoi = int(floor(rho));        // Floor for identification
 
 const double beta = .98;   // alt: =.95               // Beta: time preferences
 const double phi = 0.06;                  // moving / transaction costs in event of home sale; also =.15
-const double phi_sell = 0.06;
-const double phi_buy = 0.00;
+const double phi_sell = 0.10;
+const double phi_buy = 0.02;
 
 
 // Housing-service related parameters
