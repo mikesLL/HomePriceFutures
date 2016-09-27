@@ -255,7 +255,8 @@ void gen_VP(void *snodes_in, void *VFN_3d_1, void *VFN_3d_2 ){
 					beg_equity = -1.0e6;
 
 					res1 = gen_VPw(snodes1, rr1, rr2, coh, x_guess, b_min, beg_equity, mpmt);
-					(*rr1).set_pol_ten_v(0, i_s, w_i, res1.x_opt, 0, res1.v_opt);
+
+					(*rr1).set_pol_ten_v(0, i_s, w_i, res1.x_opt, 0, max(res1.v_opt, (*rr1).vw3_def_grid[i_s][w_i_zero]) );
 					(*rr2).def_flag = 0;
 				}
 				
