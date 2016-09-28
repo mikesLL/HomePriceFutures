@@ -349,80 +349,15 @@ void vfn::set_terminal(double phr_in) {
 // lambda interpolation parameters
 void vfn::interp_vw3(int i_t_in, int i_s_in) {
 
-	int w_i0;
-	double num1, den1;
-	int w_i_lower, w_i_upper;
-	double w_step = w_grid[1] - w_grid[0];
-	double w_step9 = 9.0*w_step;
+	int w_i4;
+	//double num1, den1;
+	//int w_i_lower, w_i_upper;
+	//double w_step = w_grid[1] - w_grid[0];
+	//double w_step9 = 9.0*w_step;
 	//double dv, ddvv;
 
-	/* // estimate first derivatives (right-direction)
-	for (w_i0 = 0; w_i0 <= (w_n - 2); w_i0++) {
-		w_i_lower = w_i0;
-		w_i_upper = w_i0 + 1;
-
-		num1 = (vw3_grid[i_t_in][i_s_in][w_i_upper] - vw3_grid[i_t_in][i_s_in][w_i_lower]);
-		vw3_d_grid[i_t_in][i_s_in][w_i0] = num1 / w_step;
-	}*/
-
-	// estimate first derivatives (centered, 4 each way)
-	for (w_i0 = 4; w_i0 <= (w_n - 5); w_i0++) {
-		w_i_lower = w_i0 - 4;
-		w_i_upper = w_i0 + 4;
-
-		num1 = (vw3_grid[i_t_in][i_s_in][w_i_upper] - vw3_grid[i_t_in][i_s_in][w_i_lower]);
-		vw3_d_grid[i_t_in][i_s_in][w_i0] = num1 / w_step9;
-	}
-
-	// estimate second derivatives (centered, 1 each way)
-	for (w_i0 = 5; w_i0 <= (w_n - 6); w_i0++) {
-		w_i_lower = w_i0 - 1;
-		w_i_upper = w_i0 + 1; 
-
-		num1 = (vw3_d_grid[i_t_in][i_s_in][w_i_upper] - vw3_d_grid[i_t_in][i_s_in][w_i_lower]);
-		vw3_dd_grid[i_t_in][i_s_in][w_i0] = num1 / (3.0* w_step);
-	}
-
-	// boundary conditions: first derivs
-	vw3_d_grid[i_t_in][i_s_in][0] = vw3_d_grid[i_t_in][i_s_in][4];
-	vw3_d_grid[i_t_in][i_s_in][1] = vw3_d_grid[i_t_in][i_s_in][4];
-	vw3_d_grid[i_t_in][i_s_in][2] = vw3_d_grid[i_t_in][i_s_in][4];
-	vw3_d_grid[i_t_in][i_s_in][3] = vw3_d_grid[i_t_in][i_s_in][4];
-
-	vw3_d_grid[i_t_in][i_s_in][w_n-1] = vw3_d_grid[i_t_in][i_s_in][w_n-5];
-	vw3_d_grid[i_t_in][i_s_in][w_n-2] = vw3_d_grid[i_t_in][i_s_in][w_n-5];
-	vw3_d_grid[i_t_in][i_s_in][w_n-3] = vw3_d_grid[i_t_in][i_s_in][w_n-5];
-	vw3_d_grid[i_t_in][i_s_in][w_n-4] = vw3_d_grid[i_t_in][i_s_in][w_n-5];
-
-	// boundary conditions: second derivs
-	vw3_dd_grid[i_t_in][i_s_in][0] = vw3_dd_grid[i_t_in][i_s_in][5];
-	vw3_dd_grid[i_t_in][i_s_in][1] = vw3_dd_grid[i_t_in][i_s_in][5];
-	vw3_dd_grid[i_t_in][i_s_in][2] = vw3_dd_grid[i_t_in][i_s_in][5];
-	vw3_dd_grid[i_t_in][i_s_in][3] = vw3_dd_grid[i_t_in][i_s_in][5];
-	vw3_dd_grid[i_t_in][i_s_in][4] = vw3_dd_grid[i_t_in][i_s_in][5];
-
-	vw3_dd_grid[i_t_in][i_s_in][w_n- 5] = vw3_dd_grid[i_t_in][i_s_in][w_n - 6];
-	vw3_dd_grid[i_t_in][i_s_in][w_n- 4] = vw3_dd_grid[i_t_in][i_s_in][w_n - 6];
-	vw3_dd_grid[i_t_in][i_s_in][w_n- 3] = vw3_dd_grid[i_t_in][i_s_in][w_n - 6];
-	vw3_dd_grid[i_t_in][i_s_in][w_n- 2] = vw3_dd_grid[i_t_in][i_s_in][w_n - 6];
-	vw3_dd_grid[i_t_in][i_s_in][w_n- 1] = vw3_dd_grid[i_t_in][i_s_in][w_n - 6];
-
-	// if invalid, set to linear interpolation conditions
-	for (w_i0 = 0; w_i0 <= (w_n - 1); w_i0++) {
-
-		if ((vw3_d_grid[i_t_in][i_s_in][w_i0] <= 0.0) ||
-			(vw3_dd_grid[i_t_in][i_s_in][w_i0] >= 0.0) ||
-			(w_step >= (-vw3_d_grid[i_t_in][i_s_in][w_i0] / vw3_dd_grid[i_t_in][i_s_in][w_i0]))) {
-			vw3_dd_grid[i_t_in][i_s_in][w_i0] = 0.0;
-			vw3_d_grid[i_t_in][i_s_in][w_i0] = 1.0;
-
-
-		}
-
-	}
-
-	for (w_i0 = (w_n - 2); w_i0 >= 0; w_i0--) {
-		vw3_grid[i_t_in][i_s_in][w_i0] = min(vw3_grid[i_t_in][i_s_in][w_i0], vw3_grid[i_t_in][i_s_in][w_i0 + 1]);
+	for (w_i4 = (w_n - 2); w_i4 >= 0; w_i4--) {
+		vw3_grid[i_t_in][i_s_in][w_i4] = min(vw3_grid[i_t_in][i_s_in][w_i4], vw3_grid[i_t_in][i_s_in][w_i4 + 1]);
 	}
 }
 

@@ -140,7 +140,6 @@ void gen_VP(void *snodes_in, void *VFN_3d_1, void *VFN_3d_2 ){
 					coh = coh - (*snodes1).rent_gridt[t_hor][i_rent] * (*snodes1).rent_adj;
 				}
 				
-				
 				(*rr2).i_s1 = i_s;  // pass in current state to next-period value function
 				(*rr2).t_i1 = t_i;
 				(*rr2).w_i1 = w_i;                      
@@ -180,9 +179,7 @@ void gen_VP(void *snodes_in, void *VFN_3d_1, void *VFN_3d_2 ){
 						(*rr1).set_pol_ten_v(t_i, i_s, w_i, x1, 0, v1);
 					}
 				}
-			}
-
-			
+			}			
 		}
 		(*rr1).interp_vw3(t_i, i_s);  // clean and interpolate grid			
 
@@ -268,6 +265,13 @@ void gen_VP(void *snodes_in, void *VFN_3d_1, void *VFN_3d_2 ){
 			(*rr1).interp_vw3(t_i, i_s);  // clean grid
 			duration = (clock() - start) / (double)CLOCKS_PER_SEC;
 			cout << "time elapsed: " << duration << "  lcount = " << (*rr2).lcount << endl;
+		}
+	}
+
+	// clean grid again
+	for (t_i = 0; t_i < t_n; t_i++) {                       
+		for (i_s = 0; i_s < n_s; i_s++) {
+			(*rr1).interp_vw3(t_i, i_s);  // clean grid
 		}
 	}
 
