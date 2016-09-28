@@ -179,13 +179,6 @@ void gen_VP(void *snodes_in, void *VFN_3d_1, void *VFN_3d_2 ){
 					if (res1.valid_flag == 0) {
 						(*rr1).set_pol_ten_v(t_i, i_s, w_i, x1, 0, v1);
 					}
-
-					if (v1 < v_lag_w) {
-						(*rr2).t_i2 = t_i2_lag_w;
-						res1 = gen_VPw(snodes1, rr1, rr2, coh, x_lag_w, b_min, beg_equity, mpmt);
-						(*rr1).set_pol_ten_v(t_i, i_s, w_i, res1.x_opt, t_i2_lag_w, max(v_lag_w, res1.v_opt) );
-
-					}
 				}
 			}
 

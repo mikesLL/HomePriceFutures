@@ -420,6 +420,10 @@ void vfn::interp_vw3(int i_t_in, int i_s_in) {
 		}
 
 	}
+
+	for (w_i0 = (w_n - 2); w_i0 >= 0; w_i0--) {
+		vw3_grid[i_t_in][i_s_in][w_i0] = min(vw3_grid[i_t_in][i_s_in][w_i0], vw3_grid[i_t_in][i_s_in][w_i0 + 1]);
+	}
 }
 
 
