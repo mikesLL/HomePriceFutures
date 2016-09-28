@@ -123,6 +123,9 @@ void gen_VP(void *snodes_in, void *VFN_3d_1, void *VFN_3d_2 ){
 				(*rr1).get_pol(t_i, i_s, w_i - 1, x_lag_w);   					 
 				t_i2_lag_w = (*rr1).xt_grid[t_i][i_s][max(w_i - 1, 0)];
 				v_lag_w = (*rr1).vw3_grid[t_i][i_s][max(w_i - 1, 0)];
+
+				// so now have:
+				// x_lag_w, t_i2_lag_w, v_lag_w;
 				
 				// load value given previous t_i as a benchmark
 				v_lag_t = (*rr1).vw3_grid[t_i][i_s][w_i];
@@ -172,8 +175,16 @@ void gen_VP(void *snodes_in, void *VFN_3d_1, void *VFN_3d_2 ){
 
 				if ((v1 > v_lag_t) || (t_i2 == 0)) {                      // current result is better than value given previous tenure
 					(*rr1).set_pol_ten_v(t_i, i_s, w_i, x1, t_i2, v1);  // set x, t_i2, v0 in
+					
 					if (res1.valid_flag == 0) {
 						(*rr1).set_pol_ten_v(t_i, i_s, w_i, x1, 0, v1);
+					}
+
+					if (v1 < v_lag_w) {
+						(*rr2).t_i2 = t_i2_lag_w;
+						res1 = gen_VPw(snodes1, rr1, rr2, coh, x_lag_w, b_min, beg_equity, mpmt);
+						(*rr1).set_pol_ten_v(t_i, i_s, w_i, res1.x_opt, t_i2_lag_w, max(v_lag_w, res1.v_opt) );
+
 					}
 				}
 			}
