@@ -30,9 +30,12 @@ const int age_max = 65;                  // age at which household retires / ann
 
 
 //const double margin_store[] = { 0.0, 0.0, 0.02524, 0.032408, 0.0, 0.019866, 0.0, }; 
-const double csfLev_pidxw = 2.5; 
-const double csfLev_store[] = { 0.036444571, 0.039967956, 0.032995124, 0.033871271,
+const double csfLev_pidxw[] = {1.0, 1.0, 0.0, 1.0, 0.0 };  // change in future notl to index weight
+
+// csf margin requirement by city
+const double csfmarg_store[] = { 0.036444571, 0.039967956, 0.032995124, 0.033871271,
 	0.025347143, 0.023869709, 0.037148076, 0.030927638 };
+
 
 //const double csfLev = 2.5 / csfLev_store[city_id];
 //const double csfLev = 1.0 * ( 1.0 / 0.055 );       // Case-Shiller Index Future margin-implied leverage; (notional value contract)/(median home price)*(1/margin)

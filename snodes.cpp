@@ -7,7 +7,7 @@ snodes::snodes(int age0_in, int T_max_in, int city_id_in) {
 	age0 = age0_in;
 	T_max = T_max_in;
 
-	csfLevSn = csfLev_pidxw * csfLev_store[city_id];
+	csfLevSn = csfLev_pidxw[param_id] * 1.0 / csfmarg_store[city_id];
 
 	
 	// initialize price, rent, income grids
