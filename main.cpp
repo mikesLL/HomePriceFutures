@@ -32,6 +32,12 @@ int main(){
 		                                 "bos_read_in.csv", "chi_read_in.csv", "den_read_in.csv",
 		                                 "mia_read_in.csv", "nym_read_in.csv" };
 
+	int age_begin_store2[5][3] = {  {0, 0, 0}, { 30, 60, 45 }, { 30, 60, 45 }, { 60, 45, 30 }, { 60, 45, 30 } };
+
+	age_begin_store2[0][0] = age_begin_store[0];
+	age_begin_store2[0][1] = age_begin_store[1];
+	age_begin_store2[0][2] = age_begin_store[2];
+
 	int city_id;
 	for (city_id = city_begin; city_id <= city_end; city_id++) {
 
@@ -40,23 +46,25 @@ int main(){
 		cout << "city_init = " << city_init << endl;
 		load_csv(&city_data, city_filename);
 
-		int i_age, t;
+		int i_age, t, age0;
 
 		for (i_age = 0; i_age < n_age; i_age++) {
+
 #pragma omp parallel for
 			for (t = t_begin; t <= t_end; t++) {
 
-				int age0 = age_begin_store[i_age];     // household's initial age
+				age0 = age_begin_store2[param_id][i_age];
+
 				int T_max = age_max - age0;            // optimization problem horizon
 				int t_hor = T_max;                     // household's planning horizon time index
 			       
 				double duration;
 				double phr_in = city_data.rent[t];     // load in current median rent
-
+				
 				clock_t start = clock();                 
 
 				// discretized states including home prices, rents, incomes
-				snodes snodes1(age0, T_max, city_id );
+				snodes snodes1(age0, T_max, city_id);
 
 				cout << "snoedes1.rent_adj = " << snodes1.rent_adj << endl; 
 

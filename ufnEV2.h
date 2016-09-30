@@ -22,6 +22,7 @@ class ufnEV2 {
 	double v_tlower;
 	double v_tupper;
 	double w_low, w_high;
+	double csfLevSn;
 
 	int N_s2p;           // number of states with positive probability
 	int i_s2p;            // state positive probability index

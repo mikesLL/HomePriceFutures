@@ -14,6 +14,7 @@ void ufnEV2::enter_data(void *snodes_in, void *vf2_in) {
 	snodes1 = (snodes *)snodes_in;     // state dimensions
 	vf2 = (vfn *)vf2_in;               // next period value function
 
+	csfLevSn = (*snodes1).csfLevSn; 
 	t_hor = (*snodes1).t_hor; // current horizon / value function under computation
 	i_s1 = (*vf2).i_s1;       // current state
 	t_i2 = (*vf2).t_i2;       // next period tenure (predetermined)
@@ -103,7 +104,7 @@ double ufnEV2::eval( vector<double> x ){
 		for (i_x2 = 0; i_x2 < retxn; i_x2++) {
 			
 			w2 = rb_eff*x[1] + exp(retxv[i_x2])*x[2] +
-				csfLev * csf_net2[i_s2] * (x[3] - x[4]) +
+				csfLevSn * csf_net2[i_s2] * (x[3] - x[4]) +
 				x[3] + x[4] + (*snodes1).ten_w[t_i2] * (*snodes1).p_gridt[t_hor + 1][i_ph2];
 
 				res1 = eval_v(i_s2, w2);                                   // evaluate value function in state

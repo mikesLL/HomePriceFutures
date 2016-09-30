@@ -3,8 +3,12 @@
 
 snodes::snodes(int age0_in, int T_max_in, int city_id_in) {
 
+	city_id = city_id_in;
 	age0 = age0_in;
 	T_max = T_max_in;
+
+	csfLevSn = csfLev_pidxw * csfLev_store[city_id];
+
 	
 	// initialize price, rent, income grids
 	// use max time horizon, n_ph, n_rent, n_yi gridpoints
@@ -50,8 +54,6 @@ snodes::snodes(int age0_in, int T_max_in, int city_id_in) {
     for( i_ph = 0; i_ph < n_ph; i_ph++ ){
 		s_ph_midry[i_ph] = i2s_map[i_ph][i_rent_mid][i_yi_mid];
     }
-
-	city_id = city_id_in;
 
 	int i_t;
 

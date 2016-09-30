@@ -12,14 +12,29 @@ const int city_end = 2;
 const int t_begin = 5;                   // begin in year 5 from .csv
 const int t_end = 11;                    // = 11 to cycle through all time periods;
 
-const int age_begin_store[] = { 45, 45, 30 };
-const int n_age = 1;                            // 3;
+const int param_id = 0;  // set = 0 to define parameters here manually; set = 1, 2, 3, 4 for presets and load in main
+
+const int age_begin_store[] = { 45, 45, 30 }; // manual age settings here
+const int n_age_store[] = { 1, 1, 2, 1, 2 };
+const int n_age = n_age_store[param_id]; 
+
+const double csfLevStore[] = {1.0/0.055, 1.0/0.055, 0.0, 1.0/0.055, 0.0};
+//const double csfLev[] = 1.0 * (1.0 / 0.055);
+const double csfLev = csfLevStore[param_id];
+const int w_n = 1000; // Grid points in wealth; set = 200 for fast computation, = 2000 for precision
+
 
 const int age_max = 65;                  // age at which household retires / annuitizes wealth  
-const int w_n = 200;  //200                   // Grid points in wealth; set = 200 for fast computation, = 2000 for precision
+//const int w_n = 200;  //200                   // Grid points in wealth; set = 200 for fast computation, = 2000 for precision
 
 
-const double csfLev = 1.0 * ( 1.0 / 0.055 );       // Case-Shiller Index Future margin-implied leverage; (notional value contract)/(median home price)*(1/margin)
+//const double margin_store[] = { 0.0, 0.0, 0.02524, 0.032408, 0.0, 0.019866, 0.0, }; 
+const double csfLev_pidxw = 2.5; 
+const double csfLev_store[] = { 0.036444571, 0.039967956, 0.032995124, 0.033871271,
+	0.025347143, 0.023869709, 0.037148076, 0.030927638 };
+
+//const double csfLev = 2.5 / csfLev_store[city_id];
+//const double csfLev = 1.0 * ( 1.0 / 0.055 );       // Case-Shiller Index Future margin-implied leverage; (notional value contract)/(median home price)*(1/margin)
 const int csfLevi = int(floor(csfLev));   // Floor for identification
 
 const int t_n = 5; // 4;                        // possible tenure states
@@ -54,8 +69,8 @@ const int rhoi = int(floor(rho));        // Floor for identification
 
 const double beta = .98;   // alt: =.95               // Beta: time preferences
 const double phi = 0.06;                  // moving / transaction costs in event of home sale; also =.15
-const double phi_sell = 0.10;
-const double phi_buy = 0.02;
+const double phi_sell = 0.06; //0.10;
+const double phi_buy = 0.00;  //0.02;
 
 
 // Housing-service related parameters

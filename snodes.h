@@ -15,6 +15,7 @@ public:
 	double hu_ten[t_n]; //= hu_ten_store[N_cities][t_n];
 	double ten_w[t_n]; 
 	double rent_adj;
+	double csfLevSn;
 
 	int age0;
 	int T_max;

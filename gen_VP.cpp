@@ -33,8 +33,6 @@ void gen_VP(void *snodes_in, void *VFN_3d_1, void *VFN_3d_2 ){
 	vfn *rr2 = (vfn *) VFN_3d_2;          // address to initialized V2
 	vfn *rr1 = (vfn *) VFN_3d_1;          // address to initialized V1
 
-	//vfn *rr3 = (vfn *) VFN
-
     gen_res res1;
 	eval_res res0;
 	eval_res res_t_lag;
@@ -91,15 +89,8 @@ void gen_VP(void *snodes_in, void *VFN_3d_1, void *VFN_3d_2 ){
 			 << "  i_ph = " << i_ph << "  begin renter problem" << endl;
 
 		for (w_i = 0; w_i < w_n; w_i++) {
-
-			//for (t_i2 = 0; t_i2 < t_n; t_i2++) {
 			for (t_i2 = 0; t_i2 < t_n; t_i2 ++){
-				//cout << "gen_vp: t_i2 = " << t_i2 << endl;
-
-					
-				res1_flag = 1;
-			
-
+				
 				if (w_i % 100 == 0) {
 					cout << "w_i = " << w_i << endl;
 				}
@@ -152,11 +143,9 @@ void gen_VP(void *snodes_in, void *VFN_3d_1, void *VFN_3d_2 ){
 					//cout << res1.v_opt << endl; 
 					(*rr2).def_flag = 0;
 				}
-
-				if (res1_flag) {
-					res1 = gen_VPw(snodes1, rr1, rr2, coh, x_guess, b_min, beg_equity, mpmt);                               // pass problem into gen_V1_w
-				}
-
+				
+				res1 = gen_VPw(snodes1, rr1, rr2, coh, x_guess, b_min, beg_equity, mpmt);                               // pass problem into gen_V1_w
+				
 				if (t_i2 == 1) {
 					v_ti1 = res1.v_opt;
 					x_ti1 = res1.x_opt;
@@ -179,7 +168,7 @@ void gen_VP(void *snodes_in, void *VFN_3d_1, void *VFN_3d_2 ){
 						(*rr1).set_pol_ten_v(t_i, i_s, w_i, x1, 0, v1);
 					}
 				}
-			}			
+			}
 		}
 		(*rr1).interp_vw3(t_i, i_s);  // clean and interpolate grid			
 
