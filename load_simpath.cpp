@@ -35,7 +35,7 @@ void load_simpath(void *snodes_in, double rent_in, double ph0_in, double ret0_in
 
 	int s1, s2, s_test;                             // state in current period, state in next period
 	int N_print =  40000;                          // number of observations to print to file
-	int N_sim = 2000000;                                            // number of simulations
+	int N_sim = 200000;                                            // number of simulations
 	int i_ph, i_rent, i_yi, i_s;                                 // state and individual dimension indices
 
 	cout << "load ppath: ph0_in:  " << ph0_in << endl;
@@ -143,8 +143,10 @@ double gamma0_store[] = {
 	
 	// stdev centers (tauchen-style discretization) 
 	double ph_nd_std[] = { -2.0, -1.5, -1.0, -0.5, 0.0, .5, 1.0, 1.5, 2.0 };     
-	double rent_nd_std[] = { 0.0 };                                           // can also set { -1.0, 0.0, 1.0 };
-	double yi_nd_std[] = { -1.0, 0.0, 1.0 }; //{  -1.5, 0.0, 1.5 }; 
+	double rent_nd_std[] = { -1.0, 0.0, 1.0 };
+	//double rent_nd_std[] = { 0.0 };  
+	double yi_nd_std[] = { 0.0, 1.0 };
+	//double yi_nd_std[] = { -1.0, 0.0, 1.0 }; //{  -1.5, 0.0, 1.5 }; 
 	
 	string city_init = city_init_in;                                          // initial conditions for simulation
 	    
@@ -220,12 +222,19 @@ double gamma0_store[] = {
 	double age_td; // track household age as double
 
 	// loop through simulations
+
+	g_rent = 0.01;
+
 	cout << "load_simpath.cpp: Begin Simulations" << endl;
 	for (n = 0; n < N_sim; n++){                  
 		if ( n % 10000 == 0) {
 			cout << "n = " << n << endl;
 		}
 		
+		rent0 = 1.0;
+		ph0 = 20.0;
+
+
 		// t = 0: initial year
 		t = 0;                                 
 		age_td = double(age_begin_in) + double(t); // initial age
@@ -241,6 +250,7 @@ double gamma0_store[] = {
 		
 		yi_str[t][n] = y_city_mult[city_id]*mult_unit*mult_2005*exp(log_fe + log_y_age);
 		yi_str[t][n] = log(yi_str[t][n]);
+		yi_str[t][n] = log(0.01);
 
 		v_t0 = 0.0;                             // set permanent income shock
 
@@ -261,14 +271,17 @@ double gamma0_store[] = {
 		// compute home price appreciation
 		ret_tn = (csf_1yr - ph0) / ph0 + sigma_ret*dist(gen);  // impose first year expected return equals the futures-based forecast
 
-		rent_str[t][n] = exp(g_rent)*rent_str[t-1][n]; // update rent path
+		//rent_str[t][n] = exp(g_rent)*rent_str[t-1][n]; // update rent path
+		rent_str[t][n] = exp(g_rent + 0.02*dist(gen) )*rent_str[t-1][n]; // update dividend path
 		
 		yi_str[t][n] = y_city_mult[city_id]*mult_unit*mult_2005*exp( log_fe + log_y_age + v_t + e_t );  // Cocco, Maenhoust, Gomes parameters are in 1000's; convert to 100k
 		yi_str[t][n] = log(yi_str[t][n]);
+		yi_str[t][n] = log(0.01);
 
 		//ph_str[t][n] = (ret_tn) + ph_str[t - 1][n];  // home prices in sim are in logs
-		ph_str_city[t][n] =  ret_tn + ph_str_city[t - 1][n];  // home prices in sim are in logs
-		ph_str[t][n] = ret_tn + ph_str[t - 1][n] + sigma_city_ind*dist(gen);  // home prices in sim are in logs
+		//ph_str_city[t][n] =  ret_tn + ph_str_city[t - 1][n];  // home prices in sim are in logs
+		//ph_str[t][n] = ret_tn + ph_str[t - 1][n] + sigma_city_ind*dist(gen);  // home prices in sim are in logs
+		ph_str[t][n] = ph_str[t - 1][n] + 0.055 + 0.15*dist(gen);
 
 		// simulate later time periods
 		for (t = 2; t < (T_sim + 1); t++){
@@ -296,8 +309,11 @@ double gamma0_store[] = {
 
 			yi_str[t][n] = mult_unit*mult_2005*exp(log_fe + log_y_age + v_t + e_t);
 			yi_str[t][n] = log(yi_str[t][n]);
+			yi_str[t][n] = log(0.01);
 
-			ph_str[t][n] = ret_tn + ph_str[t - 1][n] + sigma_city_ind*dist(gen);
+			rent_str[t][n] = exp(g_rent + 0.02*dist(gen))*rent_str[t - 1][n];           // update dividend path
+			ph_str[t][n] = ph_str[t - 1][n] + 0.055 + 0.15*dist(gen);
+
 			ph_str_city[t][n] = ret_tn + ph_str_city[t - 1][n];
 		}
 	}
@@ -350,9 +366,11 @@ double gamma0_store[] = {
 		res_sq_sum = inner_product(yi_str[t].begin(), yi_str[t].end(), yi_str[t].begin(), 0.0);
 		res_std = sqrt(res_sq_sum / (double)yi_str[t].size() - res_mean * res_mean);
 
-		if (t == 0) {
-			res_std = 0.01;
+		// check null stdev case
+		if ((res_std != res_std) || (res_std <= 0.01)) {
+			res_std = 0.01;  // initial period: manually set stdev
 		}
+
 		for (n = 0; n < n_yi; n++) {
 			yi_str_nds[t][n] = res_mean + yi_nd_std[n] * res_std; // compute income nodes (log scale)
 			(*snodes1).yi_gridt[t][n] = exp(yi_str_nds[t][n]);    // load individual-income nodes into income_gridt

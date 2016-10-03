@@ -14,7 +14,7 @@ const int t_end = 11;                    // = 11 to cycle through all time perio
 
 const int param_id = 0;  // set = 0 to define parameters here manually; set = 1, 2, 3, 4 for presets and load in main
 
-const int age_begin_store[] = { 45, 45, 30 }; // manual age settings here
+const int age_begin_store[] = { 60, 45, 30 }; // manual age settings here
 const int n_age_store[] = { 1, 1, 1, 2, 2 };
 //const int n_age_store[] = { 1, 1, 2, 1, 2 };
 const int n_age = n_age_store[param_id]; 
@@ -22,7 +22,7 @@ const int n_age = n_age_store[param_id];
 const double csfLevStore[] = {1.0/0.055, 1.0/0.055, 0.0, 1.0/0.055, 0.0};
 //const double csfLev[] = 1.0 * (1.0 / 0.055);
 const double csfLev = csfLevStore[param_id];
-const int w_n = 1000; // Grid points in wealth; set = 200 for fast computation, = 2000 for precision
+const int w_n = 200; // Grid points in wealth; set = 200 for fast computation, = 2000 for precision
 
 
 const int age_max = 65;                  // age at which household retires / annuitizes wealth  
@@ -47,8 +47,8 @@ const int N_control = 6;
 const int N_cities = 8;                    // number of cities
 
 const int n_ph = 9;      // possible home price states
-const int n_rent = 1; // 3;  possible rent states
-const int n_yi =  3;  // labor income states
+const int n_rent = 3; // 3;  possible rent states
+const int n_yi = 2; //3;  // labor income states
 
 const int n_s = n_ph * n_rent * n_yi;  // number of states
 
@@ -152,7 +152,7 @@ const double hu_ten_def =  .5;  // square footage in default case
 const double alpha_cd = 0.6;                         // Prefence weight for C: Non-durable consumption
 const double calpha_cd = 0.4;                        // =1.0 - alpha_sd; Preference weight for H: Housing services
 
-const double rb = 1.0204;                             // Gross return on bonds / mortgage rate; sometimes = 1.04
+const double rb = 1.0304;  //rb = 1.0204;            // Gross return on bonds / mortgage rate; sometimes = 1.04
 
 // IF CES Preferences:
 const double alpha_ces = -6.485; // -6.7; // .75;                // Low substitutability between C and H

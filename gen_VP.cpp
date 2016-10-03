@@ -89,7 +89,7 @@ void gen_VP(void *snodes_in, void *VFN_3d_1, void *VFN_3d_2 ){
 			 << "  i_ph = " << i_ph << "  begin renter problem" << endl;
 
 		for (w_i = 0; w_i < w_n; w_i++) {
-			for (t_i2 = 0; t_i2 < t_n; t_i2 ++){
+			for (t_i2 = 0; t_i2 < 1; t_i2 ++){
 				
 				if (w_i % 100 == 0) {
 					cout << "w_i = " << w_i << endl;
@@ -124,12 +124,13 @@ void gen_VP(void *snodes_in, void *VFN_3d_1, void *VFN_3d_2 ){
 				// load t_i2-restricted guess as an initial starting point
 				x_guess = x_lag_wt[t_i2];
 						
-				coh = (*rr1).w_grid[w_i] + y_atax*(*snodes1).yi_gridt[t_hor][i_yi] -
-					(1.0 + phi_buy) * (*snodes1).ten_w[t_i2] * (*snodes1).p_gridt[t_hor][i_ph];
+				//coh = (*rr1).w_grid[w_i] + y_atax*(*snodes1).yi_gridt[t_hor][i_yi] -
+				//	(1.0 + phi_buy) * (*snodes1).ten_w[t_i2] * (*snodes1).p_gridt[t_hor][i_ph];
+				coh = (*rr1).w_grid[w_i]; 
 
-				if (t_i2 == 0) {
-					coh = coh - (*snodes1).rent_gridt[t_hor][i_rent] * (*snodes1).rent_adj;
-				}
+				//if (t_i2 == 0) {
+				//	coh = coh - (*snodes1).rent_gridt[t_hor][i_rent] * (*snodes1).rent_adj;
+				//}
 				
 				(*rr2).i_s1 = i_s;  // pass in current state to next-period value function
 				(*rr2).t_i1 = t_i;
@@ -182,6 +183,7 @@ void gen_VP(void *snodes_in, void *VFN_3d_1, void *VFN_3d_2 ){
 	//do not need to cycle through t_i2 = {0, 1,2}, only t_i2 = t_i
 	
 	cout << "gen_VP.cpp: begin homeowner problem" << endl; 
+	/*
 	for (t_i = 1; t_i < t_n; t_i++) {                        // consider t_i = 0 first; case: begin with renter 
 		for (i_s = 0; i_s < n_s; i_s++) {
 			i_yi = (*snodes1).s2i_yi[i_s];
@@ -256,7 +258,7 @@ void gen_VP(void *snodes_in, void *VFN_3d_1, void *VFN_3d_2 ){
 			cout << "time elapsed: " << duration << "  lcount = " << (*rr2).lcount << endl;
 		}
 	}
-
+	*/
 	// clean grid again
 	for (t_i = 0; t_i < t_n; t_i++) {                       
 		for (i_s = 0; i_s < n_s; i_s++) {

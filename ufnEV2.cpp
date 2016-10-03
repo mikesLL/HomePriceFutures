@@ -68,7 +68,8 @@ double ufnEV2::eval( vector<double> x ){
 	double w2, w2_move, vw2;
 
 	double uc = ufn(x[0], hu, (*vf2).pref);  // composite utility
-	
+	//uc = 0.0;
+
 	// calc effective effective interest rate
 	if ((*vf2).t_i2 == 0) {           
 		if (x[1] < 0.0) {
@@ -95,14 +96,31 @@ double ufnEV2::eval( vector<double> x ){
 	//int n_csf_basis = 1; 
 	//double csf_basis[] = { 0.0, 0.0 };
 	//double pcsf_basis[] = { 1.0, 0.0 };
+	
+	double ret_x = 0.0;
+	int i_rent0 = (*snodes1).s2i_rent[i_s1];
+	double rent0 = (*snodes1).rent_gridt[t_hor][i_rent0];
+	double div_yield = rent0 / ph1; 
+	//double div_yield = (*snodes1).rent_gridt
 
 	// cycle accross possible future states to compute value function expectation
 	for (i_s2p = 0; i_s2p < N_s2p; i_s2p++) {
 		i_s2 = i_s2p_vec[i_s2p];
 		i_ph2 = (*snodes1).s2i_ph[i_s2];
+	
+		//for (i_x2 = 0; i_x2 < retxn; i_x2++) {
 
-		for (i_x2 = 0; i_x2 < retxn; i_x2++) {
+			ret_x = log((*snodes1).p_gridt[t_hor + 1][i_ph2]) - log(ph1); 
 			
+			w2 = rb_eff*x[1] + exp(ret_x + div_yield) *x[2];		
+
+			res1 = eval_v(i_s2, w2);
+
+			vw2 = res1.v_out; 
+
+			Evw_2 = Evw_2 +  (*snodes1).gammat[t_hor][i_s1][i_s2] * vw2;  // compute expectation
+			
+			/*
 			w2 = rb_eff*x[1] + exp(retxv[i_x2])*x[2] +
 				csfLevSn * csf_net2[i_s2] * (x[3] - x[4]) +
 				x[3] + x[4] + (*snodes1).ten_w[t_i2] * (*snodes1).p_gridt[t_hor + 1][i_ph2];
@@ -114,8 +132,8 @@ double ufnEV2::eval( vector<double> x ){
 				vw2 = (1.0 - p_move)* res1.v_out + p_move * res1_move.v_out; 
 
 				Evw_2 = Evw_2 + pcsf_basis[i_csf_basis]*retxp[i_x2] * (*snodes1).gammat[t_hor][i_s1][i_s2] * vw2;  // compute expectation
-			
-		}
+			*/
+		//}
 
 	}
 	
