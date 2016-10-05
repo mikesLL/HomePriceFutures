@@ -14,15 +14,15 @@ const int t_end = 11;                    // = 11 to cycle through all time perio
 
 const int param_id = 0;  // set = 0 to define parameters here manually; set = 1, 2, 3, 4 for presets and load in main
 
-const int age_begin_store[] = { 45, 45, 30 }; // manual age settings here
+const int age_begin_store[] = { 60, 45, 30 }; // manual age settings here
 const int n_age_store[] = { 1, 1, 1, 2, 2 };
 //const int n_age_store[] = { 1, 1, 2, 1, 2 };
 const int n_age = n_age_store[param_id]; 
 
-const double csfLevStore[] = {1.0/0.055, 1.0/0.055, 0.0, 1.0/0.055, 0.0};
+const double csfLevStore[] = {0.0/0.055, 1.0/0.055, 0.0, 1.0/0.055, 0.0};
 //const double csfLev[] = 1.0 * (1.0 / 0.055);
 const double csfLev = csfLevStore[param_id];
-const int w_n = 1000; // Grid points in wealth; set = 200 for fast computation, = 2000 for precision
+const int w_n = 40; // Grid points in wealth; set = 200 for fast computation, = 2000 for precision
 
 
 const int age_max = 65;                  // age at which household retires / annuitizes wealth  
@@ -30,7 +30,7 @@ const int age_max = 65;                  // age at which household retires / ann
 
 
 //const double margin_store[] = { 0.0, 0.0, 0.02524, 0.032408, 0.0, 0.019866, 0.0, }; 
-const double csfLev_pidxw[] = {1.0, 1.0, 0.0, 1.0, 0.0 };  // change in future notl to index weight
+const double csfLev_pidxw[] = {0.0, 1.0, 0.0, 1.0, 0.0 };  // change in future notl to index weight
 
 // csf margin requirement by city
 const double csfmarg_store[] = { 0.036444571, 0.039967956, 0.032995124, 0.033871271,
@@ -79,7 +79,7 @@ const double phi_buy = 0.00;  //0.02;
 
 // Housing-service related parameters
 // median square footage by city
-const double hu_med[N_cities] = { 1.7, 1.7, 1.6, 1.8, 1.8, 1.6, 1.5, 1.8 };   // san fran updated
+const double hu_med[N_cities] = { 1.6, 1.7, 1.5, 1.9, 1.8, 1.6, 1.5, 1.83 };   // san fran updated
 
 // Home Sizes (square footage, thousands);  33-66-quintiles from AHS (2005) Data;
 // Assume the small house can also be rented

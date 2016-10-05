@@ -35,7 +35,7 @@ void load_simpath(void *snodes_in, double rent_in, double ph0_in, double ret0_in
 
 	int s1, s2, s_test;                             // state in current period, state in next period
 	int N_print =  40000;                          // number of observations to print to file
-	int N_sim = 2000000;                                            // number of simulations
+	int N_sim = 200000;                                            // number of simulations
 	int i_ph, i_rent, i_yi, i_s;                                 // state and individual dimension indices
 
 	cout << "load ppath: ph0_in:  " << ph0_in << endl;
@@ -356,7 +356,13 @@ double gamma0_store[] = {
 		for (n = 0; n < n_yi; n++) {
 			yi_str_nds[t][n] = res_mean + yi_nd_std[n] * res_std; // compute income nodes (log scale)
 			(*snodes1).yi_gridt[t][n] = exp(yi_str_nds[t][n]);    // load individual-income nodes into income_gridt
+			cout << t << "..." << n << "..." << (*snodes1).yi_gridt[t][n] << "...";
+
+			//if (t <= 5) {
+			//	(*snodes1).yi_gridt[t][n] = 0.0;
+			//}
 		}
+		cout << endl;
 	}
 
 	cout << "load_simpath.cpp: Begin Computing State-Space Transition Matrix" << endl;

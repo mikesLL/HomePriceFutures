@@ -97,26 +97,37 @@ double ufnEV2::eval( vector<double> x ){
 	//double pcsf_basis[] = { 1.0, 0.0 };
 
 	// cycle accross possible future states to compute value function expectation
-	for (i_s2p = 0; i_s2p < N_s2p; i_s2p++) {
-		i_s2 = i_s2p_vec[i_s2p];
-		i_ph2 = (*snodes1).s2i_ph[i_s2];
 
-		for (i_x2 = 0; i_x2 < retxn; i_x2++) {
-			
-			w2 = rb_eff*x[1] + exp(retxv[i_x2])*x[2] +
-				csfLevSn * csf_net2[i_s2] * (x[3] - x[4]) +
-				x[3] + x[4] + (*snodes1).ten_w[t_i2] * (*snodes1).p_gridt[t_hor + 1][i_ph2];
+	int i_yi2 = 0;
+	double yprob[] = { 0.96, 0.04 };
+	double yval[] = { 0.6, 0.15 };
+
+	for (i_yi2 = 0; i_yi2 < 2; i_yi2++) {
+		for (i_s2p = 0; i_s2p < N_s2p; i_s2p++) {
+			i_s2 = i_s2p_vec[i_s2p];
+			i_ph2 = (*snodes1).s2i_ph[i_s2];
+
+			for (i_x2 = 0; i_x2 < retxn; i_x2++) {
+
+				w2 = rb_eff*x[1] + exp(retxv[i_x2])*x[2] +
+					csfLevSn * csf_net2[i_s2] * (x[3] - x[4]) +
+					x[3] + x[4] + (*snodes1).ten_w[t_i2] * (*snodes1).p_gridt[t_hor + 1][i_ph2];
+
+				if (i_yi2 >= 1) {
+					w2 = w2 - 0.45;
+				}
 
 				res1 = eval_v(i_s2, w2);                                   // evaluate value function in state
-				
-				res1_move = (*vf2).eval_v_def(i_s2, w2); 
-				
-				vw2 = (1.0 - p_move)* res1.v_out + p_move * res1_move.v_out; 
 
-				Evw_2 = Evw_2 + pcsf_basis[i_csf_basis]*retxp[i_x2] * (*snodes1).gammat[t_hor][i_s1][i_s2] * vw2;  // compute expectation
-			
+				res1_move = (*vf2).eval_v_def(i_s2, w2);
+
+				vw2 = (1.0 - p_move)* res1.v_out + p_move * res1_move.v_out;
+
+				Evw_2 = Evw_2 + yprob[i_yi2]*pcsf_basis[i_csf_basis] * retxp[i_x2] * (*snodes1).gammat[t_hor][i_s1][i_s2] * vw2;  // compute expectation
+
+			}
+
 		}
-
 	}
 	
 	return uc + beta*Evw_2;

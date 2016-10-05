@@ -98,13 +98,13 @@ void gen_VP(void *snodes_in, void *VFN_3d_1, void *VFN_3d_2 ){
 				if (t_i2 == 0) {
 					b_min = b_min_unsec;
 					beg_equity = -1.0e6;
-					mpmt = 0.0;
+					mpmt = -1.0e6;
 				}
 				else {
 					b_min =  - max_ltv*(*snodes1).ten_w[t_i2] * (*snodes1).p_gridt[t_hor][i_ph];          // lower bound on bond / mortgage
 					beg_equity = min_dpmt * (*snodes1).ten_w[t_i2] * (*snodes1).p_gridt[t_hor][i_ph];
 				    //mpmt = ( rb + mort_spread - 1.0 ) * (*snodes1).ten_w[t_i2] * (*snodes1).p_gridt[t_hor][i_ph];
-					mpmt = 0.0;
+					mpmt = -1.0e6;
 					b_min2 = -max_lti * (*snodes1).yi_gridt_btax[t_hor][i_yi] / (rb + mort_spread - 1.0);
 
 					b_min = max(b_min, b_min2);
@@ -210,7 +210,7 @@ void gen_VP(void *snodes_in, void *VFN_3d_1, void *VFN_3d_2 ){
       
 				coh = (*rr1).w_grid[w_i] + y_atax*(*snodes1).yi_gridt[t_hor][i_yi] - (*snodes1).ten_w[t_i] * maint_mult * (*snodes1).p_gridt[t_hor][i_ph];       // subtract housing wealth from cash on hand  			
 				
-				mpmt = 0.0;
+				mpmt = -1.0e6; 
 				beg_equity = -1.0e6;
 
 				(*rr2).i_s1 = i_s;
