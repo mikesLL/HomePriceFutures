@@ -53,7 +53,7 @@ const int n_yi =  3;  // labor income states
 const int n_s = n_ph * n_rent * n_yi;  // number of states
 
 // Labor income related parameters
-const double maint_mult = 0.98;
+const double maint_mult = 0.99;
 const double y_tax = 0.0;                 // 0.3;  // taxation is handled in snodes.cpp
 const double y_atax = 1.0 - y_tax;
 const double y_replace = 0.9388;            // From Cocco, Gomes, Maenhout (2005)
