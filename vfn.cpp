@@ -315,6 +315,7 @@ void vfn::set_terminal(double phr_in) {
 				// phi*(*snodes1).ten_w[t_i] * (*snodes1).p_gridt[t_hor][i_ph];
 				w_adj = w_grid[i_w] - phi * (*snodes1).ten_w[i_t] * (*snodes1).p_gridt[t_num][i_ph3]; 
 				
+				w_adj = w_grid[i_w] - (*snodes1).ten_w[i_t]*(*snodes1).p_gridt[t_num][i_ph3]; 
 				coh_perm = (rb - 1.0)*w_adj  + 1.0*(rb - 1.0)*10.0*y_atax*y_replace*(*snodes1).yi_gridt[T_max][i_yi];
 				//coh_perm = (rb - 1.0)*w_grid[i_w]  + 0.0*(rb - 1.0)*10.0*y_atax*y_replace*(*snodes1).yi_gridt[T_max][i_yi];
 				//coh_perm =  (rb - 1.0)*w_grid[i_w] + 1.0*(rb - 1.0)*30.0*y_atax*y_replace*(*snodes1).yi_gridt[T_max][i_yi];  // works
@@ -322,7 +323,8 @@ void vfn::set_terminal(double phr_in) {
 				//coh_perm -= 1.0*(*snodes1).rent_adj * (*snodes1).rent_gridt[T_max][i_rent];
 				//coh_perm = max( 0.0, c_fs ); 
 			
-				V_perm = ( 1.0 - pow( beta, 20.0) ) / (1.0 - beta) * ufn(coh_perm, (*snodes1).hu_ten[0], pref);
+				//V_perm = ( 1.0 - pow( beta, 20.0) ) / (1.0 - beta) * ufn(coh_perm, (*snodes1).hu_ten[0], pref);
+				V_perm = (1.0 - pow(beta, 20.0)) / (1.0 - beta) * ufn(coh_perm, (*snodes1).hu_ten[i_t], pref);
 
 				if (coh_perm <= 0.0) {
 					V_perm = -1.0e6 - 1.0e6*pow(coh_perm, 2.0);
