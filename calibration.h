@@ -10,7 +10,7 @@ const int city_begin = 2;
 const int city_end = 2;
 
 const int t_begin = 5;                   // begin in year 5 from .csv
-const int t_end = 11;                    // = 11 to cycle through all time periods;
+const int t_end = 5;                    // = 11 to cycle through all time periods;
 
 const int param_id = 0;  // set = 0 to define parameters here manually; set = 1, 2, 3, 4 for presets and load in main
 
@@ -22,7 +22,7 @@ const int n_age = n_age_store[param_id];
 const double csfLevStore[] = {0.0/0.055, 1.0/0.055, 0.0, 1.0/0.055, 0.0};
 //const double csfLev[] = 1.0 * (1.0 / 0.055);
 const double csfLev = csfLevStore[param_id];
-const int w_n = 40; // Grid points in wealth; set = 200 for fast computation, = 2000 for precision
+const int w_n = 200; // Grid points in wealth; set = 200 for fast computation, = 2000 for precision
 
 
 const int age_max = 65;                  // age at which household retires / annuitizes wealth  
