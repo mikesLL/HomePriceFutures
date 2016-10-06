@@ -132,7 +132,8 @@ void gen_VP(void *snodes_in, void *VFN_3d_1, void *VFN_3d_2 ){
 					(1.0 + phi_buy) * (*snodes1).ten_w[t_i2] * (*snodes1).p_gridt[t_hor][i_ph];
 
 				if (t_i2 == 0) {
-					coh = coh - (*snodes1).rent_gridt[t_hor][i_rent] * (*snodes1).rent_adj;
+					coh = coh - min( (*snodes1).rent_gridt[t_hor][i_rent] * (*snodes1).rent_adj,
+						1.0 / 3.0*(*snodes1).yi_gridt[t_hor][i_yi] );
 				}
 				
 				(*rr2).i_s1 = i_s;  // pass in current state to next-period value function
