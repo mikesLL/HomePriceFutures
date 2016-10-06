@@ -53,7 +53,7 @@ const int n_yi =  3;  // labor income states
 const int n_s = n_ph * n_rent * n_yi;  // number of states
 
 // Labor income related parameters
-const double maint_mult = 0.99;
+const double maint_mult = 0.98;
 const double y_tax = 0.0;                 // 0.3;  // taxation is handled in snodes.cpp
 const double y_atax = 1.0 - y_tax;
 const double y_replace = 0.9388;            // From Cocco, Gomes, Maenhout (2005)
@@ -175,15 +175,15 @@ const double c_fs = .01;                             // Minimum baseline consump
 const double coh_fs = .05;                           // Cash on hand (Gov Asssistance: Non-durable Consumption + Housing)
 
 // down-payment criteria
-const double delta = .05;                            // Minimum down payment
-const double min_dpmt =  .05;    //0.2;                     // minimum down payment
-const double max_ltv = 0.95; // .95;  0.8;                        // max loan to value
+const double delta = .10;                            // Minimum down payment
+const double min_dpmt =  .10;    //0.2;                     // minimum down payment
+const double max_ltv = 0.90; // .95;  0.8;                        // max loan to value
 
 // mortgage risk criteria
 const double max_lti = 0.3;
 const double mort_spread = .02;                       // mortgage spread above risk-free rate
-const double pmi_dpmt = .20;                          // if down payment below this amount, add to mortgage spread
-const double pmi_prem = 0.01;                         // pmi premium
+const double pmi_dpmt = .10;                          // if down payment below this amount, add to mortgage spread
+const double pmi_prem = 0.0; //0.01;                         // pmi premium
 const double credit_prem = .18;                       // unsecured credit apr
 const double b_min_unsec = 0.0; // -0.4;               // unsecured borrowing limit
 

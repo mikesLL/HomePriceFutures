@@ -22,7 +22,7 @@ double ufn( double c_in, double hu_in, int pref_in){
 			uc = 1.0 / (1.0 - rho)* pow(c_comp, 1.0 - rho);            // power utility in composite
 		}
 		else {
-			c_comp = pow(c_in, alpha_ces) + gammad*pow(hu_in, alpha_ces);
+			c_comp = pow(c_in, alpha_ces) + gammad*pow(hu_in*1.0/100.0, alpha_ces);
 			uc = 1.0 / (1.0 - rho) * pow(c_comp, (1.0 - rho) / alpha_ces);
 		}
 	}
