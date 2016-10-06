@@ -344,7 +344,10 @@ void vfn::set_terminal(double phr_in) {
 				
 				// evaluate bequest value
 				vw3_grid[i_t][i_s][i_w] = b_motive*max(V_perm, V_fs);
-				vw3_def_grid[i_s][i_w] = b_motive*max(V_perm, V_fs);
+
+				if (i_t == 0) {
+					vw3_def_grid[i_s][i_w] = b_motive*max(V_perm, V_fs);
+				}
 
 				v_move[i_w] = b_motive*V_perm;
 			}
