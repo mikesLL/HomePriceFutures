@@ -67,7 +67,7 @@ const int w_i_zero = (int)ceil(-w_min * double(w_n) / (w_max - w_min));
 //const double w_max = 40.0; //16.05;         // maximum wealth (on grid) (100's thousands)             
 //const double w_min = -2.0; // 0.05;          // minimum wealth (on grid) (100's thousands) 
 
-const double rho = 4.0;
+const double rho = 5.0;
 //const double rho = 1.8;                  // Power: curvature parameter; governs risk-aversion  also = 1.0, 2.0, 4.0
 const int rhoi = int(floor(rho));        // Floor for identification
 
