@@ -22,7 +22,7 @@ const int n_age = n_age_store[param_id];
 const double csfLevStore[] = {1.0/0.055, 1.0/0.055, 0.0, 1.0/0.055, 0.0};
 //const double csfLev[] = 1.0 * (1.0 / 0.055);
 const double csfLev = csfLevStore[param_id];
-const int w_n = 400; // Grid points in wealth; set = 200 for fast computation, = 2000 for precision
+const int w_n = 200; // Grid points in wealth; set = 200 for fast computation, = 2000 for precision
 
 
 const int age_max = 65;                  // age at which household retires / annuitizes wealth  
@@ -67,7 +67,7 @@ const int w_i_zero = (int)ceil(-w_min * double(w_n) / (w_max - w_min));
 //const double w_max = 40.0; //16.05;         // maximum wealth (on grid) (100's thousands)             
 //const double w_min = -2.0; // 0.05;          // minimum wealth (on grid) (100's thousands) 
 
-const double rho = 3.0;
+const double rho = 4.0;
 //const double rho = 1.8;                  // Power: curvature parameter; governs risk-aversion  also = 1.0, 2.0, 4.0
 const int rhoi = int(floor(rho));        // Floor for identification
 
@@ -149,8 +149,8 @@ const double hu_ten_store[N_cities][t_n] =
 const double hu_ten_def =  .5;  // square footage in default case
 
 // If Cobb-Douglas Preferences:
-const double alpha_cd = 0.6;                         // Prefence weight for C: Non-durable consumption
-const double calpha_cd = 0.4;                        // =1.0 - alpha_sd; Preference weight for H: Housing services
+const double alpha_cd = 0.7;                         // Prefence weight for C: Non-durable consumption
+const double calpha_cd = 0.3;                        // =1.0 - alpha_sd; Preference weight for H: Housing services
 
 const double rb = 1.0304;                             // Gross return on bonds / mortgage rate; sometimes = 1.04
 
