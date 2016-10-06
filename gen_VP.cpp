@@ -49,6 +49,10 @@ void gen_VP(void *snodes_in, void *VFN_3d_1, void *VFN_3d_2 ){
 	int i_s;
 	int t_hor = (*snodes1).t_hor;
 
+	if (t_hor == 0) {
+		cout << "first horizon" << endl; 
+	}
+
 	double coh, w_adj, v_adj, v_i_floor, v0_opt, v0, beg_equity, mpmt, b_min2;
 	double v1;
 	double v_lag_w; // value function guess from previous wealth level

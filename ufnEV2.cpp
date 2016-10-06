@@ -102,7 +102,7 @@ double ufnEV2::eval( vector<double> x ){
 	double yprob[] = { 0.96, 0.04 };
 	double yval[] = { 0.6, 0.15 };
 
-	for (i_yi2 = 0; i_yi2 < 2; i_yi2++) {
+	//for (i_yi2 = 0; i_yi2 < 2; i_yi2++) {
 		for (i_s2p = 0; i_s2p < N_s2p; i_s2p++) {
 			i_s2 = i_s2p_vec[i_s2p];
 			i_ph2 = (*snodes1).s2i_ph[i_s2];
@@ -123,12 +123,12 @@ double ufnEV2::eval( vector<double> x ){
 
 				vw2 = (1.0 - p_move)* res1.v_out + p_move * res1_move.v_out;
 
-				Evw_2 = Evw_2 + yprob[i_yi2]*pcsf_basis[i_csf_basis] * retxp[i_x2] * (*snodes1).gammat[t_hor][i_s1][i_s2] * vw2;  // compute expectation
+				Evw_2 = Evw_2 + pcsf_basis[i_csf_basis] * retxp[i_x2] * (*snodes1).gammat[t_hor][i_s1][i_s2] * vw2;  // compute expectation
 
 			}
 
 		}
-	}
+	//}
 	
 	return uc + beta*Evw_2;
 }

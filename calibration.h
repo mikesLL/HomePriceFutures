@@ -22,7 +22,7 @@ const int n_age = n_age_store[param_id];
 const double csfLevStore[] = {0.0/0.055, 1.0/0.055, 0.0, 1.0/0.055, 0.0};
 //const double csfLev[] = 1.0 * (1.0 / 0.055);
 const double csfLev = csfLevStore[param_id];
-const int w_n = 200; // Grid points in wealth; set = 200 for fast computation, = 2000 for precision
+const int w_n = 40; // Grid points in wealth; set = 200 for fast computation, = 2000 for precision
 
 
 const int age_max = 65;                  // age at which household retires / annuitizes wealth  
@@ -42,7 +42,7 @@ const double csfmarg_store[] = { 0.036444571, 0.039967956, 0.032995124, 0.033871
 const int csfLevi = int(floor(csfLev));   // Floor for identification
 
 const int t_n = 5; // 4;                        // possible tenure states
-const int pref = 1;                       // set pref = 0 for Cobb-Douglas, = 1 for CES
+const int pref = 0;                       // set pref = 0 for Cobb-Douglas, = 1 for CES
 const int N_control = 6;
 const int N_cities = 8;                    // number of cities
 
@@ -67,11 +67,11 @@ const int w_i_zero = (int)ceil(-w_min * double(w_n) / (w_max - w_min));
 //const double w_max = 40.0; //16.05;         // maximum wealth (on grid) (100's thousands)             
 //const double w_min = -2.0; // 0.05;          // minimum wealth (on grid) (100's thousands) 
 
-//const double rho = 3.0;
-const double rho = 1.8;                  // Power: curvature parameter; governs risk-aversion  also = 1.0, 2.0, 4.0
+const double rho = 3.0;
+//const double rho = 1.8;                  // Power: curvature parameter; governs risk-aversion  also = 1.0, 2.0, 4.0
 const int rhoi = int(floor(rho));        // Floor for identification
 
-const double beta = .95;   // alt: =.95               // Beta: time preferences
+const double beta = .97;   // alt: =.95               // Beta: time preferences
 const double phi = 0.06;                  // moving / transaction costs in event of home sale; also =.15
 const double phi_sell = 0.06; //0.10;
 const double phi_buy = 0.00;  //0.02;
