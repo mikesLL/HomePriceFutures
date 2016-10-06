@@ -144,7 +144,8 @@ double gamma0_store[] = {
 	// stdev centers (tauchen-style discretization) 
 	double ph_nd_std[] = { -2.0, -1.5, -1.0, -0.5, 0.0, .5, 1.0, 1.5, 2.0 };     
 	double rent_nd_std[] = { 0.0 };                                           // can also set { -1.0, 0.0, 1.0 };
-	double yi_nd_std[] = { -1.0, 0.0, 1.0 }; //{  -1.5, 0.0, 1.5 }; 
+	double yi_nd_std[] = { -0.01, 0.01 }; 
+	//double yi_nd_std[] = { -1.0, 0.0, 1.0 }; //{  -1.5, 0.0, 1.5 }; 
 	
 	string city_init = city_init_in;                                          // initial conditions for simulation
 	    

@@ -48,7 +48,7 @@ const int N_cities = 8;                    // number of cities
 
 const int n_ph = 9;      // possible home price states
 const int n_rent = 1; // 3;  possible rent states
-const int n_yi =  3;  // labor income states
+const int n_yi = 2; // 3;  // labor income states
 
 const int n_s = n_ph * n_rent * n_yi;  // number of states
 
