@@ -68,22 +68,53 @@ double ufnEV2::eval( vector<double> x ){
 	double w2, w2_move, vw2;
 
 	double uc = ufn(x[0], hu, (*vf2).pref);  // composite utility
+	double rb_eff_agg;                       // aggregated gross return on bonds
+
+	double b_unsec = 0.0;
+	double b_sec = 0.0; 
+	double rb_unsec = rb + credit_prem;
+	//double rb_sec = rb;
+
+	b_sec = max(x[1], -(1.0 - max_ltv)*(*snodes1).ten_w[t_i2] * ph1);
+	b_unsec = x[1] - b_sec;
+	rb_eff_agg = rb*b_sec + rb_unsec*b_unsec; 
 	
 	// calc effective effective interest rate
-	if ((*vf2).t_i2 == 0) {           
-		if (x[1] < 0.0) {
-			rb_eff = rb + credit_prem;     // unsecured credit APR
-		}
+	/*
+	if ((*vf2).t_i2 == 0) {    
+		b_sec = max(x[1], 0.0);
+		b_unsec = x[1] - b_sec; 
+		
+		rb_eff_agg = rb_unsec*b_unsec + rb_sec*b_sec; 
+		
+
+		//if (x[1] < 0.0) {
+		//	b_unsec
+		//	rb_eff = rb + credit_prem;     // unsecured credit APR
+		//	rb_eff_agg = rb_eff * x[1];
+		//}
 	}
 	else {
+		b_sec = max(x[1], -(1.0 - max_ltv)*(*snodes1).ten_w[t_i2] * ph1);
+		b_unsec = x[1] - b_sec; 
+
+
+		b_sec = x[1] - b_unsec;
+		rb_eff_agg = rb_unsec*b_unsec + rb_sec*b_sec;
+
+
 		if (x[1] < 0.0) {                                         
 			rb_eff = rb + mort_spread;                    // if agent holds mortgage debt, add mortgage spread
+
+			rb_eff_agg = (rb + mort_spread) * max(x[1], -(1.0 - max_ltv)*(*snodes1).ten_w[t_i2])*ph1 + 
+				            
 		}
 		                                                       
 		if (x[1] < -ph1*(1.0 - pmi_dpmt)*(*snodes1).ten_w[t_i2]) {
 			rb_eff = rb + mort_spread + pmi_prem;         // if agent has a low down payment, add pmi
 		}
 	}
+	*/
 	
 	int i_csf_basis = 0;
 	int n_csf_basis = 1;
@@ -109,7 +140,7 @@ double ufnEV2::eval( vector<double> x ){
 
 			for (i_x2 = 0; i_x2 < retxn; i_x2++) {
 
-				w2 = rb_eff*x[1] + exp(retxv[i_x2])*x[2] +
+				w2 = rb_eff_agg + exp(retxv[i_x2])*x[2] +
 					csfLevSn * csf_net2[i_s2] * (x[3] - x[4]) +
 					x[3] + x[4] + (*snodes1).ten_w[t_i2] * (*snodes1).p_gridt[t_hor + 1][i_ph2];
 
