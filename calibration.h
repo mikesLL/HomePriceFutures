@@ -71,7 +71,7 @@ const int w_i_zero = (int)ceil(-w_min * double(w_n) / (w_max - w_min));
 const double rho = 1.8;                  // Power: curvature parameter; governs risk-aversion  also = 1.0, 2.0, 4.0
 const int rhoi = int(floor(rho));        // Floor for identification
 
-const double beta = .98;   // alt: =.95               // Beta: time preferences
+const double beta = .95;   // alt: =.95               // Beta: time preferences
 const double phi = 0.06;                  // moving / transaction costs in event of home sale; also =.15
 const double phi_sell = 0.06; //0.10;
 const double phi_buy = 0.00;  //0.02;
@@ -152,7 +152,7 @@ const double hu_ten_def =  .5;  // square footage in default case
 const double alpha_cd = 0.6;                         // Prefence weight for C: Non-durable consumption
 const double calpha_cd = 0.4;                        // =1.0 - alpha_sd; Preference weight for H: Housing services
 
-const double rb = 1.0204;                             // Gross return on bonds / mortgage rate; sometimes = 1.04
+const double rb = 1.0304;                             // Gross return on bonds / mortgage rate; sometimes = 1.04
 
 // IF CES Preferences:
 const double alpha_ces = -6.485; // -6.7; // .75;                // Low substitutability between C and H
@@ -175,14 +175,14 @@ const double c_fs = .01;                             // Minimum baseline consump
 const double coh_fs = .05;                           // Cash on hand (Gov Asssistance: Non-durable Consumption + Housing)
 
 // down-payment criteria
-const double delta = .10;                            // Minimum down payment
-const double min_dpmt =  .10;    //0.2;                     // minimum down payment
-const double max_ltv = 0.90; // .95;  0.8;                        // max loan to value
+const double delta = .20;                            // Minimum down payment
+const double min_dpmt =  .20;    //0.2;                     // minimum down payment
+const double max_ltv = 0.80; // .95;  0.8;                        // max loan to value
 
 // mortgage risk criteria
 const double max_lti = 0.3;
-const double mort_spread = .02;                       // mortgage spread above risk-free rate
-const double pmi_dpmt = .10;                          // if down payment below this amount, add to mortgage spread
+const double mort_spread = .00;                       // mortgage spread above risk-free rate
+const double pmi_dpmt = .20;                          // if down payment below this amount, add to mortgage spread
 const double pmi_prem = 0.0; //0.01;                         // pmi premium
 const double credit_prem = .18;                       // unsecured credit apr
 const double b_min_unsec = 0.0; // -0.4;               // unsecured borrowing limit
