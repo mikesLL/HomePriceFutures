@@ -83,7 +83,7 @@ void gen_VP(void *snodes_in, void *VFN_3d_1, void *VFN_3d_2 ){
 	int res1_flag = 1;
 	int t_i2_lag_w = 0;
 
-	for (i_s = 0; i_s < n_s; i_s++) {
+	for (i_s = 100; i_s < n_s; i_s++) {
 		i_yi = (*snodes1).s2i_yi[i_s];
 		i_rent = (*snodes1).s2i_rent[i_s];
 		i_ph = (*snodes1).s2i_ph[i_s];
