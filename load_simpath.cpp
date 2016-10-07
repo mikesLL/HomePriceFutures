@@ -192,7 +192,7 @@ double gamma0_store[] = {
 	double v_t0 = 0.0;                                   // initial permanent income shock
 	double v_t = 0.0;                                    // permanent income state
 	
-	double sigma_city_ind = 0.0; //0.09;
+	double sigma_city_ind = 0.09; //0.09; // also set == 0; check flavin / yamashita
 	
 	double log_fe = 2.3831 + 0.4831 - 0.0228*2.0;        //2.18 // fixed effects
 	double y_mu_city = 0.005;                            // city-wide real income/rent growth
