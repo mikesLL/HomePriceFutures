@@ -239,8 +239,7 @@ void gen_VP(void *snodes_in, void *VFN_3d_1, void *VFN_3d_2 ){
 					(*rr1).set_pol_ten_v(t_i, i_s, w_i, x, t_adj, res_t_0.v_i_floor);     // first arguments are current state variables, x containts updated policy
 				}
 
-				cout << "gen_Vp: (*rr2).vw3_def_grid[i_s][w_i_zero] " << (*rr2).vw3_def_grid[i_s][w_i_zero] << endl;
-				
+				cout << "gen_Vp: (*rr1).vw3_def_grid[i_s][w_i_zero] " << (*rr1).vw3_def_grid[i_s][w_i_zero] << endl;
 				//double vw3_def_test = (*rr2).vw3_def_grid[i_s][w_i_zero]; 
 
 
