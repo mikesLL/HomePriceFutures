@@ -241,13 +241,15 @@ void gen_VP(void *snodes_in, void *VFN_3d_1, void *VFN_3d_2 ){
 
 				//cout << "gen_Vp: (*rr2).vw3_def_grid[i_s][w_i_zero] " << (*rr2).vw3_def_grid[i_s][w_i_zero] << endl;
 				
-				double vw3_def_test = (*rr2).vw3_def_grid[i_s][w_i_zero]; 
+				//double vw3_def_test = (*rr2).vw3_def_grid[i_s][w_i_zero]; 
 				if (  (*rr1).vw3_def_grid[i_s][w_i_zero] > max(v1, res_t_0.v_i_floor ) ) {
 
 					(*rr2).def_flag = 1;
-					coh = 0.0 + y_atax*(*snodes1).yi_gridt[t_hor][i_yi]  - 
-						(*snodes1).rent_gridt[t_hor][i_rent] * (*snodes1).rent_adj;
-					b_min = 0.0; 
+					coh = 0.0 + y_atax*(*snodes1).yi_gridt[t_hor][i_yi] -
+						min((*snodes1).rent_gridt[t_hor][i_rent] * (*snodes1).rent_adj,
+							1.0 / 3.0 * (*snodes1).yi_gridt[t_hor][i_yi]);
+
+					b_min = b_min_unsec; // TODO: verify mod here
 					beg_equity = -1.0e6;
 
 					res1 = gen_VPw(snodes1, rr1, rr2, coh, x_guess, b_min, beg_equity, mpmt);

@@ -21,7 +21,7 @@ void vfn::enter_data(void *snodes_in, double phr_in, int t_id_in, int t_num_in, 
 
 	vector<vector<vector<int>>> zeros_int_TN_NS_WN(t_n, vector<vector<int>>(n_s, vector<int>(w_n, 0)));
 	vector<vector<vector<double>>> zeros_TN_NS_WN(t_n, vector<vector<double>>(n_s, vector<double>(w_n, 0.0)));
-	vector<vector<vector<double>>> neg_TN_NS_WN(t_n, vector<vector<double>>(n_s, vector<double>(w_n, -1.0e6)));
+	vector<vector<vector<double>>> neg_TN_NS_WN(t_n, vector<vector<double>>(n_s, vector<double>(w_n, num_small)));
 
 	vector<vector<double>> neg_NS_WN(n_s, vector<double>(w_n, -1.0e6));
 
@@ -280,7 +280,7 @@ eval_res vfn::eval_v_move(int i_t_in, int i_s_in, double w_in, int t_left) {
 // set value function in terminal case
 void vfn::set_terminal(double phr_in) {
 	double coh_perm, coh_perm2;
-	double c_perm, c_fs;
+	double c_perm;
 
 	double w_adj = 0.0;
 	double c_comp_perm;

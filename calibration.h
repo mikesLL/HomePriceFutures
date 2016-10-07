@@ -9,7 +9,7 @@
 const int city_begin = 2;
 const int city_end = 2;
 
-const int t_begin = 5;                   // begin in year 5 from .csv
+const int t_begin = 11;                   // begin in year 5 from .csv
 const int t_end = 11;                    // = 11 to cycle through all time periods;
 
 const int param_id = 0;  // set = 0 to define parameters here manually; set = 1, 2, 3, 4 for presets and load in main
@@ -186,6 +186,8 @@ const double pmi_dpmt = 0.00;                          // if down payment below 
 const double pmi_prem = 0.0; //0.01;                         // pmi premium
 const double credit_prem = .15;                       // unsecured credit apr
 const double b_min_unsec = -0.4; // -0.4;               // unsecured borrowing limit
+
+const double num_small = -1.0e20;
 
 // basis risk
 //int n_csf_basis = 1;// 2;
