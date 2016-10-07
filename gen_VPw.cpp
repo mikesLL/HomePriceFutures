@@ -23,7 +23,7 @@ gen_res gen_VPw(void *snodes_in, void *vf1_in, void *vf2_in,
 	//double v0_default = (1.0 - pow(beta, 20.0 + t_left + 5.0)) / (1.0 - beta)*ufn(x0_default[0], hu_ten_def, pref); 
 	//double v0_default = 1.0 / (1.0 - beta)*ufn(x0_default[0], hu_ten_def, pref);
 	//double v0_default = 1.0 / (1.0 - beta)*ufn(x0_default[0], hu_ten_def, pref);
-	double v0_default =  -1.0e6;
+	double v0_default =  -1.0e20;
 	double v_guess, v_guess_prop, v_w_lag;
 
 

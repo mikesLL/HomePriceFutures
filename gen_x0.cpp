@@ -70,7 +70,7 @@ vector<double> gen_x0(double coh_in, double b_min, void *vf1_in, void *vf2_in, v
 
 	vector<double> x0_g3 = x0_g2;
 	double v0_g3 = v0_g2;
-	double vi = -1.0e6;
+	double vi = -1.0e20;
 
 	N_controlh = N_control2; // for larger step sizes, only allow access to C,B,X
 
@@ -112,9 +112,9 @@ vector<double> gen_x0(double coh_in, double b_min, void *vf1_in, void *vf2_in, v
 		i_min = 0;
 		i_min_flag = 0;
 
-		v1 = -1.0e6;               
-		vi_max = -1.0e6;  
-		vi_min = 1.0e6;
+		v1 = -1.0e20;               
+		vi_max = -1.0e20;  
+		vi_min = 1.0e20;
 
 		for (i = 0; i < N_control3; i++) {
 			if ( (i == 3 ) && ( (*ufnEV21).t_i2 >= 1 ) ) {
@@ -152,7 +152,7 @@ vector<double> gen_x0(double coh_in, double b_min, void *vf1_in, void *vf2_in, v
 		} 
 		else {
 			x1 = x0;
-			v1 = -1.0e6;
+			v1 = -1.0e20;
 			h_step1 = 0.1 * h_step;
 
 			nds2 = 4;

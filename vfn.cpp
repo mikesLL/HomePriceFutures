@@ -336,7 +336,7 @@ void vfn::set_terminal(double phr_in) {
 				V_perm = (1.0 - pow(beta, 20.0)) / (1.0 - beta) * ufn(coh_perm, (*snodes1).hu_ten[i_t], pref);
 
 				if (coh_perm <= 0.0) {
-					V_perm = -1.0e6 - 1.0e6*pow(coh_perm, 2.0);
+					V_perm = -1.0e20 - 1.0e20*pow(coh_perm, 2.0);
 				}
 				//V_perm = 1.0 / (1.0 - beta) * ufn(coh_perm, (*snodes1).hu_ten[0], pref);
 				

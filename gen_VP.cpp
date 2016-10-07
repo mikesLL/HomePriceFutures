@@ -66,7 +66,7 @@ void gen_VP(void *snodes_in, void *VFN_3d_1, void *VFN_3d_2 ){
 	vector<double> x_guess(5, 0.0);
 
 	vector<double> x_ti1(5, 0.0);       // policy: owns smallest home
-	double v_ti1 = -1.0e6;              // value: owns smallest home
+	double v_ti1 = -1.0e20;              // value: owns smallest home
 	//x1 = x_ti1 * 1.2;
 	//v1 = v_ti1 * (1.2);
 
