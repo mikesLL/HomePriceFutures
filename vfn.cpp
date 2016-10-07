@@ -366,22 +366,14 @@ void vfn::interp_vw3(int i_t_in, int i_s_in) {
 	vector<double> x0_default = { c_fs, 0.0, 0.0, 0.0, 0.0 };
 	int w_i4;
 	double v0_default = 0.0;
-	//double num1, den1;
-	//int w_i_lower, w_i_upper;
-	//double w_step = w_grid[1] - w_grid[0];
-	//double w_step9 = 9.0*w_step;
-	//double dv, ddvv;
 
 	for (w_i4 = (w_n - 2); w_i4 >= 0; w_i4--) {
 		vw3_grid[i_t_in][i_s_in][w_i4] = min(vw3_grid[i_t_in][i_s_in][w_i4], vw3_grid[i_t_in][i_s_in][w_i4 + 1]);
 
 		v0_default = ufn(x0_default[0], hu_ten_def, pref); 
-		//cout << "ufn = " << v0_default  << endl;
-		//vw3_grid[i_t_in][i_s_in][w_i4] = 0.0; 
 		vw3_grid[i_t_in][i_s_in][w_i4] = max(vw3_grid[i_t_in][i_s_in][w_i4], 
 			v0_default );
 
-		vw3_grid[i_t_in][i_s_in][w_i4] = double(w_i4); 
 	}
 }
 
