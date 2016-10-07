@@ -240,7 +240,7 @@ void gen_VP(void *snodes_in, void *VFN_3d_1, void *VFN_3d_2 ){
 				}
 
 				//cout << "gen_Vp: (*rr2).vw3_def_grid[i_s][w_i_zero] " << (*rr2).vw3_def_grid[i_s][w_i_zero] << endl;
-				/*
+				
 				double vw3_def_test = (*rr2).vw3_def_grid[i_s][w_i_zero]; 
 				if (  (*rr1).vw3_def_grid[i_s][w_i_zero] > max(v1, res_t_0.v_i_floor ) ) {
 
@@ -255,7 +255,7 @@ void gen_VP(void *snodes_in, void *VFN_3d_1, void *VFN_3d_2 ){
 					(*rr1).set_pol_ten_v(0, i_s, w_i, res1.x_opt, 0, (*rr1).vw3_def_grid[i_s][w_i_zero] );
 					(*rr2).def_flag = 0;
 				}
-				*/
+				
 				
 			}
 			(*rr1).interp_vw3(t_i, i_s);  // clean grid
