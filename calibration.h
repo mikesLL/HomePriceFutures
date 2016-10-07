@@ -171,7 +171,7 @@ const double p_move = 0.05;  // also: set = 0.0                 // Probability r
 const double b_min_const = -20.0;                    
 const double b_motive = 1.0;                         // Strength of bequest motive
 
-const double c_fs = .01;                             // Minimum baseline consumption (Gov Assistance)
+const double c_fs = .06;                             // Minimum baseline consumption (Gov Assistance)
 const double coh_fs = .05;                           // Cash on hand (Gov Asssistance: Non-durable Consumption + Housing)
 
 // down-payment criteria

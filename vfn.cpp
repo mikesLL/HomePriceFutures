@@ -320,7 +320,7 @@ void vfn::set_terminal(double phr_in) {
 				//coh_perm = (rb - 1.0)*w_adj  + 1.0*(rb - 1.0)*10.0*y_atax*y_replace*(*snodes1).yi_gridt[T_max][i_yi];
 				
 				//coh_perm = (rb - 1.0)*w_adj + y_replace*(*snodes1).yi_gridt[T_max][i_yi];
-				coh_perm = 1.0/16.0*w_adj + 1.0*y_replace*(*snodes1).yi_gridt[T_max][i_yi];
+				coh_perm = 1.0/16.0*w_adj + 0.0*y_replace*(*snodes1).yi_gridt[T_max][i_yi];
 
 				if (i_t == 0) {
 					coh_perm = coh_perm - min(1.0*(*snodes1).rent_adj * (*snodes1).rent_gridt[T_max][i_rent], 1.0 / 3.0*coh_perm);
@@ -365,14 +365,14 @@ void vfn::interp_vw3(int i_t_in, int i_s_in) {
 
 	vector<double> x0_default = { c_fs, 0.0, 0.0, 0.0, 0.0 };
 	int w_i4;
-	double v0_default = 0.0;
+	//double v0_default = 0.0;
 
 	for (w_i4 = (w_n - 2); w_i4 >= 0; w_i4--) {
 		vw3_grid[i_t_in][i_s_in][w_i4] = min(vw3_grid[i_t_in][i_s_in][w_i4], vw3_grid[i_t_in][i_s_in][w_i4 + 1]);
 
-		v0_default = ufn(x0_default[0], hu_ten_def, pref); 
-		vw3_grid[i_t_in][i_s_in][w_i4] = max(vw3_grid[i_t_in][i_s_in][w_i4], 
-			v0_default );
+		//v0_default = ufn(x0_default[0], hu_ten_def, pref); 
+		//vw3_grid[i_t_in][i_s_in][w_i4] = max(vw3_grid[i_t_in][i_s_in][w_i4], 
+		//	v0_default );
 
 	}
 }
