@@ -22,7 +22,7 @@ gen_res gen_VPw(void *snodes_in, void *vf1_in, void *vf2_in,
 	double t_left = double(age_max) - ((*snodes1).age0 + (double)(*snodes1).t_hor);
 	//double v0_default = 1.0 / (1.0 - beta)*ufn(x0_default[0], hu_ten_def, pref); 
 	//double v0_default = 1.0 / (1.0 - beta)*ufn(x0_default[0], hu_ten_def, pref);
-	double v0_default = ( 1.0 - pow(beta, t_left + 20.0) ) / (1.0 - beta)*ufn(x0_default[0], hu_ten_def, pref);
+	double v0_default = ( 1.0 - pow(beta, t_left + 21.0) ) / (1.0 - beta)*ufn(x0_default[0], hu_ten_def, pref);
 	//double v0_default =  -1.0e20;
 	double v_guess, v_guess_prop, v_w_lag;
 
