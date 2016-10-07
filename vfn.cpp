@@ -363,6 +363,7 @@ void vfn::set_terminal(double phr_in) {
 // lambda interpolation parameters
 void vfn::interp_vw3(int i_t_in, int i_s_in) {
 
+	vector<double> x0_default = { c_fs, 0.0, 0.0, 0.0, 0.0 };
 	int w_i4;
 	//double num1, den1;
 	//int w_i_lower, w_i_upper;
@@ -372,6 +373,8 @@ void vfn::interp_vw3(int i_t_in, int i_s_in) {
 
 	for (w_i4 = (w_n - 2); w_i4 >= 0; w_i4--) {
 		vw3_grid[i_t_in][i_s_in][w_i4] = min(vw3_grid[i_t_in][i_s_in][w_i4], vw3_grid[i_t_in][i_s_in][w_i4 + 1]);
+		vw3_grid[i_t_in][i_s_in][w_i4] = max(vw3_grid[i_t_in][i_s_in][w_i4], 
+			1.0 / (1.0 - beta)*ufn(x0_default[0], hu_ten_def, pref) ); 
 	}
 }
 

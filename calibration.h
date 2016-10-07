@@ -59,7 +59,7 @@ const double y_atax = 1.0 - y_tax;
 const double y_replace = 0.9388;            // From Cocco, Gomes, Maenhout (2005)
 
 const double w_max = 40.0; //16.05;         // maximum wealth (on grid) (100's thousands)             
-const double w_min = -1.0; // 0.0; // 0.05;          // minimum wealth (on grid) (100's thousands) 
+const double w_min = -2.0; // 0.0; // 0.05;          // minimum wealth (on grid) (100's thousands) 
 
 const int w_i_zero = (int)ceil(-w_min * double(w_n) / (w_max - w_min));
 
@@ -185,7 +185,7 @@ const double mort_spread = .00;                       // mortgage spread above r
 const double pmi_dpmt = 0.00;                          // if down payment below this amount, add to mortgage spread
 const double pmi_prem = 0.0; //0.01;                         // pmi premium
 const double credit_prem = .15;                       // unsecured credit apr
-const double b_min_unsec = -10.0;               // unsecured borrowing limit
+const double b_min_unsec = -1.0;               // unsecured borrowing limit
 
 const double num_small = -1.0e20;
 
