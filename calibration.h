@@ -185,7 +185,7 @@ const double mort_spread = .00;                       // mortgage spread above r
 const double pmi_dpmt = 0.00;                          // if down payment below this amount, add to mortgage spread
 const double pmi_prem = 0.0; //0.01;                         // pmi premium
 const double credit_prem = .15;                       // unsecured credit apr
-const double b_min_unsec = 0.0; //-1.0;               // unsecured borrowing limit
+const double b_min_unsec = -0.4; //-1.0;               // unsecured borrowing limit
 
 const double num_small = -1.0e20;
 
