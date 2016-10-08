@@ -35,7 +35,7 @@ void load_simpath(void *snodes_in, double rent_in, double ph0_in, double ret0_in
 
 	int s1, s2, s_test;                             // state in current period, state in next period
 	int N_print =  40000;                          // number of observations to print to file
-	int N_sim = 200000;                                            // number of simulations
+	int N_sim = 100000;                                            // number of simulations
 	int i_ph, i_rent, i_yi, i_s;                                 // state and individual dimension indices
 
 	cout << "load ppath: ph0_in:  " << ph0_in << endl;
@@ -212,7 +212,10 @@ double gamma0_store[] = {
 	double var_y_city = pow(0.019, 2.0); // Coco RFS
 	double var_h = pow(sigma_ret, 2.0); // estimated from AHS
 	double cov_y_city_h = 0.553*var_y_city*pow(sigma_ret, 2.0);
+	double y_city_sigma = 0.019;
 	double z1, z2; 
+	double corr_y_city_h = 0.553;
+	double corr_delta = pow(pow(1.0 - corr_y_city_h, 2.0), 0.5); 
 
 
 	double mult_2005 =   .56 / .51; // 1.5;                              // multiplier: convert $1992 to $2005
@@ -270,8 +273,14 @@ double gamma0_store[] = {
 		// compute correlated shocks
 		z1 = dist(gen);
 		z2 = dist(gen);
-		eps_h = pow(var_h*z1 + cov_y_city_h*z2, 0.5);
-		eps_y = pow(cov_y_city_h*z1 + var_y_city*z2, 0.5);
+		
+		eps_h = sigma_ret*z1;
+		eps_y = y_city_sigma*(corr_y_city_h * z1 - corr_delta * z2);
+
+		//eps_h = pow(var_h*z1 + cov_y_city_h*z2, 0.5);
+		//eps_y = pow(cov_y_city_h*z1 + var_y_city*z2, 0.5);
+		//eps_h = pow(var_h*z1 + cov_y_city_h*z2, 0.5);
+		//eps_y = pow(cov_y_city_h*z1 + var_y_city*z2, 0.5);
 
 		g_yc_t = mu_yc + sigma_yc*dist(gen);    // city-wide income / rent
 		u_t = sigma_u*dist(gen);                // individual: permanent shock
@@ -309,8 +318,10 @@ double gamma0_store[] = {
 			// draw shocks
 			z1 = dist(gen);
 			z2 = dist(gen);
-			eps_h = pow(var_h*z1 + cov_y_city_h*z2, 0.5);
-			eps_y = pow(cov_y_city_h*z1 + var_y_city*z2, 0.5);
+			eps_h = sigma_ret*z1;
+			eps_y = y_city_sigma*(corr_y_city_h * z1 - corr_delta * z2);
+			//eps_h = pow(var_h*z1 + cov_y_city_h*z2, 0.5);
+			//eps_y = pow(cov_y_city_h*z1 + var_y_city*z2, 0.5);
 			g_yc_t = mu_yc + sigma_yc*dist(gen);  // city-wide income / rent
 			u_t = sigma_u*dist(gen);              // individual: permanent shock
 			e_t = sigma_e*dist(gen);              // individual: transient shock
