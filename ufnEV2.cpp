@@ -118,8 +118,8 @@ double ufnEV2::eval( vector<double> x ){
 	
 	int i_csf_basis = 0;
 	int n_csf_basis = 1;
-	double csf_basis[] = { 0.0, 0.0 };
-	double pcsf_basis[] = { 0.5, 0.5 }; //{ 1.0, 0.0 };
+	//double csf_basis[] = { 0.0, 0.0 };
+	//double pcsf_basis[] = { 0.5, 0.5 }; //{ 1.0, 0.0 };
 
 	//int n_csf_basis = 2;
 	//double csf_basis[] = { -0.045, 0.045 };
@@ -133,38 +133,29 @@ double ufnEV2::eval( vector<double> x ){
 	double yprob[] = { 0.96, 0.04 };
 	double yval[] = { 0.6, 0.15 };
 	int i_basis = 0;
-	int N_basis = 2; 
-	double basis_val[] = { -0.045, 0.045 };
-	double basis_pval[] = { 0.5, 0.5 }; 
-
-	//for (i_yi2 = 0; i_yi2 < 2; i_yi2++) {
-		for (i_s2p = 0; i_s2p < N_s2p; i_s2p++) {
-			i_s2 = i_s2p_vec[i_s2p];
-			i_ph2 = (*snodes1).s2i_ph[i_s2];
-
-			for (i_basis = 0; i_basis < N_basis; i_basis++) {
+	int N_basis = 1; // 2;
+	double basis_val[] = { 0.0, 0.0 }; // { -0.045, 0.045 };
+	double basis_pval[] = { 1.0, 0.0 }; //{ 0.5, 0.5 }; 
+	
+	for (i_s2p = 0; i_s2p < N_s2p; i_s2p++) {
+		i_s2 = i_s2p_vec[i_s2p];
+		i_ph2 = (*snodes1).s2i_ph[i_s2];
+		
+		for (i_basis = 0; i_basis < N_basis; i_basis++) {
 				for (i_x2 = 0; i_x2 < retxn; i_x2++) {
 
 					w2 = rb_eff_agg + exp(retxv[i_x2])*x[2] +
 						exp(basis_val[i_basis])* csfLevSn * csf_net2[i_s2] * (x[3] - x[4]) +
 						x[3] + x[4] + (*snodes1).ten_w[t_i2] * (*snodes1).p_gridt[t_hor + 1][i_ph2];
 
-					if (i_yi2 >= 1) {
-						w2 = w2 - 0.45;
-					}
-
 					res1 = eval_v(i_s2, w2);                                   // evaluate value function in state
-
 					res1_move = (*vf2).eval_v_def(i_s2, w2);
 
-					vw2 = (1.0 - p_move)* res1.v_out + p_move * res1_move.v_out;
-					//vw2 = (1.0 - p_move)* res1.v_out + p_move * res1_move.v_out;
-
-					Evw_2 = Evw_2 + pcsf_basis[i_csf_basis] * retxp[i_x2] * (*snodes1).gammat[t_hor][i_s1][i_s2] * vw2;  // compute expectation
+					vw2 = (1.0 - p_move)* res1.v_out + p_move * res1_move.v_out;	
+					Evw_2 = Evw_2 + basis_pval[i_csf_basis] * retxp[i_x2] * (*snodes1).gammat[t_hor][i_s1][i_s2] * vw2;  // compute expectation
 				}
 			}
 		}
-	//}
 	
 	return uc + beta*Evw_2;
 }
