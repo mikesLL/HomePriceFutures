@@ -192,17 +192,28 @@ double gamma0_store[] = {
 	double v_t0 = 0.0;                                   // initial permanent income shock
 	double v_t = 0.0;                                    // permanent income state
 	
-	double sigma_city_ind = 0.09; //0.09; // also set == 0; check flavin / yamashita
+	double sigma_city_ind = 0.0; //0.09; // also set == 0; check flavin / yamashita  set = 0.0 for no neighborhood-level tracking risk
 	
 	double log_fe = 2.3831 + 0.4831 - 0.0228*2.0;        //2.18 // fixed effects
 	double y_mu_city = 0.005;                            // city-wide real income/rent growth
 	double y_sig_city = 0.005;
 
-	double sigma_u = pow(0.0106, 0.5);  //0.005;                              // permanent income shock stdev
-	double sigma_e = pow(0.0738, 0.5); // 0.005;                              // transitory income shock stdev
+	//double var_y = 0.0169; 
+
+	double sigma_u = pow(0.0169, 0.5);  //pow(0.0106, 0.5);  //0.005;                              // permanent income shock stdev
+	double sigma_e = pow(0.0584, 0.5);  //pow(0.0738, 0.5); // 0.005;                              // transitory income shock stdev
 
 	double mu_yc =  0.000;    // 0.0                             // avg real income / rent growth
 	double sigma_yc = 0.0001; //0.01;   // 0.0                  // avg real income / rent growth stdev
+
+	double y_city_agg = 0.0;
+	double y_city_agg0 = 0.0;
+
+	double var_y_city = pow(0.019, 2.0); // Coco RFS
+	double var_h = pow(sigma_ret, 2.0); // estimated from AHS
+	double cov_y_city_h = 0.553*var_y_city*pow(sigma_ret, 2.0);
+	double z1, z2; 
+
 
 	double mult_2005 =   .56 / .51; // 1.5;                              // multiplier: convert $1992 to $2005
 	double mult_unit = 0.01;                             // multiplier: convert $1000s from parameters to $100000s in paper
@@ -219,6 +230,12 @@ double gamma0_store[] = {
     //int i_age; // Track agent's age
 	//int age_t = age_begin_in;  // track household age
 	double age_td; // track household age as double
+
+	// added work here
+	double eps_h; // housing shock
+	double eps_y; // city-wide income shock 
+	double rho_y_city = 0.748; // cocco rfs
+	double eta_t, eta_t0;
 
 	// loop through simulations
 	cout << "load_simpath.cpp: Begin Simulations" << endl;
@@ -244,33 +261,44 @@ double gamma0_store[] = {
 		yi_str[t][n] = log(yi_str[t][n]);
 
 		v_t0 = 0.0;                             // set permanent income shock
+		eta_t0 = 0.0;                           // set city-wide income shock
 
 		// t = 1: first year
 		t = 1;                                  // first year: draw shocks
 		age_td = double(age_begin_in) + double(t);   // current age
 
+		// compute correlated shocks
+		z1 = dist(gen);
+		z2 = dist(gen);
+		eps_h = pow(var_h*z1 + cov_y_city_h*z2, 0.5);
+		eps_y = pow(cov_y_city_h*z1 + var_y_city*z2, 0.5);
+
 		g_yc_t = mu_yc + sigma_yc*dist(gen);    // city-wide income / rent
 		u_t = sigma_u*dist(gen);                // individual: permanent shock
 		e_t = sigma_e*dist(gen);                // individual: transient shock
 
-		v_t = v_t0 + u_t;  // upadate income permanent component
-		v_t0 = v_t;                             // update transient component
+		eta_t = rho_y_city*eta_t0 + eps_y;       // set city-wide income component
+		eta_t0 = eta_t;                           // update city-wide income component 
+		v_t = v_t0 + u_t;                        // upadate income permanent component
+		v_t0 = v_t;                              // update transient component
 		
 		// compute age-related component of log-income (deterministic)
 		log_y_age = -4.3148 + 0.3194*age_td - 0.0577*pow(age_td, 2.0) / 10.0 + 0.0033*pow(age_td, 3.0) / 100.0;
 
 		// compute home price appreciation
-		ret_tn = (csf_1yr - ph0) / ph0 + sigma_ret*dist(gen);  // impose first year expected return equals the futures-based forecast
+		ret_tn = (csf_1yr - ph0) / ph0 + eps_h*dist(gen);
+		//ret_tn = (csf_1yr - ph0) / ph0 + sigma_ret*dist(gen);  // impose first year expected return equals the futures-based forecast
 
 		rent_str[t][n] = exp(g_rent)*rent_str[t-1][n]; // update rent path
 		
-		yi_str[t][n] = y_city_mult[city_id]*mult_unit*mult_2005*exp( log_fe + log_y_age + v_t + e_t );  // Cocco, Maenhoust, Gomes parameters are in 1000's; convert to 100k
+		yi_str[t][n] = y_city_mult[city_id]*mult_unit*mult_2005*exp( log_fe + log_y_age + eta_t + v_t + e_t );  // Cocco, Maenhoust, Gomes parameters are in 1000's; convert to 100k
 		yi_str[t][n] = log(yi_str[t][n]);
 
 		//ph_str[t][n] = (ret_tn) + ph_str[t - 1][n];  // home prices in sim are in logs
 		ph_str_city[t][n] =  ret_tn + ph_str_city[t - 1][n];  // home prices in sim are in logs
 		ph_str[t][n] = ret_tn + ph_str[t - 1][n] + sigma_city_ind*dist(gen);  // home prices in sim are in logs
 
+		
 		// simulate later time periods
 		for (t = 2; t < (T_sim + 1); t++){
 			age_td = double(age_begin_in) + double(t);  // compute age
@@ -279,23 +307,29 @@ double gamma0_store[] = {
 			log_y_age = -4.3148 + 0.3194*age_td - 0.0577*pow(age_td, 2.0) / 10.0 + 0.0033*pow(age_td, 3.0) / 100.0;
 
 			// draw shocks
+			z1 = dist(gen);
+			z2 = dist(gen);
+			eps_h = pow(var_h*z1 + cov_y_city_h*z2, 0.5);
+			eps_y = pow(cov_y_city_h*z1 + var_y_city*z2, 0.5);
 			g_yc_t = mu_yc + sigma_yc*dist(gen);  // city-wide income / rent
 			u_t = sigma_u*dist(gen);              // individual: permanent shock
 			e_t = sigma_e*dist(gen);              // individual: transient shock
 
 			// update income path 
+			eta_t = rho_y_city*eta_t0 + eps_y;        // set city-wide income component
+			eta_t0 = eta_t;                           // update city-wide income component 
 			v_t = v_t0 + u_t;
-			v_t0 = v_t;                             // update transient component
+			v_t0 = v_t;                               // update transient component
 			
 			// compute home price
 			ret_lag = ph_str_city[t - 1][n] - ph_str_city[t - 2][n];                                       // ph_str is in logs 
 			ecm = log(rent_str[t - 1][n]) - gamma0_hat - gamma1_hat*(ph_str_city[t - 1][n]);          // cointegrate rents, prices
 			
-			ret_tn = alpha_hat + rhof_hat*ret_lag + theta_hat*ecm + sigma_ret*dist(gen);         // return series
+			ret_tn = alpha_hat + rhof_hat*ret_lag + theta_hat*ecm + eps_h*dist(gen);         // return series
 		
 			rent_str[t][n] = exp(g_rent)*rent_str[t-1][n];
 
-			yi_str[t][n] = mult_unit*mult_2005*exp(log_fe + log_y_age + v_t + e_t);
+			yi_str[t][n] = mult_unit*mult_2005*exp(log_fe + log_y_age + eta_t + v_t + e_t);
 			yi_str[t][n] = log(yi_str[t][n]);
 
 			ph_str[t][n] = ret_tn + ph_str[t - 1][n] + sigma_city_ind*dist(gen);
