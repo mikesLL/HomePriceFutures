@@ -117,9 +117,9 @@ double ufnEV2::eval( vector<double> x ){
 	*/
 	
 	int i_csf_basis = 0;
-	int n_csf_basis = 2;
-	double csf_basis[] = { -0.045, 0.045 };
-	double pcsf_basis[] = { 0.5, 0.5 };
+	int n_csf_basis = 1;
+	double csf_basis[] = { 0.0, 0.0 }; // { -0.045, 0.045 };
+	double pcsf_basis[] = { 1.0, 0.0 }; // { 0.5, 0.5 };
 
 	//int n_csf_basis = 2;
 	//double csf_basis[] = { -0.045, 0.045 };
