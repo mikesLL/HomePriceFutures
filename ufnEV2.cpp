@@ -75,7 +75,7 @@ double ufnEV2::eval( vector<double> x ){
 	double rb_unsec = rb + credit_prem;
 	//double rb_sec = rb;
 
-	b_sec = max(x[1], -(1.0 - max_ltv)*(*snodes1).ten_w[t_i2] * ph1);
+	b_sec = max(x[1], - max_ltv*(*snodes1).ten_w[t_i2] * ph1);
 	b_unsec = x[1] - b_sec;
 	rb_eff_agg = rb*b_sec + rb_unsec*b_unsec; 
 	
