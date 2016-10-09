@@ -132,22 +132,33 @@ double ufnEV2::eval( vector<double> x ){
 	int i_yi2 = 0;
 	double yprob[] = { 0.96, 0.04 };
 	double yval[] = { 0.6, 0.15 };
-	
+	int spec_flag = 1;
+
 	for (i_s2p = 0; i_s2p < N_s2p; i_s2p++) {
 			i_s2 = i_s2p_vec[i_s2p];
 			i_ph2 = (*snodes1).s2i_ph[i_s2];
 
 			for (i_x2 = 0; i_x2 < retxn; i_x2++) {
+				spec_flag = 0;
 
 				w2 = rb_eff_agg + exp(retxv[i_x2])*x[2] +
 					csfLevSn * csf_net2[i_s2] * (x[3] - x[4]) +
 					x[3] + x[4] + (*snodes1).ten_w[t_i2] * (*snodes1).p_gridt[t_hor + 1][i_ph2];
 
-				res1 = eval_v(i_s2, w2);                                   // evaluate value function in state
+				if ( (x[3] + x[4] + x[5]) > 0.0) {
+					if (w2 < 0.0) {
+						spec_flag = 0;
+					}
+				} 
 
-				res1_move = (*vf2).eval_v_def(i_s2, w2);
-
-				vw2 = (1.0 - p_move)* res1.v_out + p_move * res1_move.v_out;
+				if (spec_flag) {
+					res1 = eval_v(i_s2, w2);                                   // evaluate value function in state
+					res1_move = (*vf2).eval_v_def(i_s2, w2);
+					vw2 = (1.0 - p_move)* res1.v_out + p_move * res1_move.v_out;
+				}
+				else {
+					vw2 = -1.0e20 - pow( (x[3] + x[4] + x[5]), 2.0);
+				}
 				
 				Evw_2 = Evw_2 + pcsf_basis[i_csf_basis] * retxp[i_x2] * (*snodes1).gammat[t_hor][i_s1][i_s2] * vw2;  // compute expectation
 

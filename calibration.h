@@ -19,7 +19,7 @@ const int n_age_store[] = { 1, 1, 1, 2, 2 };
 //const int n_age_store[] = { 1, 1, 2, 1, 2 };
 const int n_age = n_age_store[param_id]; 
 
-const double csfLevStore[] = {0.0/0.055, 1.0/0.055, 0.0, 1.0/0.055, 0.0};
+const double csfLevStore[] = {1.0/0.055, 1.0/0.055, 0.0, 1.0/0.055, 0.0};
 //const double csfLev[] = 1.0 * (1.0 / 0.055);
 const double csfLev = csfLevStore[param_id];
 const int w_n = 200; // Grid points in wealth; set = 200 for fast computation, = 2000 for precision
@@ -30,9 +30,11 @@ const int age_max = 65;                  // age at which household retires / ann
 
 
 //const double margin_store[] = { 0.0, 0.0, 0.02524, 0.032408, 0.0, 0.019866, 0.0, }; 
-const double csfLev_pidxw[] = {0.0, 1.0, 0.0, 1.0, 0.0 };  // change in future notl to index weight
+const double csfLev_pidxw[] = {1.0, 1.0, 0.0, 1.0, 0.0 };  // change in future notl to index weight
 
 // csf margin requirement by city
+//const double csfmarg_store[] = { 0.036444571, 0.039967956, 0.032995124, 0.033871271,
+//	0.025347143, 0.023869709, 0.037148076, 0.030927638 };
 const double csfmarg_store[] = { 0.036444571, 0.039967956, 0.032995124, 0.033871271,
 	0.025347143, 0.023869709, 0.037148076, 0.030927638 };
 
@@ -185,7 +187,7 @@ const double mort_spread = .00;                       // mortgage spread above r
 const double pmi_dpmt = 0.00;                          // if down payment below this amount, add to mortgage spread
 const double pmi_prem = 0.0; //0.01;                         // pmi premium
 const double credit_prem = .15;                       // unsecured credit apr
-const double b_min_unsec = -2.0; //-1.0;               // unsecured borrowing limit
+const double b_min_unsec = -0.40; //-1.0;               // unsecured borrowing limit
 
 const double num_small = -1.0e20;
 
