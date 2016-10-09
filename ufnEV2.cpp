@@ -117,9 +117,9 @@ double ufnEV2::eval( vector<double> x ){
 	*/
 	
 	int i_csf_basis = 0;
-	int n_csf_basis = 1;
-	double csf_basis[] = { 0.0, 0.0 };
-	double pcsf_basis[] = { 1.0, 0.0 };
+	int n_csf_basis = 2;
+	double csf_basis[] = { -0.045, 0.045 };
+	double pcsf_basis[] = { 0.5, 0.5 };
 
 	//int n_csf_basis = 2;
 	//double csf_basis[] = { -0.045, 0.045 };
@@ -134,7 +134,8 @@ double ufnEV2::eval( vector<double> x ){
 	double yval[] = { 0.6, 0.15 };
 	int spec_flag = 1;
 
-	for (i_s2p = 0; i_s2p < N_s2p; i_s2p++) {
+	for (i_csf_basis = 0; i_csf_basis < n_csf_basis; i_csf_basis++){
+		for (i_s2p = 0; i_s2p < N_s2p; i_s2p++) {
 			i_s2 = i_s2p_vec[i_s2p];
 			i_ph2 = (*snodes1).s2i_ph[i_s2];
 
@@ -142,14 +143,14 @@ double ufnEV2::eval( vector<double> x ){
 				spec_flag = 1;
 
 				w2 = rb_eff_agg + exp(retxv[i_x2])*x[2] +
-					csfLevSn * csf_net2[i_s2] * (x[3] - x[4]) +
+					exp(csf_basis[i_csf_basis])*csfLevSn * csf_net2[i_s2] * (x[3] - x[4]) +
 					x[3] + x[4] + (*snodes1).ten_w[t_i2] * (*snodes1).p_gridt[t_hor + 1][i_ph2];
 
-				if ( (x[3] + x[4] + x[5]) > 0.0) {
+				if ((x[3] + x[4] + x[5]) > 0.0) {
 					if (w2 < 0.0) {
 						spec_flag = 0;
 					}
-				} 
+				}
 
 				if (spec_flag) {
 					res1 = eval_v(i_s2, w2);                                   // evaluate value function in state
@@ -157,12 +158,13 @@ double ufnEV2::eval( vector<double> x ){
 					vw2 = (1.0 - p_move)* res1.v_out + p_move * res1_move.v_out;
 				}
 				else {
-					vw2 = -1.0e20 - pow( (x[3] + x[4] + x[5]), 2.0);
+					vw2 = -1.0e20 - pow((x[3] + x[4] + x[5]), 2.0);
 				}
-				
+
 				Evw_2 = Evw_2 + pcsf_basis[i_csf_basis] * retxp[i_x2] * (*snodes1).gammat[t_hor][i_s1][i_s2] * vw2;  // compute expectation
 
 			}
+		}
 	}
 	
 	
