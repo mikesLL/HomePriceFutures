@@ -214,7 +214,7 @@ double gamma0_store[] = {
 	double cov_y_city_h = 0.553*var_y_city*pow(sigma_ret, 2.0);
 	double y_city_sigma = 0.019;
 	double z1, z2; 
-	double corr_y_city_h = 0.553;
+	double corr_y_city_h = 0.0; // 0.553;
 	double corr_delta = pow(pow(1.0 - corr_y_city_h, 2.0), 0.5); 
 
 
