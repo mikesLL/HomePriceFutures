@@ -209,10 +209,10 @@ double gamma0_store[] = {
 	double y_city_agg = 0.0;
 	double y_city_agg0 = 0.0;
 
-	double var_y_city = pow(0.019, 2.0); // Coco RFS
+	double var_y_city = 0.0; // pow(0.019, 2.0); // Coco RFS
 	double var_h = pow(sigma_ret, 2.0); // estimated from AHS
 	double cov_y_city_h = 0.553*var_y_city*pow(sigma_ret, 2.0);
-	double y_city_sigma = 0.019;
+	double y_city_sigma = 0.0; //0.019;
 	double z1, z2; 
 	double corr_y_city_h = 0.0; // 0.553;
 	double corr_delta = pow(pow(1.0 - corr_y_city_h, 2.0), 0.5); 
