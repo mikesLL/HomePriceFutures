@@ -295,7 +295,7 @@ double gamma0_store[] = {
 		log_y_age = -4.3148 + 0.3194*age_td - 0.0577*pow(age_td, 2.0) / 10.0 + 0.0033*pow(age_td, 3.0) / 100.0;
 
 		// compute home price appreciation
-		ret_tn = (csf_1yr - ph0) / ph0 + eps_h*dist(gen);
+		ret_tn = (csf_1yr - ph0) / ph0 + eps_h;
 		//ret_tn = (csf_1yr - ph0) / ph0 + sigma_ret*dist(gen);  // impose first year expected return equals the futures-based forecast
 
 		rent_str[t][n] = exp(g_rent)*rent_str[t-1][n]; // update rent path
@@ -336,7 +336,7 @@ double gamma0_store[] = {
 			ret_lag = ph_str_city[t - 1][n] - ph_str_city[t - 2][n];                                       // ph_str is in logs 
 			ecm = log(rent_str[t - 1][n]) - gamma0_hat - gamma1_hat*(ph_str_city[t - 1][n]);          // cointegrate rents, prices
 			
-			ret_tn = alpha_hat + rhof_hat*ret_lag + theta_hat*ecm + eps_h*dist(gen);         // return series
+			ret_tn = alpha_hat + rhof_hat*ret_lag + theta_hat*ecm + eps_h;         // return series
 		
 			rent_str[t][n] = exp(g_rent)*rent_str[t-1][n];
 
