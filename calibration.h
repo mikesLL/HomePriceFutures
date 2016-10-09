@@ -19,7 +19,7 @@ const int n_age_store[] = { 1, 1, 1, 2, 2 };
 //const int n_age_store[] = { 1, 1, 2, 1, 2 };
 const int n_age = n_age_store[param_id]; 
 
-const double csfLevStore[] = {1.0/0.055, 1.0/0.055, 0.0, 1.0/0.055, 0.0};
+const double csfLevStore[] = {0.0/0.055, 1.0/0.055, 0.0, 1.0/0.055, 0.0};
 //const double csfLev[] = 1.0 * (1.0 / 0.055);
 const double csfLev = csfLevStore[param_id];
 const int w_n = 200; // Grid points in wealth; set = 200 for fast computation, = 2000 for precision
