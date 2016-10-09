@@ -333,7 +333,9 @@ void vfn::set_terminal(double phr_in) {
 				//coh_perm = max( 0.0, c_fs ); 
 			
 				//V_perm = ( 1.0 - pow( beta, 20.0) ) / (1.0 - beta) * ufn(coh_perm, (*snodes1).hu_ten[0], pref);
-				V_perm = (1.0 - pow(beta, 20.0)) / (1.0 - beta) * ufn(coh_perm, (*snodes1).hu_ten[i_t], pref);
+				coh_perm = max(coh_perm, 0.0); 
+				//V_perm = (1.0 - pow(beta, 20.0)) / (1.0 - beta) * ufn(coh_perm, (*snodes1).hu_ten[i_t], pref);
+				V_perm = (1.0 - pow(beta, 20.0)) / (1.0 - beta) * ufn(c_fs + coh_perm, (*snodes1).hu_ten[i_t], pref);
 
 				if (coh_perm <= 0.0) {
 					V_perm = -1.0e20 - 1.0e20*pow(coh_perm, 2.0);
