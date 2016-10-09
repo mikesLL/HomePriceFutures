@@ -346,7 +346,7 @@ void vfn::set_terminal(double phr_in) {
 				//V_fs = -1.0e6 +  0.0*( 1.0 - pow( beta, 20.0) ) / (1.0 - beta) * ufn(c_fs, hu_ten_def , pref);
 				
 				// trying this here
-				w_adj = max(w_adj, 0.05); 
+				w_adj = 0.05 + max(w_adj, 0.0); 
 				V_fs = -1.0e20;
 				V_perm = 1.0 / (1.0 - rho)*pow(w_adj, 1.0 - rho);
 				// evaluate bequest value
