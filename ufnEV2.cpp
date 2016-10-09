@@ -139,7 +139,7 @@ double ufnEV2::eval( vector<double> x ){
 			i_ph2 = (*snodes1).s2i_ph[i_s2];
 
 			for (i_x2 = 0; i_x2 < retxn; i_x2++) {
-				spec_flag = 0;
+				spec_flag = 1;
 
 				w2 = rb_eff_agg + exp(retxv[i_x2])*x[2] +
 					csfLevSn * csf_net2[i_s2] * (x[3] - x[4]) +
