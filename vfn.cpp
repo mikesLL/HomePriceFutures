@@ -345,6 +345,10 @@ void vfn::set_terminal(double phr_in) {
 				//c_fs = 0.01;
 				//V_fs = -1.0e6 +  0.0*( 1.0 - pow( beta, 20.0) ) / (1.0 - beta) * ufn(c_fs, hu_ten_def , pref);
 				
+				// trying this here
+				w_adj = max(w_adj, 0.05); 
+				V_perm = -1.0e20;
+				V_perm = 1.0 / (1.0 - rho)*pow(w_adj, 1.0 - rho);
 				// evaluate bequest value
 				vw3_grid[i_t][i_s][i_w] = b_motive*max(V_perm, V_fs);
 
