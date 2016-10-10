@@ -14,7 +14,7 @@ const int t_end = 11;                    // = 11 to cycle through all time perio
 
 const int param_id = 0;  // set = 0 to define parameters here manually; set = 1, 2, 3, 4 for presets and load in main
 
-const int age_begin_store[] = { 60, 45, 30 }; // manual age settings here
+const int age_begin_store[] = { 64, 45, 30 }; // manual age settings here
 const int n_age_store[] = { 1, 1, 1, 2, 2 };
 //const int n_age_store[] = { 1, 1, 2, 1, 2 };
 const int n_age = n_age_store[param_id]; 

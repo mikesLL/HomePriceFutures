@@ -146,7 +146,7 @@ double ufnEV2::eval( vector<double> x ){
 					exp(csf_basis[i_csf_basis])*csfLevSn * csf_net2[i_s2] * (x[3] - x[4]) +
 					x[3] + x[4] + (*snodes1).ten_w[t_i2] * (*snodes1).p_gridt[t_hor + 1][i_ph2];
 
-				if ((x[3] + x[4] + x[5]) > 0.0) {
+				if ( (x[3] + x[4]) > 0.0) {
 					if (w2 < 0.0) {
 						spec_flag = 0;
 					}
@@ -158,7 +158,7 @@ double ufnEV2::eval( vector<double> x ){
 					vw2 = (1.0 - p_move)* res1.v_out + p_move * res1_move.v_out;
 				}
 				else {
-					vw2 = -1.0e20 - pow((x[3] + x[4] + x[5]), 2.0);
+					vw2 = -1.0e20 - pow((x[3] + x[4] ), 2.0);
 				}
 
 				Evw_2 = Evw_2 + pcsf_basis[i_csf_basis] * retxp[i_x2] * (*snodes1).gammat[t_hor][i_s1][i_s2] * vw2;  // compute expectation

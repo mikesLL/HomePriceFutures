@@ -313,9 +313,9 @@ void vfn::set_terminal(double phr_in) {
 				// old version 
 				
 				// phi*(*snodes1).ten_w[t_i] * (*snodes1).p_gridt[t_hor][i_ph];
-				w_adj = w_grid[i_w] - phi * (*snodes1).ten_w[i_t] * (*snodes1).p_gridt[t_num][i_ph3]; 
+				w_adj = w_grid[i_w] - 0.0*phi * (*snodes1).ten_w[i_t] * (*snodes1).p_gridt[t_num][i_ph3]; 
 			
-				w_adj = w_grid[i_w] - (*snodes1).ten_w[i_t]*(*snodes1).p_gridt[t_num][i_ph3]; 
+				//w_adj = w_grid[i_w] - (*snodes1).ten_w[i_t]*(*snodes1).p_gridt[t_num][i_ph3]; 
 	
 				//coh_perm = (rb - 1.0)*w_adj  + 1.0*(rb - 1.0)*10.0*y_atax*y_replace*(*snodes1).yi_gridt[T_max][i_yi];
 				
@@ -346,9 +346,9 @@ void vfn::set_terminal(double phr_in) {
 				//V_fs = -1.0e6 +  0.0*( 1.0 - pow( beta, 20.0) ) / (1.0 - beta) * ufn(c_fs, hu_ten_def , pref);
 				
 				// trying this here
-				//w_adj = 0.05 + max(w_adj, 0.0); 
-				//V_fs = -1.0e20;
-				//V_perm = 1.0 / (1.0 - rho)*pow(w_adj, 1.0 - rho);
+				w_adj = 0.05 + max(w_adj, 0.0); 
+				V_fs = -1.0e20;
+				V_perm = 1.0 / (1.0 - rho)*pow(w_adj, 1.0 - rho);
 				// evaluate bequest value
 				vw3_grid[i_t][i_s][i_w] = b_motive*max(V_perm, V_fs);
 
