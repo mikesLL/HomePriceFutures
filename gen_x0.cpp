@@ -28,8 +28,6 @@ vector<double> gen_x0(double coh_in, double b_min, void *vf1_in, void *vf2_in, v
 	int N_control4 = N_control - 1; 
 
 	int N_controlh;
-	int nds2 = 10;
-	int nds2_low = 4;
 	double h_step0 = 0.2;
 	double h_step_mult = 0.25;
 	double h_step = h_step0;
@@ -81,7 +79,9 @@ vector<double> gen_x0(double coh_in, double b_min, void *vf1_in, void *vf2_in, v
 
 	int k1 = 0, k2 = 0;
 	int nds = 10;
-	int nds2 = 2;
+	int nds2 = 10;
+	int nds2_low = 4;
+	
 
 	if ( (*vf2).w_i1 % 10 == 0 ) {
 
