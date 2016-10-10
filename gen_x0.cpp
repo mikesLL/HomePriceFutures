@@ -141,9 +141,9 @@ vector<double> gen_x0(double coh_in, double b_min, void *vf1_in, void *vf2_in, v
 			}
 		}
 		
-		if ( (x0[3] + x0[4]) >= 0.35) {
-			cout << "gen_x0: issue here" << endl;
-		}
+		//if ( (x0[3] + x0[4]) >= 0.35) {
+		//	cout << "gen_x0: issue here" << endl;
+		//}
 		
 		
 
