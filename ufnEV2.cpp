@@ -8,7 +8,6 @@ Copyright A. Michael Sharifi, 2016
 // enter data to speed up value function evaluation
 void ufnEV2::enter_data(void *snodes_in, void *vf2_in) {
 
-	
 	int i_s2, i_ph2;
 	int i_ph1;
 	snodes1 = (snodes *)snodes_in;     // state dimensions
@@ -40,10 +39,8 @@ void ufnEV2::enter_data(void *snodes_in, void *vf2_in) {
 	}
 
 	// compute home price future payout in each state
-	//if ( t_hor <= (T_max - 2) ) {
 	for (i_s2 = 0; i_s2 < n_s; i_s2++) {
 		i_ph2 = (*snodes1).s2i_ph[i_s2];
-		//csf_net2[i_s2] = (*snodes1).p_gridt[t_hor + 1][i_ph2] - ph_2e;
 		csf_net2[i_s2] = ( (*snodes1).p_gridt[t_hor + 1][i_ph2] - ph_2e ) / ph_2e;
 	}
 
@@ -73,109 +70,46 @@ double ufnEV2::eval( vector<double> x ){
 	double b_unsec = 0.0;
 	double b_sec = 0.0; 
 	double rb_unsec = rb + credit_prem;
-	//double rb_sec = rb;
-
+	
+	// calc effective effective interest rate
 	b_sec = max(x[1], - max_ltv*(*snodes1).ten_w[t_i2] * ph1);
 	b_unsec = x[1] - b_sec;
 	rb_eff_agg = rb*b_sec + rb_unsec*b_unsec; 
 	
-	// calc effective effective interest rate
-	/*
-	if ((*vf2).t_i2 == 0) {    
-		b_sec = max(x[1], 0.0);
-		b_unsec = x[1] - b_sec; 
-		
-		rb_eff_agg = rb_unsec*b_unsec + rb_sec*b_sec; 
-		
-
-		//if (x[1] < 0.0) {
-		//	b_unsec
-		//	rb_eff = rb + credit_prem;     // unsecured credit APR
-		//	rb_eff_agg = rb_eff * x[1];
-		//}
-	}
-	else {
-		b_sec = max(x[1], -(1.0 - max_ltv)*(*snodes1).ten_w[t_i2] * ph1);
-		b_unsec = x[1] - b_sec; 
-
-
-		b_sec = x[1] - b_unsec;
-		rb_eff_agg = rb_unsec*b_unsec + rb_sec*b_sec;
-
-
-		if (x[1] < 0.0) {                                         
-			rb_eff = rb + mort_spread;                    // if agent holds mortgage debt, add mortgage spread
-
-			rb_eff_agg = (rb + mort_spread) * max(x[1], -(1.0 - max_ltv)*(*snodes1).ten_w[t_i2])*ph1 + 
-				            
-		}
-		                                                       
-		if (x[1] < -ph1*(1.0 - pmi_dpmt)*(*snodes1).ten_w[t_i2]) {
-			rb_eff = rb + mort_spread + pmi_prem;         // if agent has a low down payment, add pmi
-		}
-	}
-	*/
-	
 	int i_csf_basis = 0;
 	int n_csf_basis = 1;
-	double csf_basis[] = { 0.0, 0.0 }; // { -0.045, 0.045 };
-	double pcsf_basis[] = { 1.0, 0.0 }; // { 0.5, 0.5 };
-
-	//int n_csf_basis = 2;
-	//double csf_basis[] = { -0.045, 0.045 };
-	//int n_csf_basis = 1; 
-	//double csf_basis[] = { 0.0, 0.0 };
-	//double pcsf_basis[] = { 1.0, 0.0 };
+	double csf_basis[] =  { 0.0, 0.0 };             //{ -0.045, 0.045 };    
+	double pcsf_basis[] =   { 1.0, 0.0 };           // { 0.5, 0.5 }; 
 
 	// cycle accross possible future states to compute value function expectation
-
-	int i_yi2 = 0;
-	double yprob[] = { 0.96, 0.04 };
-	double yval[] = { 0.6, 0.15 };
-	int spec_flag = 1;
-
 	for (i_csf_basis = 0; i_csf_basis < n_csf_basis; i_csf_basis++){
 		for (i_s2p = 0; i_s2p < N_s2p; i_s2p++) {
 			i_s2 = i_s2p_vec[i_s2p];
 			i_ph2 = (*snodes1).s2i_ph[i_s2];
 
 			for (i_x2 = 0; i_x2 < retxn; i_x2++) {
-				spec_flag = 1;
-
+				
 				w2 = rb_eff_agg + exp(retxv[i_x2])*x[2] +
 					exp(csf_basis[i_csf_basis])*csfLevSn * csf_net2[i_s2] * (x[3] - x[4]) +
 					x[3] + x[4] + (*snodes1).ten_w[t_i2] * (*snodes1).p_gridt[t_hor + 1][i_ph2];
 
-				if ( (x[3] + x[4]) > 0.0) {
-					if (w2 < 0.0) {
-						spec_flag = 0;
-					}
-				}
-
-				if (spec_flag) {
 					res1 = eval_v(i_s2, w2);                                   // evaluate value function in state
 					res1_move = (*vf2).eval_v_def(i_s2, w2);
 					vw2 = (1.0 - p_move)* res1.v_out + p_move * res1_move.v_out;
-				}
-				else {
-					vw2 = -1.0e20 - pow((x[3] + x[4] ), 2.0);
-				}
-
+					
 				Evw_2 = Evw_2 + pcsf_basis[i_csf_basis] * retxp[i_x2] * (*snodes1).gammat[t_hor][i_s1][i_s2] * vw2;  // compute expectation
 
 			}
 		}
 	}
 	
-	
 	return uc + beta*Evw_2;
 }
 
-// cycle across futures returns
+
+//cycle across futures returns
 //for (i_csf_basis = 0; i_csf_basis < n_csf_basis; i_csf_basis++) {
 //double foo1 = exp(csf_basis[i_csf_basis]); 
-
-
 inline eval_res ufnEV2::eval_v( int i_s_in, double w_in) {
 	double num1, den1, w_diff1, w_diff2;
 
@@ -194,7 +128,7 @@ inline eval_res ufnEV2::eval_v( int i_s_in, double w_in) {
 		res2.v_out = v_tlower + alpha1*(v_tupper - v_tlower);
 		
 		res2.w_i_floor = w_i_low;
-		res2.v_i_floor = vw3_grid_ti2[i_s_in][w_i_low];  // TODO: double check; this may be an issue when considering tenure changes
+		res2.v_i_floor = vw3_grid_ti2[i_s_in][w_i_low]; 
 	}
 	else {
 		if (w_in >= w_max) {

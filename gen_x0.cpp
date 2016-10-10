@@ -28,6 +28,8 @@ vector<double> gen_x0(double coh_in, double b_min, void *vf1_in, void *vf2_in, v
 	int N_control4 = N_control - 1; 
 
 	int N_controlh;
+	int nds2 = 10;
+	int nds2_low = 4;
 	double h_step0 = 0.2;
 	double h_step_mult = 0.25;
 	double h_step = h_step0;
@@ -63,7 +65,7 @@ vector<double> gen_x0(double coh_in, double b_min, void *vf1_in, void *vf2_in, v
 	x0[0] = coh - x0[1] - x0[2] - x0[3] - x0[4];
 	v0 = (*ufnEV21).eval(x0);       
 
-	// x0_g2: simple, robust guess
+	// x0_g2: robust guess
 	x0_g2[3] = 0.0;
 	x0_g2[4] = 0.0;
 	x0_g2[2] = 0.0; 
@@ -110,6 +112,14 @@ vector<double> gen_x0(double coh_in, double b_min, void *vf1_in, void *vf2_in, v
 	double h_step1 = 0.0;
 	
 	while (opt_flag) {
+		x0[3] = max(x0[3], 0.0);
+		x0[4] = max(x0[4], 0.0);
+		csf_min = min(x0[3], x0[4]);
+		x0[3] = x0[3] - csf_min;
+		x0[4] = x0[4] - csf_min;
+		x0[1] = max(x0[1], b_min);
+		x0[0] = coh - x0[1] - x0[2] - x0[3] - x0[4];
+		v0 = (*ufnEV21).eval(x0);
 		
 		i_max = 0;
 		i_min = 0;
@@ -120,10 +130,7 @@ vector<double> gen_x0(double coh_in, double b_min, void *vf1_in, void *vf2_in, v
 		vi_min = 1.0e20;
 
 		for (i = 0; i < N_control4; i++) {
-			//if ( (i == 3 ) && ( (*ufnEV21).t_i2 >= 1 ) ) {
-			//	i++;
-			//}
-
+			
 			x0_h = x0;
 			x0_h[i] = x0[i] + h_step;
 
@@ -136,17 +143,14 @@ vector<double> gen_x0(double coh_in, double b_min, void *vf1_in, void *vf2_in, v
 
 			if ((v0_h < vi_min) && ( (x0[i] - h_step) >= lb[i])) {
 				i_min = i;
-				i_min_flag = 1;
-				vi_min = v0_h;	
+	
+				vi_min = v0_h;
+				if (i_min != i_max) {
+					i_min_flag = 1;
+				}
 			}
 		}
-		
-		//if ( (x0[3] + x0[4]) >= 0.35) {
-		//	cout << "gen_x0: issue here" << endl;
-		//}
-		
-		
-
+				
 		if ( i_min_flag >= 1 ) {
 			x1 = x0;
 			x1[i_max] = x1[i_max] + h_step;
@@ -161,11 +165,9 @@ vector<double> gen_x0(double coh_in, double b_min, void *vf1_in, void *vf2_in, v
 		else {
 			x1 = x0;
 			v1 = -1.0e20;
-			h_step1 = 0.1 * h_step;
-
-			nds2 = 4;
-			if (h_step >= 0.2) {
-				nds2 = 10;
+			
+			if (h_step < h_step0) {
+				nds2 = nds2_low; 
 			}
 
 			h_step1 = 0.25 * h_step; 
@@ -188,7 +190,7 @@ vector<double> gen_x0(double coh_in, double b_min, void *vf1_in, void *vf2_in, v
 				x0 = x1;
 			}
 
-			h_step = h_step1; //h_step = h_step * h_step_mult;
+			h_step = h_step1;
 		}
 
 		it++;

@@ -16,18 +16,13 @@ const int param_id = 0;  // set = 0 to define parameters here manually; set = 1,
 
 const int age_begin_store[] = { 64, 45, 30 }; // manual age settings here
 const int n_age_store[] = { 1, 1, 1, 2, 2 };
-//const int n_age_store[] = { 1, 1, 2, 1, 2 };
 const int n_age = n_age_store[param_id]; 
 
-const double csfLevStore[] = {1.0/0.055, 1.0/0.055, 0.0, 1.0/0.055, 0.0};
-//const double csfLev[] = 1.0 * (1.0 / 0.055);
+const double csfLevStore[] = {1.0/0.055, 1.0/0.055, 0.0, 1.0/0.055, 0.0}; // manually set futures leverage
 const double csfLev = csfLevStore[param_id];
-const int w_n = 200; // Grid points in wealth; set = 200 for fast computation, = 2000 for precision
-
+const int w_n = 400; // Grid points in wealth; set = 200 for fast computation, = 2000 for precision
 
 const int age_max = 65;                  // age at which household retires / annuitizes wealth  
-//const int w_n = 200;  //200                   // Grid points in wealth; set = 200 for fast computation, = 2000 for precision
-
 
 //const double margin_store[] = { 0.0, 0.0, 0.02524, 0.032408, 0.0, 0.019866, 0.0, }; 
 const double csfLev_pidxw[] = {1.0, 1.0, 0.0, 1.0, 0.0 };  // change in future notl to index weight
@@ -74,8 +69,8 @@ const double rho = 5.0;
 const int rhoi = int(floor(rho));        // Floor for identification
 
 const double beta = .97;   // alt: =.95               // Beta: time preferences
-const double phi = 0.06;                  // moving / transaction costs in event of home sale; also =.15
-const double phi_sell = 0.06; //0.10;
+const double phi = 0.08;                  // moving / transaction costs in event of home sale; also =.15
+const double phi_sell = 0.08; //0.10;
 const double phi_buy = 0.00;  //0.02;
 
 
@@ -168,7 +163,7 @@ const int retxn = 2;
 const double retxv[] = { x_mu - x_std, x_mu + x_std }; //{ -0.10, 0.25 };
 const double retxp[] = { 0.5, 0.5 };
 
-const double p_move = 0.05;  // also: set = 0.0                 // Probability receiving an exogenous moving shock
+const double p_move = 0.0;  // also: set = 0.0        // Probability receiving an exogenous moving shock
 
 const double b_min_const = -20.0;                    
 const double b_motive = 1.0;                         // Strength of bequest motive

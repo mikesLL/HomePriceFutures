@@ -294,66 +294,15 @@ void vfn::set_terminal(double phr_in) {
 	for (i_t = 0; i_t < t_n; i_t++) {
 		for (i_s = 0; i_s < n_s; i_s++) {
 			for (i_w = 0; i_w < w_n; i_w++) {
-				i_yi = (*snodes1).s2i_yi[i_s];
-				i_rent = (*snodes1).s2i_rent[i_s];
-
-				i_ph3 = (*snodes1).s2i_ph[i_s]; // retrieve home price state
-
-		
-				// experimental version
-				/*
-				coh_perm = (rb - 1.0)*( w_grid[i_w] - (*snodes1).p_gridt[T_max][i_ph3] ); 
-
-				if ( i_t == 0 ) {
-					coh_perm -= (*snodes1).rent_adj * (*snodes1).rent_gridt[T_max][i_rent];
-				}
-
-				V_perm = 1.0 / (1.0 - beta) * ufn(coh_perm, (*snodes1).hu_ten[i_t], pref);
-				*/
-				// old version 
 				
-				// phi*(*snodes1).ten_w[t_i] * (*snodes1).p_gridt[t_hor][i_ph];
-				w_adj = w_grid[i_w] - 0.0*phi * (*snodes1).ten_w[i_t] * (*snodes1).p_gridt[t_num][i_ph3]; 
-			
-				//w_adj = w_grid[i_w] - (*snodes1).ten_w[i_t]*(*snodes1).p_gridt[t_num][i_ph3]; 
-	
-				//coh_perm = (rb - 1.0)*w_adj  + 1.0*(rb - 1.0)*10.0*y_atax*y_replace*(*snodes1).yi_gridt[T_max][i_yi];
-				
-				//coh_perm = (rb - 1.0)*w_adj + y_replace*(*snodes1).yi_gridt[T_max][i_yi];
-				coh_perm = 1.0/16.0*w_adj + 0.0*y_replace*(*snodes1).yi_gridt[T_max][i_yi];
+				w_adj = c_fs + max(w_grid[i_w] , 0.0);   // terminal wealth
 
-				if (i_t == 0) {
-					coh_perm = coh_perm - min(1.0*(*snodes1).rent_adj * (*snodes1).rent_gridt[T_max][i_rent], 1.0 / 3.0*coh_perm);
-				}
-
-				//coh_perm = (rb - 1.0)*w_grid[i_w]  + 0.0*(rb - 1.0)*10.0*y_atax*y_replace*(*snodes1).yi_gridt[T_max][i_yi];
-				//coh_perm =  (rb - 1.0)*w_grid[i_w] + 1.0*(rb - 1.0)*30.0*y_atax*y_replace*(*snodes1).yi_gridt[T_max][i_yi];  // works
-				
-				//coh_perm -= 1.0*(*snodes1).rent_adj * (*snodes1).rent_gridt[T_max][i_rent];
-				//coh_perm = max( 0.0, c_fs ); 
-			
-				//V_perm = ( 1.0 - pow( beta, 20.0) ) / (1.0 - beta) * ufn(coh_perm, (*snodes1).hu_ten[0], pref);
-				coh_perm = max(coh_perm, 0.0); 
-				//V_perm = (1.0 - pow(beta, 20.0)) / (1.0 - beta) * ufn(coh_perm, (*snodes1).hu_ten[i_t], pref);
-				V_perm = (1.0 - pow(beta, 20.0)) / (1.0 - beta) * ufn(c_fs + coh_perm, (*snodes1).hu_ten[i_t], pref);
-
-				if (coh_perm <= 0.0) {
-					V_perm = -1.0e20 - 1.0e20*pow(coh_perm, 2.0);
-				}
-				//V_perm = 1.0 / (1.0 - beta) * ufn(coh_perm, (*snodes1).hu_ten[0], pref);
-				
-				//c_fs = 0.01;
-				//V_fs = -1.0e6 +  0.0*( 1.0 - pow( beta, 20.0) ) / (1.0 - beta) * ufn(c_fs, hu_ten_def , pref);
-				
-				// trying this here
-				w_adj = 0.05 + max(w_adj, 0.0); 
-				V_fs = -1.0e20;
 				V_perm = 1.0 / (1.0 - rho)*pow(w_adj, 1.0 - rho);
-				// evaluate bequest value
-				vw3_grid[i_t][i_s][i_w] = b_motive*max(V_perm, V_fs);
+				
+				vw3_grid[i_t][i_s][i_w] = b_motive*V_perm;        // bequest value
 
 				if (i_t == 0) {
-					vw3_def_grid[i_s][i_w] = b_motive*max(V_perm, V_fs);
+					vw3_def_grid[i_s][i_w] = V_perm;
 				}
 
 				v_move[i_w] = b_motive*V_perm;
@@ -369,18 +318,14 @@ void vfn::set_terminal(double phr_in) {
 // lambda interpolation parameters
 void vfn::interp_vw3(int i_t_in, int i_s_in) {
 
-	vector<double> x0_default = { c_fs, 0.0, 0.0, 0.0, 0.0 };
+	//vector<double> x0_default = { c_fs, 0.0, 0.0, 0.0, 0.0 };
 	int w_i4;
 	//double v0_default = 0.0;
 
 	for (w_i4 = (w_n - 2); w_i4 >= 0; w_i4--) {
 		vw3_grid[i_t_in][i_s_in][w_i4] = min(vw3_grid[i_t_in][i_s_in][w_i4], vw3_grid[i_t_in][i_s_in][w_i4 + 1]);
-
-		//v0_default = ufn(x0_default[0], hu_ten_def, pref); 
-		//vw3_grid[i_t_in][i_s_in][w_i4] = max(vw3_grid[i_t_in][i_s_in][w_i4], 
-		//	v0_default );
-
 	}
+
 }
 
 
