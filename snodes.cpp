@@ -7,9 +7,8 @@ snodes::snodes(int age0_in, int T_max_in, int city_id_in) {
 	age0 = age0_in;
 	T_max = T_max_in;
 
-	csfLevSn = csfLev_pidxw[param_id] * 1.0 / csfmarg_store[city_id];
+	csfLevSn = csfLev_pidxw[config_id] * 1.0 / csfmarg_store[city_id];  // load home price index futures leverage
 
-	
 	// initialize price, rent, income grids
 	// use max time horizon, n_ph, n_rent, n_yi gridpoints
 	p_gridt = vector<vector<double>>(T_max + 1, vector<double>(n_ph, 0.0));

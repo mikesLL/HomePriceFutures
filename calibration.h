@@ -5,48 +5,57 @@
 // cities: San Diego, San Francisco, Los Angeles, Boston, Chicago, Denver,  Miami, New York
 // city_id: 0,1,2,3,4,5,6,7,8
 // *.read_in files begin at year 5 (2007) and end at year 11 (2013)
+// config_id is used to toggle between preset age and leverage combinations
+// set config_id = 0 to enter manually, = 1,2,3,4 for presets
+
 
 const int city_begin = 2;
 const int city_end = 2;
 
-const int t_begin = 5;                   // begin in year 5 from .csv
-const int t_end = 11;                    // = 11 to cycle through all time periods;
+const int t_begin = 12;                   // begin in year 5 from .csv
+const int t_end = 12;                    // set = 11 to cycle through all time periods;
+const int t_rep = 12;                    // set representative time period
 
-const int param_id = 0;  // set = 0 to define parameters here manually; set = 1, 2, 3, 4 for presets and load in main
+const int config_id = 0;  // set = 0 to define parameters here manually; set = 1, 2, 3, 4 for presets and load in main
 
-const int age_begin_store[] = { 60, 45, 30 }; // manual age settings here
+const int age_begin_store_man[] = { 60, 45, 30 };                // manual age settings
+const int age_begin_store_const[4][3] = { { 30, 60, 45 },{ 30, 60, 45 },{ 60, 45, 30 },{ 60, 45, 30 } }; // stored age presets
+
+const int age_man[] = { 60, 45, 30 };     // manual age settings
+
+// stored age presets
+const int age_config[5][3] = { {age_man[0], age_man[1], age_man[2] }, { 30, 60, 45 },
+   { 30, 60, 45 },{ 60, 45, 30 },{ 60, 45, 30 } }; 
+
 const int n_age_store[] = { 1, 1, 1, 2, 2 };
-const int n_age = n_age_store[param_id]; 
+const int n_age = n_age_store[config_id];     // number of ages to compute
 
-const double csfLevStore[] = {1.0/0.055, 1.0/0.055, 0.0, 1.0/0.055, 0.0}; // manually set futures leverage
-const double csfLev = csfLevStore[param_id];
+//const double csfLevStore[] = {1.0/0.055, 1.0/0.055, 0.0, 1.0/0.055, 0.0}; // manually set futures leverage
+//const double csfLev = csfLevStore[config_id];
 const int w_n = 400; // Grid points in wealth; set = 200 for fast computation, = 2000 for precision
 
 const int age_max = 65;                  // age at which household retires / annuitizes wealth  
 
-//const double margin_store[] = { 0.0, 0.0, 0.02524, 0.032408, 0.0, 0.019866, 0.0, }; 
-const double csfLev_pidxw[] = {1.0, 1.0, 0.0, 1.0, 0.0 };  // change in future notl to index weight
+// index determines access to home price index futures; set = 0 for no accesss, = 1.0 for access
+const double csfLev_man = 1.0; // manual setting
+const double csfLev_pidxw[] = {csfLev_man, 1.0, 0.0, 1.0, 0.0 };  // change in future notl to index weight
 
 // csf margin requirement by city
-//const double csfmarg_store[] = { 0.036444571, 0.039967956, 0.032995124, 0.033871271,
-//	0.025347143, 0.023869709, 0.037148076, 0.030927638 };
 const double csfmarg_store[] = { 0.036444571, 0.039967956, 0.032995124, 0.033871271,
 	0.025347143, 0.023869709, 0.037148076, 0.030927638 };
 
-
-//const double csfLev = 2.5 / csfLev_store[city_id];
-//const double csfLev = 1.0 * ( 1.0 / 0.055 );       // Case-Shiller Index Future margin-implied leverage; (notional value contract)/(median home price)*(1/margin)
-const int csfLevi = int(floor(csfLev));   // Floor for identification
+const double csfLev = csfLev_pidxw[config_id] / 0.055; // earlier margin constant
+const int csfLevi = int(floor(csfLev));                    // store for file identification
 
 const int t_n = 5; // 4;                        // possible tenure states
 const int pref = 0;                       // set pref = 0 for Cobb-Douglas, = 1 for CES
 const int N_control = 6;
 const int N_cities = 8;                    // number of cities
 
-const int n_ph = 9;      // possible home price states
-const int n_rent = 1; // 3;  possible rent states
-const int n_yi = 3; // 3;  // labor income states
-
+const int n_ph = 9;                     // possible home price states
+const int n_rent = 1;                   // 3;  possible rent states
+const int n_yi = 3;                    // 3;  // labor income states
+ 
 const int n_s = n_ph * n_rent * n_yi;  // number of states
 
 // Labor income related parameters
