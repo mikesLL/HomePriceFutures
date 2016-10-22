@@ -79,7 +79,8 @@ void snodes::adj_tax() {
 	int i_y2 = 0;
 
 	double tax_brack[] = {0.0, 0.4385, 1.0595, 1.61, 2.88 };
-	double tax_rate[] = { 0.15, 0.28, 0.31, 0.36, 0.396 };
+	double tax_rate[] = { 0.0, 0.0, 0.0, 0.0, 0.0 };   // Abstract from income taxes
+	//double tax_rate[] = { 0.15, 0.28, 0.31, 0.36, 0.396 }; // Year 2000 tax brackets 
 
 	double y_btax2 = 0.0;
 	double y_tax_bill = 0.0;
