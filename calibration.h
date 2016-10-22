@@ -9,10 +9,10 @@
 // set config_id = 0 to enter manually, = 1,2,3,4 for presets
 
 
-const int city_begin = 2;
-const int city_end = 2;
+const int city_begin = 4;
+const int city_end = 4;
 
-const int t_begin = 12;                   // begin in year 5 from .csv
+const int t_begin = 5;                   // begin in year 5 from .csv
 const int t_end = 12;                    // set = 11 to cycle through all time periods;
 const int t_rep = 12;                    // set representative time period
 
